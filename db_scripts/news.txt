@@ -1,0 +1,14 @@
+ CREATE TABLE news (
+   id INT NOT NULL auto_increment,
+   author VARCHAR(100) NOT NULL,
+   title VARCHAR(100) NOT NULL,
+   content TEXT NOT NULL,
+   date_posted DATETIME NOT NULL,
+   PRIMARY KEY (id)
+ );
+
+
+ INSERT INTO news (author, title, content, date_posted)
+     VALUES  ('noob',  'First news', 'This is the first news.', '20150831202022');
+ INSERT INTO news (author, title, content, date_posted)
+     VALUES  ('ryan',  'Secound news', 'This is the secound news.', '20150831221822');
