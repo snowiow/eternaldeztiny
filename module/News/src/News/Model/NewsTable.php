@@ -2,7 +2,8 @@
 
 namespace News\Model;
 
- use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
 
  class NewsTable
  {
@@ -15,7 +16,9 @@ namespace News\Model;
 
      public function fetchAll()
      {
-         $resultSet = $this->tableGateway->select();
+         $resultSet = $this->tableGateway->select(function (Select $select) {
+             $select->order('date_posted DESC');
+         });
          return $resultSet;
      }
 
