@@ -42,10 +42,67 @@ class NewsController extends AbstractActionController
 
     public function editAction()
     {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('news', array(
+                'action' => 'add'
+            ));
+        }
+
+        try {
+            $news = $this->getNewsTable()->getNews($id);
+        }
+        catch (\Exception $ex) {
+            return $this->redirect()->toRoute('news', array(
+                'action' => 'index'
+            ));
+        }
+
+        $form = new NewsForm();
+        $form->bind($news);
+        $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($news->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getNewsTable()->saveNews($news);
+
+                return $this->redirect()->toRoute('news');
+            }
+        }
+
+        return array(
+            'id' => $id,
+            'form' => $form,
+        );
     }
 
     public function deleteAction()
     {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('news');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->getNewsTable()->deleteNews($id);
+            }
+
+            return $this->redirect()->toRoute('news');
+        }
+
+        return array(
+            'id' => $id,
+            'news' => $this->getNewsTable()->getNews($id),
+        );
     }
 
     public function getNewsTable()

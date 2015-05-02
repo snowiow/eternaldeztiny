@@ -22,12 +22,17 @@ class News implements InputFilterAwareInterface
         $this->author = (!empty($data['author'])) ? $data['author'] : null;
         $this->title = (!empty($data['title'])) ? $data['title'] : null;
         $this->content = (!empty($data['content'])) ? $data['content'] : null;
-        
+
         $date = new \DateTime();
         $this->date_posted = (!empty($data['date_posted'])) ?
                                                 $data['date_posted'] : $date->format('Y-m-d H:i:s');
     }
 
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
+    
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new Exception("Not used");
