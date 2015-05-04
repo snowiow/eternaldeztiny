@@ -7,16 +7,14 @@ $this->headTitle($title);
     <a href="<?php echo $this->url('news', array('action'=>'add'));?>">Add new news</a>
 </p>
 <?php foreach ($news as $item) : ?>
-    <div class="panel panel-default">
-<div class="panel-body">
-        <h1><?php echo $this->escapeHtml($item->title);?>
-            <small> by <?php echo $this->escapeHtml($item->author);?> <br />
-        <?php echo $this->escapeHtml($item->date_posted);?></small></h3>
-        <p><?php echo $this->escapeHtml($item->content);?></p>
-       <a href="<?php echo $this->url('news',
-           array('action'=>'edit', 'id' => $item->id));?>">Edit</a>
-       <a href="<?php echo $this->url('news',
-           array('action'=>'delete', 'id' => $item->id));?>">Delete</a>
-       </div>
-   </div>
+<div>
+    <h1><?php echo $this->escapeHtml($item->title);?>
+        <small> by <?php echo $this->escapeHtml($item->author);?> <br />
+    <?php echo $this->escapeHtml($item->date_posted);?></small></h3>
+    <p><?php echo $this->escapeHtml($item->content);?></p>
+    <a href="<?php echo $this->url('news',
+       array('action'=>'edit', 'id' => $item->id));?>">Edit</a>
+    <a href="<?php echo $this->url('news',
+       array('action'=>'delete', 'id' => $item->id));?>">Delete</a>
+</div>
 <?php endforeach; ?>

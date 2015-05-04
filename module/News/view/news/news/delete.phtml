@@ -18,7 +18,7 @@ $url = $this->url('news', array(
 <form action="<?php echo $url; ?>" method="post">
 <div>
      <input type="hidden" name="id" value="<?php echo (int) $news->id; ?>" />
-     <input type="submit" name="del" value="Yes" />
-     <input type="submit" name="del" value="No" />
+     <input type="submit" class="btn btn-danger" name="del" value="Yes" />
+     <input type="submit" class="btn btn-primary" name="del" value="No" />
 </div>
 </form>
