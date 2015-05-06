@@ -1,0 +1,13 @@
+CREATE TABLE account (
+name VARCHAR(64) NOT NULL,
+password VARCHAR(64) NOT NULL,
+email VARCHAR(64) NOT NULL,
+role INT NOT NULL,
+avatar VARCHAR(128),
+date_registered TIMESTAMP NOT NULL,
+PRIMARY KEY (name)
+);
+
+
+INSERT INTO account (name, password, email, role, date_registered)
+VALUES  ('noob',  'hallotest', 'noob@test.com', '0', '20150331202022');
