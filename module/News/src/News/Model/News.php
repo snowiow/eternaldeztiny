@@ -35,7 +35,7 @@ class News implements InputFilterAwareInterface
     
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new Exception("Not used");
+        throw new \Exception("Not used");
     }
 
     public function getInputFilter()
