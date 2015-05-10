@@ -10,7 +10,7 @@ $this->headTitle($title);
 <div>
     <h1><?php echo $this->escapeHtml($item->title);?>
         <small> by <?php echo $this->escapeHtml($item->author);?> <br />
-    <?php echo $this->escapeHtml($item->date_posted);?></small></h3>
+    <?php echo $this->escapeHtml(substr($item->date_posted, 0, -3));?></small></h3>
     <p><?php echo $this->escapeHtml($item->content);?></p>
     <a href="<?php echo $this->url('news',
        array('action'=>'edit', 'id' => $item->id));?>">Edit</a>
