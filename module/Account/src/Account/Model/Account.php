@@ -57,7 +57,7 @@ class Account
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
+                            'min' => 3,
                             'max' => 64,
                         ),
                     ),

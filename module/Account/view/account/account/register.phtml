@@ -3,67 +3,111 @@
 $title = 'Register';
 $this->headTitle($title);
 ?>
-
-<div>
-    <div class="col-md-2">
-    </div>
-    <div class="col-md-6">
-        <h1><?php echo $this->escapeHtml($title); ?></h1>
-        <?php
-        $form->setAttribute('action', $this->url('account', ['action' => 'register']));
-        $form->prepare();
-        echo $this->form()->openTag($form);
-        $attribute = '';
-        if (isset($errors)) {
-            if (array_key_exists('name', $errors)) {
-                $attribute = 'has-error';
-            } else {
-                $attribute = 'has-success';
-            }
+<div class="col-md-6">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <?php
+    $form->setAttribute('action', $this->url('account', ['action' => 'register']));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    if (isset($errors)) {
+        if (array_key_exists('name', $errors)) {
+            echo '<div class="form-group has-error has-feedback">';
+            echo $this->formLabel(
+                $form->get('name')
+                    ->setLabelAttributes(['class' => 'control-label']));
+            echo $this->formText(
+                $form->get('name')
+                    ->setAttribute('class', 'form-control'));
+            echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+            echo '<p>Username must be between 3 and 64 characters long </p>';
+        } else {
+            echo '<div class="form-group has-success has-feedback">';
+            echo $this->formLabel(
+                $form->get('name')
+                    ->setLabelAttributes(['class' => 'control-label']));
+            echo $this->formText(
+                $form->get('name')
+                    ->setAttribute('class', 'form-control'));
+            echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
         }
-        echo '<div class="form-group ' . $attribute . '">';
+    }
+    else {
+        echo '<div class="form-group">';
         echo $this->formLabel(
             $form->get('name')
                 ->setLabelAttributes(['class' => 'control-label']));
         echo $this->formText(
             $form->get('name')
                 ->setAttribute('class', 'form-control'));
-        ?>
-    </div>
-    <?php
-    $attribute = '';
-    if (isset($errors)) {
-        if (array_key_exists('password', $errors)) {
-            $attribute = 'has-error';
-        } else {
-            $attribute = 'has-success';
-        }
     }
-    echo '<div class="form-group ' . $attribute . '">';
+    ?>
+</div>
+<?php
+if (isset($errors)) {
+    if (array_key_exists('password', $errors)) {
+        echo '<div class="form-group has-error has-feedback">';
+        echo $this->formLabel(
+            $form->get('password')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formPassword(
+            $form->get('password')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+        echo '<p>Password must be between 4 and 64 characters long</p>';
+    } else {
+        echo '<div class="form-group has-success has-feedback">';
+        echo $this->formLabel(
+            $form->get('password')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formPassword(
+            $form->get('password')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+    }
+}
+else {
+    echo '<div class="form-group">';
     echo $this->formLabel(
         $form->get('password')
             ->setLabelAttributes(['class' => 'control-label']));
     echo $this->formPassword(
         $form->get('password')
             ->setAttribute('class', 'form-control'));
-    ?>
+}
+?>
 </div>
 <?php
-$attribute = '';
 if (isset($errors)) {
     if (array_key_exists('email', $errors)) {
-        $attribute = 'has-error';
+        echo '<div class="form-group has-error has-feedback">';
+        echo $this->formLabel(
+            $form->get('email')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('email')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+        echo '<p>No valid E-Mail adress</p>';
     } else {
-        $attribute = 'has-success';
+        echo '<div class="form-group has-success has-feedback">';
+        echo $this->formLabel(
+            $form->get('email')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('email')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
     }
 }
-echo '<div class="form-group ' . $attribute . '">';
-echo $this->formLabel(
-    $form->get('email')
-        ->setLabelAttributes(['class' => 'control-label']));
-echo $this->formText(
-    $form->get('email')
-        ->setAttribute('class', 'form-control'));
+else {
+    echo '<div class="form-group">';
+    echo $this->formLabel(
+        $form->get('email')
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formText(
+        $form->get('email')
+            ->setAttribute('class', 'form-control'));
+}
 ?>
 </div>
 <div class="form-group">
@@ -71,9 +115,6 @@ echo $this->formText(
         $form->get('submit')
             ->setAttribute('class', 'btn btn-success'));
     ?>
-</div>
-</div>
-<div class="col-md-2">
 </div>
 </div>
 <?php echo $this->form()->closeTag(); ?>
