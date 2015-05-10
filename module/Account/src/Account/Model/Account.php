@@ -20,7 +20,7 @@ class Account
     public function exchangeArray($data)
     {
         $this->name = !empty($data['name']) ? $data['name'] : null;
-        $this->password = !empty($data['password']) ? $data['password'] : null;
+        $this->password = !empty($data['password']) ? md5($data['password']) : null;
         $this->email = !empty($data['email']) ? $data['email'] : null;
         $this->role = !empty($data['role']) ? $data['role'] : 0;
         $this->avatar = !empty($data['avatar']) ? $data['avatar'] : null;

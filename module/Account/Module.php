@@ -5,6 +5,7 @@ namespace Account;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\ResultSet\ResultSet;
 
 use Account\Model\Account;
 use Account\Model\AccountTable;

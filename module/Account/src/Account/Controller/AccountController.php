@@ -3,12 +3,10 @@
 namespace Account\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Captcha\AdapterInterface as CaptchaAdapter;
-use Zend\Captcha\Figlet;
 
 use Account\Form\RegisterForm;
 use Account\Model\Account;
-use Account\Model\AccountTable;
+use ZendTest\XmlRpc\Server\Exception;
 
 class AccountController extends AbstractActionController
 {
@@ -32,11 +30,19 @@ class AccountController extends AbstractActionController
 
             if ($form->isValid()) {
                 $account->exchangeArray($form->getData());
-                $this->getAccountTable()->saveAccount($account);
-
-                return $this->redirect()->toRoute('news');
+                try {
+                    $this->getAccountTable()->saveAccount($account);
+                }
+                catch (\Exception $e) {
+                   return ['form' => $form, 'errors' => $errors = ['name' => 'name_taken']];
+                }
+                return $this->redirect()->toRoute('account', [
+                    'controller' => 'account',
+                    'action' => 'registersuccess',
+                ]);
             } else {
                 $errors = $form->getMessages();
+
                 return ['form' => $form, 'errors' => $errors];
             }
         }
@@ -45,6 +51,10 @@ class AccountController extends AbstractActionController
     }
 
     public function loginAction()
+    {
+    }
+
+    public function registerSuccessAction()
     {
     }
 

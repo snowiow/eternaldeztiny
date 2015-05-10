@@ -19,7 +19,10 @@ $this->headTitle($title);
                 $form->get('name')
                     ->setAttribute('class', 'form-control'));
             echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
-            echo '<p>Username must be between 3 and 64 characters long </p>';
+            if ($errors['name'] === 'name_taken')
+                echo '<p>Username already taken. Please choose another</p>';
+            else
+                echo '<p>Username must be between 3 and 64 characters long </p>';
         } else {
             echo '<div class="form-group has-success has-feedback">';
             echo $this->formLabel(
