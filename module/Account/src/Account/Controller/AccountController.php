@@ -21,13 +21,7 @@ class AccountController extends AbstractActionController
 
     public function registerAction()
     {
-        $captcha = new Figlet([
-            'name' => 'captcha',
-            'wordLen' => 6,
-            'timeout' => 300,
-        ]);
-        $id = $captcha->generate();
-        $form = new RegisterForm($captcha);
+        $form = new RegisterForm();
         $form->get('submit')->setValue('Register');
 
         $request = $this->getRequest();
@@ -40,10 +34,14 @@ class AccountController extends AbstractActionController
                 $account->exchangeArray($form->getData());
                 $this->getAccountTable()->saveAccount($account);
 
-                return $this->redirect()->toRoute('account');
+                return $this->redirect()->toRoute('news');
+            } else {
+                $errors = $form->getMessages();
+                return ['form' => $form, 'errors' => $errors];
             }
         }
-        return array('form' => $form);
+
+        return ['form' => $form];
     }
 
     public function loginAction()
@@ -56,6 +54,7 @@ class AccountController extends AbstractActionController
             $sm = $this->getServiceLocator();
             $this->accountTable = $sm->get('Account\Model\AccountTable');
         }
+
         return $this->accountTable;
     }
 }

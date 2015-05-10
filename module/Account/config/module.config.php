@@ -1,4 +1,5 @@
 <?php
+
 return [
     'controllers'  => [
         'invokables' => [
@@ -7,7 +8,7 @@ return [
     ],
     'router'       => [
         'routes' => [
-            'album' => [
+            'account' => [
                 'type'    => 'segment',
                 'options' => [
                     'route'       => '/account[/:action][/:id]',

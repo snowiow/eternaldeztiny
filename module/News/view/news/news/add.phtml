@@ -5,46 +5,43 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
-$form->setAttribute('action', $this->url('news', array('action' => 'add')));
+$form->setAttribute('action', $this->url('news', ['action' => 'add']));
 $form->prepare();
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 ?>
 <div class="form-group">
     <?php echo $this->formLabel(
-            $form->get('title')
-                 ->setLabelAttributes(array('class' => 'control-label')));
-    ?>
-    <?php echo $this->formText(
         $form->get('title')
-             ->setAttribute('class', 'form-control'));
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formText(
+        $form->get('title')
+            ->setAttribute('class', 'form-control'));
     ?>
 </div>
 <div class="form-group">
     <?php echo $this->formLabel(
-            $form->get('author')
-                 ->setLabelAttributes(array('class' => 'control-label')));
-    ?>
-    <?php echo $this->formText(
         $form->get('author')
-             ->setAttribute('class', 'form-control'));
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formText(
+        $form->get('author')
+            ->setAttribute('class', 'form-control'));
     ?>
 </div>
 <div class="form-group">
     <?php echo $this->formLabel(
-            $form->get('content')
-                 ->setLabelAttributes(array('class' => 'control-label')));
-    ?>
-    <?php echo $this->formTextarea(
         $form->get('content')
-             ->setAttribute('class', 'form-control')
-             ->setAttribute('rows', '10'));
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formTextarea(
+        $form->get('content')
+            ->setAttribute('class', 'form-control')
+            ->setAttribute('rows', '10'));
     ?>
 </div>
 <div class="form-group">
     <?php echo $this->formSubmit(
         $form->get('submit')
-             ->setAttribute('class', 'btn btn-success'));
+            ->setAttribute('class', 'btn btn-success'));
     ?>
 </div>
 <?php echo $this->form()->closeTag(); ?>

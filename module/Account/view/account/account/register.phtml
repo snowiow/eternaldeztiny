@@ -3,47 +3,77 @@
 $title = 'Register';
 $this->headTitle($title);
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-6">
+        <h1><?php echo $this->escapeHtml($title); ?></h1>
+        <?php
+        $form->setAttribute('action', $this->url('account', ['action' => 'register']));
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        $attribute = '';
+        if (isset($errors)) {
+            if (array_key_exists('name', $errors)) {
+                $attribute = 'has-error';
+            } else {
+                $attribute = 'has-success';
+            }
+        }
+        echo '<div class="form-group ' . $attribute . '">';
+        echo $this->formLabel(
+            $form->get('name')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('name')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <?php
+    $attribute = '';
+    if (isset($errors)) {
+        if (array_key_exists('password', $errors)) {
+            $attribute = 'has-error';
+        } else {
+            $attribute = 'has-success';
+        }
+    }
+    echo '<div class="form-group ' . $attribute . '">';
+    echo $this->formLabel(
+        $form->get('password')
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formPassword(
+        $form->get('password')
+            ->setAttribute('class', 'form-control'));
+    ?>
+</div>
 <?php
-$form->setAttribute('action', $this->url('account', ['action' => 'register']));
-$form->prepare();
-echo $this->form()->openTag($form);
+$attribute = '';
+if (isset($errors)) {
+    if (array_key_exists('email', $errors)) {
+        $attribute = 'has-error';
+    } else {
+        $attribute = 'has-success';
+    }
+}
+echo '<div class="form-group ' . $attribute . '">';
+echo $this->formLabel(
+    $form->get('email')
+        ->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText(
+    $form->get('email')
+        ->setAttribute('class', 'form-control'));
 ?>
-<div class="form-group">
-    <?php echo $this->formLabel(
-        $form->get('name')
-            ->setLabelAttributes(['class' => 'control-label']));
-    ?>
-    <?php echo $this->formText(
-        $form->get('name')
-            ->setAttribute('class', 'form-control'));
-    ?>
-</div>
-<div class="form-group">
-    <?php echo $this->formLabel(
-        $form->get('password')
-            ->setLabelAttributes(['class' => 'control-label']));
-    ?>
-    <?php echo $this->formPassword(
-        $form->get('password')
-            ->setAttribute('class', 'form-control'));
-    ?>
-</div>
-<div class="form-group">
-    <?php echo $this->formLabel(
-        $form->get('email')
-            ->setLabelAttributes(['class' => 'control-label']));
-    ?>
-    <?php echo $this->formText(
-        $form->get('email')
-            ->setAttribute('class', 'form-control')
-            ->setAttribute('rows', '10'));
-    ?>
 </div>
 <div class="form-group">
     <?php echo $this->formSubmit(
         $form->get('submit')
             ->setAttribute('class', 'btn btn-success'));
     ?>
+</div>
+</div>
+<div class="col-md-2">
+</div>
 </div>
 <?php echo $this->form()->closeTag(); ?>

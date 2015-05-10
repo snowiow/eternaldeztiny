@@ -21,7 +21,6 @@ class AccountTable
 
     public function getAccount($name)
     {
-        $name = (int)$name;
         $rowset = $this->tableGateway->select(['name' => $name]);
         $row = $rowset->current();
         if (!$row) {

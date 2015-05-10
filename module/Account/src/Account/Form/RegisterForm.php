@@ -3,23 +3,20 @@
 namespace Account\Form;
 
 use Zend\Form\Form;
-use Zend\Captcha\AdapterInterface as CaptchaAdapter;
 use Zend\Form\Element;
 
 class RegisterForm extends Form
 {
-    protected  $captcha;
 
-    public function __construct(CaptchaAdapter $captcha)
+    public function __construct($name = null)
     {
         parent::__construct('register');
-        $this->captcha = $captcha;
 
         $this->add([
             'name'       => 'name',
             'type'       => 'Text',
             'options'    => [
-                'Label' => 'Username',
+                'label' => 'Username',
             ],
         ]);
 
@@ -27,7 +24,7 @@ class RegisterForm extends Form
             'name'       => 'password',
             'type'       => 'Password',
             'options'    => [
-                'Label' => 'Password',
+                'label' => 'Password',
             ],
         ]);
 
@@ -35,16 +32,7 @@ class RegisterForm extends Form
             'name' => 'email',
             'type' => 'Zend\Form\Element\Email',
             'options' => [
-                'Label' => 'E-Mail Adress',
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'captcha',
-            'type' => 'Zend\Form\Element\Captcha',
-            'options' => [
-                'Label' => 'Please verify that you are human',
-                'captcha' => $this->captcha,
+                'label' => 'E-Mail Adress',
             ],
         ]);
 
