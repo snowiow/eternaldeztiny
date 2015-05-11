@@ -3,13 +3,15 @@
 namespace Account\Model;
 
 use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+
+use Application\Constants;
 
 class Account
 {
     public $name;
     public $password;
+    public $userhash;
     public $email;
     public $role;
     public $avatar;
@@ -20,7 +22,8 @@ class Account
     public function exchangeArray($data)
     {
         $this->name = !empty($data['name']) ? $data['name'] : null;
-        $this->password = !empty($data['password']) ? md5($data['password']) : null;
+        $this->password = !empty($data['password']) ? hash('sha256', $data['password']) . Constants::SALT  : null;
+        $this->userhash = hash('sha256', $this->name);
         $this->email = !empty($data['email']) ? $data['email'] : null;
         $this->role = !empty($data['role']) ? $data['role'] : 0;
         $this->avatar = !empty($data['avatar']) ? $data['avatar'] : null;

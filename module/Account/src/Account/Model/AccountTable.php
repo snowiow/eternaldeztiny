@@ -19,12 +19,33 @@ class AccountTable
         return $resultSet;
     }
 
-    public function getAccount($name)
+    public function getAccount($id)
     {
+        $id = (int) $id;
+        $rowset = $this->tableGateway->select(['id' => $id]);
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+
+        return $row;
+    }
+
+    public function getAccountByName($name) {
         $rowset = $this->tableGateway->select(['name' => $name]);
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $name");
+            return null;
+        }
+
+        return $row;
+    }
+
+    public function getAccountByMail($email) {
+        $rowset = $this->tableGateway->select(['email' => $email]);
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
         }
 
         return $row;
@@ -35,6 +56,7 @@ class AccountTable
         $data = [
             'name'            => $account->name,
             'password'        => $account->password,
+            'userhash'        => $account->userhash,
             'email'           => $account->email,
             'role'            => $account->role,
             'avatar'          => $account->avatar,

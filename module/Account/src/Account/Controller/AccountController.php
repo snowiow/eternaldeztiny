@@ -30,15 +30,19 @@ class AccountController extends AbstractActionController
 
             if ($form->isValid()) {
                 $account->exchangeArray($form->getData());
-                try {
-                    $this->getAccountTable()->saveAccount($account);
+                if (!$this->getAccountTable()->getAccountByName($account->name)) {
+                    if (!$this->getAccountTable()->getAccountByMail($account->email)) {
+                        $this->getAccountTable()->saveAccount($account);
+                    } else {
+                        return ['form' => $form, 'errors' => $errors = ['email' => 'email_taken']];
+                    }
+                } else {
+                    return ['form' => $form, 'errors' => $errors = ['name' => 'name_taken']];
                 }
-                catch (\Exception $e) {
-                   return ['form' => $form, 'errors' => $errors = ['name' => 'name_taken']];
-                }
+
                 return $this->redirect()->toRoute('account', [
                     'controller' => 'account',
-                    'action' => 'registersuccess',
+                    'action'     => 'registersuccess',
                 ]);
             } else {
                 $errors = $form->getMessages();
@@ -50,15 +54,18 @@ class AccountController extends AbstractActionController
         return ['form' => $form];
     }
 
-    public function loginAction()
+    public
+    function loginAction()
     {
     }
 
-    public function registerSuccessAction()
+    public
+    function registerSuccessAction()
     {
     }
 
-    public function getAccountTable()
+    public
+    function getAccountTable()
     {
         if (!$this->accountTable) {
             $sm = $this->getServiceLocator();

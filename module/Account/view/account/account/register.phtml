@@ -19,10 +19,11 @@ $this->headTitle($title);
                 $form->get('name')
                     ->setAttribute('class', 'form-control'));
             echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
-            if ($errors['name'] === 'name_taken')
+            if ($errors['name'] === 'name_taken') {
                 echo '<p>Username already taken. Please choose another</p>';
-            else
+            } else {
                 echo '<p>Username must be between 3 and 64 characters long </p>';
+            }
         } else {
             echo '<div class="form-group has-success has-feedback">';
             echo $this->formLabel(
@@ -33,8 +34,7 @@ $this->headTitle($title);
                     ->setAttribute('class', 'form-control'));
             echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
         }
-    }
-    else {
+    } else {
         echo '<div class="form-group">';
         echo $this->formLabel(
             $form->get('name')
@@ -67,8 +67,7 @@ if (isset($errors)) {
                 ->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
     }
-}
-else {
+} else {
     echo '<div class="form-group">';
     echo $this->formLabel(
         $form->get('password')
@@ -90,7 +89,11 @@ if (isset($errors)) {
             $form->get('email')
                 ->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
-        echo '<p>No valid E-Mail adress</p>';
+        if ($errors['email'] === 'email_taken') {
+            echo '<p>E-Mail already taken. Please choose another</p>';
+        } else {
+            echo '<p>No valid E-Mail adress</p>';
+        }
     } else {
         echo '<div class="form-group has-success has-feedback">';
         echo $this->formLabel(
@@ -101,8 +104,7 @@ if (isset($errors)) {
                 ->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
     }
-}
-else {
+} else {
     echo '<div class="form-group">';
     echo $this->formLabel(
         $form->get('email')
