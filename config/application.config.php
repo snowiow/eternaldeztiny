@@ -5,6 +5,7 @@ return array(
         'Application',
         'News',
         'Account',
+        'AppMail',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

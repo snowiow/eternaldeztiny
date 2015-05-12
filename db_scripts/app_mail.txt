@@ -1,0 +1,8 @@
+CREATE TABLE app_mail (
+id INT NOT NULL auto_increment,
+name VARCHAR(64) NOT NULL UNIQUE,
+host VARCHAR(64) NOT NULL,
+login VARCHAR(64) NOT NULL,
+password VARCHAR(64) NOT NULL,
+PRIMARY KEY (id)
+);

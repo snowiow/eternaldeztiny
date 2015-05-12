@@ -1,12 +1,17 @@
 <?php
 
 return [
-    'controllers'  => [
-        'invokables' => [
-            'Account\Controller\Account' => 'Account\Controller\AccountController',
+    'service_manager' => [
+        'factories' => [
+            'AppMail\Service\AppMailServiceInterface' => 'AppMail\Factory\AppMailServiceFactory',
         ],
     ],
-    'router'       => [
+    'controllers'     => [
+        'factories' => [
+            'Account\Controller\Account' => 'Account\Factory\AccountControllerFactory',
+        ],
+    ],
+    'router'          => [
         'routes' => [
             'account' => [
                 'type'    => 'segment',
@@ -24,7 +29,7 @@ return [
             ],
         ],
     ],
-    'view_manager' => [
+    'view_manager'    => [
         'template_path_stack' => [
             'account' => __DIR__ . '/../view',
         ],
