@@ -6,12 +6,19 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 use Account\Form\RegisterForm;
 use Account\Model\Account;
-
+use Account\Model\AccountTable;
 use AppMail\Service\AppMailServiceInterface;
 
 class AccountController extends AbstractActionController
 {
+    /**
+     * @var AccountTable
+     */
     protected $accountTable;
+
+    /**
+     * @var \AppMail\Service\AppMailServiceInterface
+     */
     protected $appMailService;
 
     /**
@@ -27,6 +34,10 @@ class AccountController extends AbstractActionController
         print_r("test");
     }
 
+    /**
+     * the registration action- Either returns the registration page or adds an account to the db and sends out an email.
+     * @return array|\Zend\Http\Response
+     */
     public function registerAction()
     {
         $form = new RegisterForm();
@@ -40,8 +51,8 @@ class AccountController extends AbstractActionController
 
             if ($form->isValid()) {
                 $account->exchangeArray($form->getData());
-                if (!$this->getAccountTable()->getAccountByName($account->name)) {
-                    if (!$this->getAccountTable()->getAccountByMail($account->email)) {
+                if (!$this->getAccountTable()->getAccountByName($account->getName())) {
+                    if (!$this->getAccountTable()->getAccountByMail($account->getEmail())) {
                         $this->getAccountTable()->saveAccount($account);
                         $this->sendConfirmationMail($account);
                     } else {
@@ -73,6 +84,10 @@ class AccountController extends AbstractActionController
     {
     }
 
+    /**
+     * Retrieve the accountTable
+     * @return AccountTable
+     */
     public function getAccountTable()
     {
         if (!$this->accountTable) {
@@ -90,9 +105,9 @@ class AccountController extends AbstractActionController
      */
     private function sendConfirmationMail($account)
     {
-        $mailText = "Congratulations " . $account->name . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText = $mailText . "follow the link:\ned.com/account/registersuccess/" . $account->userhash;
+        $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
+        $mailText = $mailText . "follow the link:\ned.com/account/registersuccess/" . $account->getUserHash();
 
-        $this->appMailService->sendMail($account->email, 'Your registration at Eternal Deztiny', $mailText);
+        $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
     }
 }

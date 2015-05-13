@@ -8,14 +8,96 @@ use Zend\InputFilter\InputFilterInterface;
 
 class News implements InputFilterAwareInterface
 {
-    public $id;
-    public $author;
-    public $title;
-    public $content;
-    public $date_posted;
+    /**
+     * @var int
+     */
+    private $id;
 
+    /**
+     * @var string
+     */
+    private $author;
+
+    /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var string
+     */
+    private $content;
+
+    /**
+     * @var string
+     */
+    private $date_posted;
+
+    /**
+     * @var InputFilter
+     */
     protected $inputFilter;
 
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor() {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author) {
+        $this->author = $author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()  {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title) {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent() {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent($content) {
+        $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatePosted() {
+        return $this->date_posted;
+    }
+
+    /**
+     * Fills up the model class with the given data
+     * @param array $data
+     */
     public function exchangeArray($data)
     {
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
@@ -28,83 +110,97 @@ class News implements InputFilterAwareInterface
                                                 $data['date_posted'] : $date->format('Y-m-d H:i:s');
     }
 
+    /**
+     *
+     * @return array NewsModel as array
+     */
     public function getArrayCopy()
     {
         return get_object_vars($this);
     }
-    
+
+    /**
+     * Always throws exception. InputFilter wont be set from outside.
+     * @param \Zend\InputFilter\InputFilterInterface $inputFilter
+     *
+     * @throws \Exception
+     */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
 
+    /**
+     * Creates the InputFilter for an NewsModel.
+     * @return InputFilter
+     */
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name' => 'id',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-            ));
+                'filters' => [
+                    ['name' => 'Int'],
+                ],
+            ]);
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name' => 'author',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name' => 'StringLength',
-                        'options' => array(
+                        'options' => [
                             'encoding' => 'UTF-8',
                             'min' => 1,
                             'max' => 100,
-                        ),
-                    ),
-                ),
-            ));
+                        ],
+                    ],
+                ],
+            ]);
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name' => 'title',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name' => 'StringLength',
-                        'options' => array(
+                        'options' => [
                             'encoding' => 'UTF-8',
                             'min' => 1,
                             'max' => 100,
-                        ),
-                    ),
-                ),
-            ));
+                        ],
+                    ],
+                ],
+            ]);
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name' => 'content',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name' => 'StringLength',
-                        'options' => array(
+                        'options' => [
                             'encoding' => 'UTF-8',
-                        ),
-                    ),
-                ),
-            ));
+                        ],
+                    ],
+                ],
+            ]);
             $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;

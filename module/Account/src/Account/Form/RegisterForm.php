@@ -8,6 +8,9 @@ use Zend\Form\Element;
 class RegisterForm extends Form
 {
 
+    /**
+     * @param null $name
+     */
     public function __construct($name = null)
     {
         parent::__construct('register');

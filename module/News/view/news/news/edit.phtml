@@ -22,7 +22,7 @@ echo $this->formHidden($form->get('id'));
     <?php echo $this->formLabel(
         $form->get('title')
             ->setLabelAttributes(['class' => 'control-label']));
-    $this->formText(
+    echo $this->formText(
         $form->get('title')
             ->setAttribute('class', 'form-control'));
     ?>

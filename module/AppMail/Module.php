@@ -34,23 +34,4 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return include __DIR__ . '/config/module.config.php';
     }
-
-    public function getServiceConfig()
-    {
-        return array(
-            'factories' => array(
-                'AppMail\Model\AppMailTable' =>  function($sm) {
-                    $tableGateway = $sm->get('AppMailTableGateway');
-                    $table = new AppMailTable($tableGateway);
-                    return $table;
-                },
-                'AppMailTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new AppMail());
-                    return new TableGateway('app_mail', $dbAdapter, null, $resultSetPrototype);
-                },
-            ),
-        );
-    }
 }

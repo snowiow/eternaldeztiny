@@ -29,6 +29,11 @@ class AppMailService implements AppMailServiceInterface
      */
     protected $appMailPrototype;
 
+    /**
+     * @param \Zend\Db\Adapter\AdapterInterface       $dbAdapter
+     * @param \Zend\Stdlib\Hydrator\HydratorInterface $hydrator
+     * @param \AppMail\Model\AppMail                  $appMailPrototype
+     */
     public function __construct(AdapterInterface $dbAdapter, HydratorInterface $hydrator, AppMail $appMailPrototype)
     {
         $this->dbAdapter = $dbAdapter;
@@ -36,6 +41,12 @@ class AppMailService implements AppMailServiceInterface
         $this->appMailPrototype = $appMailPrototype;
     }
 
+    /**
+     * Sends a mail with the given data from the AppMailAccount
+     * @param string $to
+     * @param string $subject
+     * @param string $content
+     */
     public function sendMail($to, $subject, $content)
     {
         $appMailData = $this->getAppMailData();
@@ -61,7 +72,9 @@ class AppMailService implements AppMailServiceInterface
     }
 
     /**
+     * Retrieves the login data for the mailbox which is used by the app
      * @return AppMail
+     * @throws InvalidArgumentException if the mailbox doesn't exist
      */
     private function getAppMailData()
     {

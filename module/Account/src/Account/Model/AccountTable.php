@@ -5,13 +5,23 @@ use Zend\Db\TableGateway\TableGateway;
 
 class AccountTable
 {
+    /**
+     * @var \Zend\Db\TableGateway\TableGateway
+     */
     protected $tableGateway;
 
+    /**
+     * @param \Zend\Db\TableGateway\TableGateway $tableGateway
+     */
     public function __construct(TableGateway $tableGateway)
     {
         $this->tableGateway = $tableGateway;
     }
 
+    /**
+     * Returns all Accounts in db
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
     public function fetchAll()
     {
         $resultSet = $this->tableGateway->select();
@@ -19,6 +29,12 @@ class AccountTable
         return $resultSet;
     }
 
+    /**
+     *
+     * @param string|int $id
+     *
+     * @return array|\ArrayObject|null the account with the given id
+     */
     public function getAccount($id)
     {
         $id = (int) $id;
@@ -31,6 +47,11 @@ class AccountTable
         return $row;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return array|\ArrayObject|null the account with the given name
+     */
     public function getAccountByName($name) {
         $rowset = $this->tableGateway->select(['name' => $name]);
         $row = $rowset->current();
@@ -41,6 +62,11 @@ class AccountTable
         return $row;
     }
 
+    /**
+     * @param $email
+     *
+     * @return array|\ArrayObject|null the account with the given email
+     */
     public function getAccountByMail($email) {
         $rowset = $this->tableGateway->select(['email' => $email]);
         $row = $rowset->current();
@@ -51,31 +77,41 @@ class AccountTable
         return $row;
     }
 
+    /**
+     * Saves an account to the db. If the id exists the given dataset will be updated
+     * @param \Account\Model\Account $account
+     *
+     * @throws \Exception
+     */
     public function saveAccount(Account $account)
     {
         $data = [
-            'name'            => $account->name,
-            'password'        => $account->password,
-            'userhash'        => $account->userhash,
-            'email'           => $account->email,
-            'role'            => $account->role,
-            'avatar'          => $account->avatar,
-            'date_registered' => $account->date_registered,
+            'name'            => $account->getName(),
+            'password'        => $account->getPassword(),
+            'userhash'        => $account->getUserHash(),
+            'email'           => $account->getEmail(),
+            'role'            => $account->getRole(),
+            'avatar'          => $account->getAvatar(),
+            'date_registered' => $account->getDateRegistered(),
         ];
 
-        if ($account->name) {
+        if (!$account->getId()) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getAccount($account->name)) {
-                $this->tableGateway->update($data, ['name' => $account->name]);
+            if ($this->getAccount($account->getId())) {
+                $this->tableGateway->update($data, ['id' => $account->getId()]);
             } else {
-                throw new \Exception('Account name does not exist');
+                throw new \Exception('Account id does not exist');
             }
         }
     }
 
-    public function deleteAccount($name)
+    /**
+     * Deletes the account with the given id
+     * @param int|string $id
+     */
+    public function deleteAccount($id)
     {
-        $this->tableGateway->delete(['name' => $name]);
+        $this->tableGateway->delete(['id' => $id]);
     }
 }

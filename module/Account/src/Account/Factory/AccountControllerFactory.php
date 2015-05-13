@@ -13,7 +13,7 @@ class AccountControllerFactory implements FactoryInterface
      *
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
      *
-     * @return mixed
+     * @return AccountController
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

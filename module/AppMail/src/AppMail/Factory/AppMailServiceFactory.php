@@ -15,7 +15,7 @@ class AppMailServiceFactory implements FactoryInterface
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return AppMailService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

@@ -1,23 +1,22 @@
 <?php
-
  $title = 'Delete News';
  $this->headTitle($title);
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
 
  <p>Are you sure that you want to delete
-     '<?php echo $this->escapeHtml($news->title); ?>' by
-     '<?php echo $this->escapeHtml($news->author); ?>'?
+     '<?php echo $this->escapeHtml($news->getTitle()); ?>' by
+     '<?php echo $this->escapeHtml($news->getAuthor()); ?>'?
 </p>
 <?php
 $url = $this->url('news', array(
     'action' => 'delete',
-    'id'     => $this->id,
+    'id'     => $id,
 ));
 ?>
 <form action="<?php echo $url; ?>" method="post">
 <div>
-     <input type="hidden" name="id" value="<?php echo (int) $news->id; ?>" />
+     <input type="hidden" name="id" value="<?php echo (int) $news->getId(); ?>" />
      <input type="submit" class="btn btn-danger" name="del" value="Yes" />
      <input type="submit" class="btn btn-primary" name="del" value="No" />
 </div>

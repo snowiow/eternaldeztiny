@@ -6,19 +6,28 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 use News\Model\News;
+use News\Model\NewsTable;
 use News\Form\NewsForm;
 
 class NewsController extends AbstractActionController
 {
+    /**
+     * @var NewsTable
+     */
     protected $newsTable;
 
     public function indexAction()
     {
-        return new ViewModel(array(
+        return new ViewModel([
             'news' => $this->getNewsTable()->fetchAll(),
-        ));
+        ]);
     }
 
+    /**
+     * Adds a new News to the db or opens up the form for adding, if it isn't opened yet.
+     * @return array|\Zend\Http\Response
+     * @throws \Exception
+     */
     public function addAction()
     {
         $form = new NewsForm();
@@ -37,25 +46,30 @@ class NewsController extends AbstractActionController
                 return $this->redirect()->toRoute('news');
             }
         }
-        return array('form' => $form);
+        return ['form' => $form];
     }
 
+    /**
+     * Edits a already existing news and updates it-
+     * @return array|\Zend\Http\Response
+     * @throws \Exception
+     */
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('news', array(
+            return $this->redirect()->toRoute('news', [
                 'action' => 'add'
-            ));
+            ]);
         }
 
         try {
             $news = $this->getNewsTable()->getNews($id);
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('news', array(
+            return $this->redirect()->toRoute('news', [
                 'action' => 'index'
-            ));
+            ]);
         }
 
         $form = new NewsForm();
@@ -74,12 +88,17 @@ class NewsController extends AbstractActionController
             }
         }
 
-        return array(
+        return [
             'id' => $id,
             'form' => $form,
-        );
+        ];
     }
 
+    /**
+     * Deletes the NewsPost which is chosen.
+     * @return array|\Zend\Http\Response
+     * @throws \Exception
+     */
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -99,12 +118,15 @@ class NewsController extends AbstractActionController
             return $this->redirect()->toRoute('news');
         }
 
-        return array(
+        return [
             'id' => $id,
             'news' => $this->getNewsTable()->getNews($id),
-        );
+        ];
     }
 
+    /**
+     * @return array|NewsTable|object
+     */
     public function getNewsTable()
     {
         if (!$this->newsTable) {

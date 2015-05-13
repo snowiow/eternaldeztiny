@@ -9,27 +9,27 @@ class AppMail implements AppMailInterface
     /**
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string
      */
-    protected $host;
+    private $host;
 
     /**
      * @var string
      */
-    protected $login;
+    private $login;
 
     /**
      * @var string
      */
-    protected $password;
+    private $password;
 
     /**
      * @return int

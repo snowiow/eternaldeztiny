@@ -8,13 +8,13 @@ $this->headTitle($title);
 </p>
 <?php foreach ($news as $item) : ?>
 <div>
-    <h1><?php echo $this->escapeHtml($item->title);?>
-        <small> by <?php echo $this->escapeHtml($item->author);?> <br />
-    <?php echo $this->escapeHtml(substr($item->date_posted, 0, -3));?></small></h3>
-    <p><?php echo $this->escapeHtml($item->content);?></p>
+    <h1><?php echo $this->escapeHtml($item->getTitle());?>
+        <small> by <?php echo $this->escapeHtml($item->getAuthor());?> <br />
+    <?php echo $this->escapeHtml(substr($item->getDatePosted(), 0, -3));?></small></h1>
+    <p><?php echo $this->escapeHtml($item->getContent());?></p>
     <a href="<?php echo $this->url('news',
-       array('action'=>'edit', 'id' => $item->id));?>">Edit</a>
+       array('action'=>'edit', 'id' => $item->getId()));?>">Edit</a>
     <a href="<?php echo $this->url('news',
-       array('action'=>'delete', 'id' => $item->id));?>">Delete</a>
+       array('action'=>'delete', 'id' => $item->getId()));?>">Delete</a>
 </div>
 <?php endforeach; ?>
