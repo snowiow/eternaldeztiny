@@ -7,6 +7,16 @@ use Zend\InputFilter\InputFilterInterface;
 
 use Application\Constants;
 
+interface Role {
+    const NOT_ACTIVATED = 0;
+    const ACTIVATED = 1;
+    const MEMBER = 1 << 1;
+    const ELDAR = 1 << 2;
+    const CO  = 1 << 3;
+    const LEADER = 1 << 4;
+    const ADMIN = 1 << 5;
+}
+
 class Account
 {
     /**
@@ -35,7 +45,7 @@ class Account
     private $email;
 
     /**
-     * @var int
+     * @var Role
      */
     private $role;
 
@@ -125,7 +135,7 @@ class Account
     }
 
     /**
-     * @param int $role
+     * @param Role $role
      */
     public function setRole($role) {
         $this->role = $role;
@@ -163,7 +173,7 @@ class Account
         $this->password = !empty($data['password']) ? hash('sha256', $data['password']) . Constants::SALT  : null;
         $this->userhash = hash('sha256', $this->name);
         $this->email = !empty($data['email']) ? $data['email'] : null;
-        $this->role = !empty($data['role']) ? $data['role'] : 0;
+        $this->role = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
         $this->avatar = !empty($data['avatar']) ? $data['avatar'] : null;
 
         $date = new \DateTime();

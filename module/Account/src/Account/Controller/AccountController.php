@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 use Account\Form\RegisterForm;
 use Account\Model\Account;
+use Account\Model\Role;
 use Account\Model\AccountTable;
 use AppMail\Service\AppMailServiceInterface;
 
@@ -36,6 +37,7 @@ class AccountController extends AbstractActionController
 
     /**
      * the registration action- Either returns the registration page or adds an account to the db and sends out an email.
+     *
      * @return array|\Zend\Http\Response
      */
     public function registerAction()
@@ -51,8 +53,8 @@ class AccountController extends AbstractActionController
 
             if ($form->isValid()) {
                 $account->exchangeArray($form->getData());
-                if (!$this->getAccountTable()->getAccountByName($account->getName())) {
-                    if (!$this->getAccountTable()->getAccountByMail($account->getEmail())) {
+                if (!$this->getAccountTable()->getAccountBy(['name' => $account->getName()])) {
+                    if (!$this->getAccountTable()->getAccountBy(['email' => $account->getEmail()])) {
                         $this->getAccountTable()->saveAccount($account);
                         $this->sendConfirmationMail($account);
                     } else {
@@ -80,12 +82,23 @@ class AccountController extends AbstractActionController
     {
     }
 
-    public function registerSuccessAction()
+    public function registersuccessAction()
     {
+    }
+
+    public function activateAction()
+    {
+        $userhash = $this->params()->fromRoute('id', 0);
+        $account = $this->getAccountTable()->getAccountBy(['userhash' => $userhash]);
+        if ($account->getRole() == Role::NOT_ACTIVATED) {
+            $account->setRole(Role::ACTIVATED);
+            $this->accountTable->saveAccount($account);
+        }
     }
 
     /**
      * Retrieve the accountTable
+     *
      * @return AccountTable
      */
     public function getAccountTable()
@@ -106,7 +119,7 @@ class AccountController extends AbstractActionController
     private function sendConfirmationMail($account)
     {
         $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText = $mailText . "follow the link:\ned.com/account/registersuccess/" . $account->getUserHash();
+        $mailText = $mailText . "follow the link:\ned.com/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
     }

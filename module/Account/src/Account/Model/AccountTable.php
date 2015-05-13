@@ -48,27 +48,13 @@ class AccountTable
     }
 
     /**
-     * @param string $name
-     *
-     * @return array|\ArrayObject|null the account with the given name
-     */
-    public function getAccountByName($name) {
-        $rowset = $this->tableGateway->select(['name' => $name]);
-        $row = $rowset->current();
-        if (!$row) {
-            return null;
-        }
-
-        return $row;
-    }
-
-    /**
-     * @param $email
+     * Returns the data requested by the array. Key of array must be column name of Account table and $value the actual value
+     * @param array $array with one [key => value] pair
      *
      * @return array|\ArrayObject|null the account with the given email
      */
-    public function getAccountByMail($email) {
-        $rowset = $this->tableGateway->select(['email' => $email]);
+    public function getAccountBy($array) {
+        $rowset = $this->tableGateway->select($array);
         $row = $rowset->current();
         if (!$row) {
             return null;
