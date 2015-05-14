@@ -3,6 +3,8 @@ namespace Account\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
+use Application\Constants;
+
 class AccountTable
 {
     /**
@@ -80,8 +82,8 @@ class AccountTable
             'avatar'          => $account->getAvatar(),
             'date_registered' => $account->getDateRegistered(),
         ];
-
         if (!$account->getId()) {
+            $data['password'] = hash('sha256', $account->getPassword()) . Constants::SALT;
             $this->tableGateway->insert($data);
         } else {
             if ($this->getAccount($account->getId())) {

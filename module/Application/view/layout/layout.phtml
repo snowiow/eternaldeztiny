@@ -1,4 +1,7 @@
-<?php echo $this->doctype(); ?>
+<?php
+echo $this->doctype();
+$session = new \Zend\Session\Container('user');
+?>
 
 <html lang="en">
 <head>
@@ -48,8 +51,15 @@
                 <li><a href="#">WarClaim</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Login</a></li>
-                <li><a href="/account/register">Register</a></li>
+                <?php if ($session->id != null) {
+                    echo $session->id;
+                    echo '<li><a href = "/account/index"> Profile</a></li>';
+                    echo '<li><a href = "/account/logout"> Logout</a></li>';
+                } else {
+                    echo '<li><a href = "/account/login"> Login</a></li>';
+                    echo '<li><a href = "/account/register"> Register</a></li>';
+                }
+                ?>
             </ul>
         </div>
     </div>

@@ -2,13 +2,25 @@
 
 namespace Account\Controller;
 
+use Application\Constants;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 
 use Account\Form\RegisterForm;
+use Account\Form\LoginForm;
 use Account\Model\Account;
 use Account\Model\Role;
 use Account\Model\AccountTable;
 use AppMail\Service\AppMailServiceInterface;
+
+
+interface AUTH_RESULT
+{
+    const SUCCESS           = 0;
+    const WRONG_CREDENTIALS = 1;
+    const NOT_FOUND         = 1 << 1;
+    const NOT_CONFIRMED     = 1 << 2;
+}
 
 class AccountController extends AbstractActionController
 {
@@ -48,7 +60,7 @@ class AccountController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $account = new Account();
-            $form->setInputFilter($account->getInputFilter());
+            $form->setInputFilter($account->getRegisterInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -80,9 +92,44 @@ class AccountController extends AbstractActionController
 
     public function loginAction()
     {
+        $form = new LoginForm();
+        $form->get('submit')->setValue('Login');
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $account = new Account();
+            $form->setInputFilter($account->getLoginInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $account->exchangeArray($form->getData());
+                $result = $this->authenticate($account);
+                switch ($result) {
+                    case AUTH_RESULT::NOT_FOUND:
+                        return ['form' => $form, 'errors' => $errors = ['name' => 'name_not_available']];
+                    case AUTH_RESULT::WRONG_CREDENTIALS:
+                        return ['form' => $form, 'errors' => $errors = ['password' => 'wrong_password']];
+                    case AUTH_RESULT::NOT_CONFIRMED:
+                        return ['form' => $form, 'errors' => $errors = ['name' => 'not_confirmed']];
+                    case AUTH_RESULT::SUCCESS:
+                        return $this->redirect()->toRoute('account', [
+                            'account' => 'account',
+                            'action'  => 'loginsuccess',
+                        ]);
+                }
+            } else {
+                $errors = $form->getMessages();
+
+                return ['form' => $form, 'errors' => $errors];
+            }
+        }
+
+        return ['form' => $form];
     }
 
     public function registersuccessAction()
+    {
+    }
+
+    public function loginsuccessAction()
     {
     }
 
@@ -122,5 +169,31 @@ class AccountController extends AbstractActionController
         $mailText = $mailText . "follow the link:\ned.com/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
+    }
+
+    /**
+     * @param Account $account
+     *
+     * @return int
+     */
+    private function authenticate($account)
+    {
+        $dbAcc = $this->getAccountTable()->getAccountBy(['name' => $account->getName()]);
+        if (!$dbAcc) {
+            return AUTH_RESULT::NOT_FOUND;
+        }
+        $hashedPw = hash('sha256', $account->getPassword()) . Constants::SALT;
+        if ($hashedPw != $dbAcc->getPassword()) {
+            return AUTH_RESULT::WRONG_CREDENTIALS;
+        }
+        if ($dbAcc->getRole() == Role::NOT_ACTIVATED) {
+            return AUTH_RESULT::NOT_CONFIRMED;
+        }
+        $session = new Container('user');
+        $session->id = $dbAcc->getId();
+        $session->role = $dbAcc->getRole();
+        $session->name = $dbAcc->getName();
+
+        return AUTH_RESULT::SUCCESS;
     }
 }

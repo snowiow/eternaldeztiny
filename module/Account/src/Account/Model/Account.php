@@ -62,7 +62,12 @@ class Account
     /**
      * @var InputFilter
      */
-    protected $inputFilter;
+    protected $registerInputFilter;
+
+    /**
+     * @var InputFilter
+     */
+    protected $loginInputFilter;
 
     /**
      * @param int
@@ -170,7 +175,7 @@ class Account
     {
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
         $this->name = !empty($data['name']) ? $data['name'] : null;
-        $this->password = !empty($data['password']) ? hash('sha256', $data['password']) . Constants::SALT  : null;
+        $this->password = !empty($data['password']) ? $data['password'] : null;
         $this->userhash = hash('sha256', $this->name);
         $this->email = !empty($data['email']) ? $data['email'] : null;
         $this->role = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
@@ -201,12 +206,12 @@ class Account
     }
 
     /**
-     * Creates the InputFilter for an AccountModel.
+     * Creates the InputFilter for the registration form.
      * @return \Zend\InputFilter\InputFilter
      */
-    public function getInputFilter()
+    public function getRegisterInputFilter()
     {
-        if (!$this->inputFilter) {
+        if (!$this->registerInputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
@@ -265,8 +270,56 @@ class Account
                     ],
                 ],
             ]);
-            $this->inputFilter = $inputFilter;
+            $this->registerInputFilter = $inputFilter;
         }
-        return $this->inputFilter;
+        return $this->registerInputFilter;
+    }
+
+    /**
+     * Creates a InputFilter for the loginForm
+     * @return \Zend\InputFilter\InputFilter
+     */
+    public function getLoginInputFilter() {
+        if (!$this->loginInputFilter) {
+            $inputFilter = new InputFilter();
+
+            $inputFilter->add([
+                'name' => 'name',
+                'required' => true,
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name' => 'password',
+                'required' => true,
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min' => 4,
+                            'max' => 64,
+                        ],
+                    ],
+                ],
+            ]);
+            $this->loginInputFilter = $inputFilter;
+        }
+        return $this->loginInputFilter;
     }
 }

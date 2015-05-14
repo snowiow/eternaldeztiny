@@ -1,0 +1,90 @@
+<?php
+
+$title = 'Login';
+$this->headTitle($title);
+?>
+<div class="col-md-6">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <?php
+$form->setAttribute('action', $this->url('account', ['action' => 'login']));
+$form->prepare();
+echo $this->form()->openTag($form);
+if (isset($errors)) {
+    if (array_key_exists('name', $errors)) {
+        echo '<div class="form-group has-error has-feedback">';
+        echo $this->formLabel(
+            $form->get('name')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('name')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+        if ($errors['name'] === 'name_not_available') {
+            echo '<p>Username not registered. You may register before logging in</p>';
+        }
+        else {
+            echo '<p>Account with this username is not confirmed yet. Please have a look at your mailbox and follow the given link first.</p>';
+        }
+    } else {
+        echo '<div class="form-group has-success has-feedback">';
+        echo $this->formLabel(
+            $form->get('name')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('name')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+    }
+} else {
+    echo '<div class="form-group">';
+    echo $this->formLabel(
+        $form->get('name')
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formText(
+        $form->get('name')
+            ->setAttribute('class', 'form-control'));
+}
+?>
+</div>
+<?php
+if (isset($errors)) {
+    if (array_key_exists('password', $errors)) {
+        echo '<div class="form-group has-error has-feedback">';
+        echo $this->formLabel(
+            $form->get('password')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formPassword(
+            $form->get('password')
+                ->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+        if ($errors['password'] === 'wrong_password') {
+            echo '<p>Wrong password</p>';
+        }
+    } else {
+        echo '<div class="form-group">';
+        echo $this->formLabel(
+            $form->get('password')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formPassword(
+            $form->get('password')
+                ->setAttribute('class', 'form-control'));
+    }
+} else {
+    echo '<div class="form-group">';
+    echo $this->formLabel(
+        $form->get('password')
+            ->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formPassword(
+        $form->get('password')
+            ->setAttribute('class', 'form-control'));
+}
+?>
+</div>
+<div class="form-group">
+    <?php echo $this->formSubmit(
+    $form->get('submit')
+        ->setAttribute('class', 'btn btn-success'));
+?>
+</div>
+
+<?php echo $this->form()->closeTag(); ?>

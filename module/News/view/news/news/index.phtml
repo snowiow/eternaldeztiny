@@ -1,20 +1,28 @@
 <?php
 
 $title = 'News';
-$this->headTitle($title);
 ?>
-<p>
-    <a href="<?php echo $this->url('news', array('action'=>'add'));?>">Add new news</a>
-</p>
-<?php foreach ($news as $item) : ?>
-<div>
-    <h1><?php echo $this->escapeHtml($item->getTitle());?>
-        <small> by <?php echo $this->escapeHtml($item->getAuthor());?> <br />
-    <?php echo $this->escapeHtml(substr($item->getDatePosted(), 0, -3));?></small></h1>
-    <p><?php echo $this->escapeHtml($item->getContent());?></p>
-    <a href="<?php echo $this->url('news',
-       array('action'=>'edit', 'id' => $item->getId()));?>">Edit</a>
-    <a href="<?php echo $this->url('news',
-       array('action'=>'delete', 'id' => $item->getId()));?>">Delete</a>
+<div class="col-md-8">
+<?php $this->headTitle($title);?>
+    <p>
+        <a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add new news</a>
+    </p>
+    <?php foreach ($news as $item) : ?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title"><?php echo $this->escapeHtml($item->getTitle()); ?></h1>
+                by <?php echo $this->escapeHtml($item->getAuthor()); ?>
+            </div>
+            <div class="panel-body">
+                <p><?php echo $this->escapeHtml($item->getContent()); ?></p>
+                <a href="<?php echo $this->url('news',
+                    ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
+                <a href="<?php echo $this->url('news',
+                    ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+            </div>
+            <div class="panel-footer">
+                posted on <?php echo substr($item->getDatePosted(), 0, -3); ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>
-<?php endforeach; ?>
