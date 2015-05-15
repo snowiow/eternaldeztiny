@@ -51,8 +51,7 @@ $session = new \Zend\Session\Container('user');
                 <li><a href="#">WarClaim</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <?php if ($session->id != null) {
-                    echo $session->id;
+                <?php if ($session->name != null) {
                     echo '<li><a href = "/account/index"> Profile</a></li>';
                     echo '<li><a href = "/account/logout"> Logout</a></li>';
                 } else {

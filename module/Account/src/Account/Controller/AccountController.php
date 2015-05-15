@@ -110,9 +110,10 @@ class AccountController extends AbstractActionController
                     case AUTH_RESULT::NOT_CONFIRMED:
                         return ['form' => $form, 'errors' => $errors = ['name' => 'not_confirmed']];
                     case AUTH_RESULT::SUCCESS:
+                        $this->createUserSession($account);
+
                         return $this->redirect()->toRoute('account', [
-                            'account' => 'account',
-                            'action'  => 'loginsuccess',
+                            'action' => 'loginsuccess',
                         ]);
                 }
             } else {
@@ -125,11 +126,24 @@ class AccountController extends AbstractActionController
         return ['form' => $form];
     }
 
+    public function logoutAction()
+    {
+        $this->destroyUserSession();
+
+        return $this->redirect()->toRoute('account', [
+            'action' => 'logoutsuccess',
+        ]);
+    }
+
     public function registersuccessAction()
     {
     }
 
     public function loginsuccessAction()
+    {
+    }
+
+    public function logoutsuccessAction()
     {
     }
 
@@ -189,11 +203,36 @@ class AccountController extends AbstractActionController
         if ($dbAcc->getRole() == Role::NOT_ACTIVATED) {
             return AUTH_RESULT::NOT_CONFIRMED;
         }
-        $session = new Container('user');
-        $session->id = $dbAcc->getId();
-        $session->role = $dbAcc->getRole();
-        $session->name = $dbAcc->getName();
 
         return AUTH_RESULT::SUCCESS;
+    }
+
+    private function createUserSession(Account $account)
+    {
+        $session = new Container('user');
+        $session->id = $account->getId();
+        $session->role = $account->getRole();
+        $session->name = $account->getName();
+        $session->avatar = $account->getAvatar();
+    }
+
+    private function destroyUserSession()
+    {
+        $session = new Container('user');
+        if (isset($session->id)) {
+            unset($session->id);
+        }
+
+        if (isset($session->role)) {
+            unset($session->role);
+        }
+
+        if (isset($session->name)) {
+            unset($session->name);
+        }
+
+        if (isset($session->avatar)) {
+            unset($session->avatar);
+        }
     }
 }
