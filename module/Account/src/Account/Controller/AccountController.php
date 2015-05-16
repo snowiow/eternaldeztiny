@@ -42,9 +42,8 @@ class AccountController extends AbstractActionController
         $this->appMailService = $appMailService;
     }
 
-    public function indexAction()
+    public function profileAction()
     {
-        print_r("test");
     }
 
     /**
@@ -110,6 +109,7 @@ class AccountController extends AbstractActionController
                     case AUTH_RESULT::NOT_CONFIRMED:
                         return ['form' => $form, 'errors' => $errors = ['name' => 'not_confirmed']];
                     case AUTH_RESULT::SUCCESS:
+                        $account = $this->getAccountTable()->getAccountBy(['name' => $account->getName()]);
                         $this->createUserSession($account);
 
                         return $this->redirect()->toRoute('account', [
@@ -214,6 +214,7 @@ class AccountController extends AbstractActionController
         $session->role = $account->getRole();
         $session->name = $account->getName();
         $session->avatar = $account->getAvatar();
+        $session->registered = $account->getDateRegistered();
     }
 
     private function destroyUserSession()
@@ -233,6 +234,10 @@ class AccountController extends AbstractActionController
 
         if (isset($session->avatar)) {
             unset($session->avatar);
+        }
+
+        if (isset($session->registered)) {
+            unset($session->registered);
         }
     }
 }

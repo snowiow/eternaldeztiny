@@ -46,14 +46,28 @@ $session = new \Zend\Session\Container('user');
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/news">News</a></li>
                 <li><a href="#">Member</a></li>
+                <li><a href="#">Warlog</a></li>
                 <li><a href="#">Guides</a></li>
                 <li><a href="#">Forum</a></li>
-                <li><a href="#">WarClaim</a></li>
+                <?php
+                if (isset($session->role)) {
+                    if ($session->role > 1) {
+                        echo '<li><a href="#">WarClaim</a></li>';
+                    } else {
+                        echo '<li><a href="#">Apply Now</a></li>';
+                    }
+                } else {
+                    echo '<li><a href="#">Apply Now</a></li>';
+                }
+                ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <?php if ($session->name != null) {
-                    echo '<li><a href = "/account/index"> Profile</a></li>';
-                    echo '<li><a href = "/account/logout"> Logout</a></li>';
+                <?php if (isset($session->avatar)) {
+                    echo '<li><img src="' . $this->basePath() . $session->avatar . '" class="img-responsive img-circle" style="max-width:75px;"></li>';
+                }
+                if (isset($session->name)) {
+                echo '<li><a href = "/account/profile/' . $session->name . '">' . $session->name . '</a></li>';
+                echo '<li><a href = "/account/logout"> Logout</a></li>';
                 } else {
                     echo '<li><a href = "/account/login"> Login</a></li>';
                     echo '<li><a href = "/account/register"> Register</a></li>';

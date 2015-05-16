@@ -9,7 +9,7 @@ use Application\Constants;
 
 interface Role {
     const NOT_ACTIVATED = 0;
-    const ACTIVATED = 1;
+    const USER = 1;
     const MEMBER = 1 << 1;
     const ELDAR = 1 << 2;
     const CO  = 1 << 3;
@@ -321,5 +321,22 @@ class Account
             $this->loginInputFilter = $inputFilter;
         }
         return $this->loginInputFilter;
+    }
+
+    static function convertToRole($int) {
+        switch($int) {
+            case Role::USER:
+                return 'User';
+            case Role::MEMBER:
+                return 'Member';
+            case Role::CO:
+                return 'Co-Leader';
+            case Role::ELDAR:
+                return 'Eldar';
+            case Role::LEADER:
+                return 'Leader';
+            default:
+                return 'Admin';
+        }
     }
 }
