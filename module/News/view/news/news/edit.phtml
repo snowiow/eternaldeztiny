@@ -18,6 +18,7 @@ $this->headTitle($title);
     $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('id'));
+    echo $this->formHidden($form->get('account_id')->setValue($accountId));
     ?>
     <div class="form-group">
         <?php echo $this->formLabel(
@@ -25,15 +26,6 @@ $this->headTitle($title);
                 ->setLabelAttributes(['class' => 'control-label']));
         echo $this->formText(
             $form->get('title')
-                ->setAttribute('class', 'form-control'));
-        ?>
-    </div>
-    <div class="form-group">
-        <?php echo $this->formLabel(
-            $form->get('author')
-                ->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formText(
-            $form->get('author')
                 ->setAttribute('class', 'form-control'));
         ?>
     </div>

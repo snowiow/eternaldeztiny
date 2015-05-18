@@ -16,6 +16,11 @@ class News implements InputFilterAwareInterface
     /**
      * @var string
      */
+    private $accountId;
+
+    /**
+     * @var string
+     */
     private $author;
 
     /**
@@ -48,13 +53,24 @@ class News implements InputFilterAwareInterface
     /**
      * @return string
      */
-    public function getAuthor() {
-        return $this->author;
+    public function getAccountId() {
+        return $this->accountId;
     }
 
     /**
      * @param string $author
      */
+    public function setAccountId($id) {
+        $this->accountId = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor() {
+        return $this->author;
+    }
+
     public function setAuthor($author) {
         $this->author = $author;
     }
@@ -101,13 +117,15 @@ class News implements InputFilterAwareInterface
     public function exchangeArray($data)
     {
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
-        $this->author = (!empty($data['author'])) ? $data['author'] : null;
+        $this->accountId = (!empty($data['account_id'])) ? $data['account_id'] : null;
+        $this->author = (!empty($data['name'])) ? $data['name'] : null;
         $this->title = (!empty($data['title'])) ? $data['title'] : null;
         $this->content = (!empty($data['content'])) ? $data['content'] : null;
 
         $date = new \DateTime();
         $this->date_posted = (!empty($data['date_posted'])) ?
                                                 $data['date_posted'] : $date->format('Y-m-d H:i:s');
+
     }
 
     /**
@@ -148,21 +166,10 @@ class News implements InputFilterAwareInterface
             ]);
 
             $inputFilter->add([
-                'name' => 'author',
+                'name' => 'account_id',
                 'required' => true,
                 'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
-                        ],
-                    ],
+                    ['name' => 'Int'],
                 ],
             ]);
 

@@ -147,6 +147,10 @@ class AccountController extends AbstractActionController
     {
     }
 
+    public function norightAction()
+    {
+    }
+
     public function activateAction()
     {
         $userhash = $this->params()->fromRoute('id', 0);

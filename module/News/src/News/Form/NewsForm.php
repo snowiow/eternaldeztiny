@@ -24,11 +24,8 @@ class NewsForm extends Form
         ]);
 
         $this->add([
-            'name'    => 'author',
-            'type'    => 'Text',
-            'options' => [
-                'label' => 'Author'
-            ],
+            'name'    => 'account_id',
+            'type'    => 'Hidden',
         ]);
 
         $this->add([
