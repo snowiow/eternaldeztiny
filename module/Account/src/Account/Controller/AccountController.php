@@ -151,6 +151,11 @@ class AccountController extends AbstractActionController
     {
     }
 
+    /**
+     * Activates an account which isn't activated yet.
+     * Deletes it's userhash, because it's not needed anymore.
+     * Creates a folder for stuff of the user.
+     */
     public function activateAction()
     {
         $userhash = $this->params()->fromRoute('id', 0);
@@ -159,6 +164,7 @@ class AccountController extends AbstractActionController
             $account->setRole(Role::USER);
             $account->setUserHash('');
             $this->accountTable->saveAccount($account);
+            mkdir(getcwd() . '/public/users/' . $account->getName());
         }
     }
 
@@ -212,6 +218,11 @@ class AccountController extends AbstractActionController
         return AUTH_RESULT::SUCCESS;
     }
 
+    /**
+     * Creates a user session in the user namespace.
+     * id, role, name, avatar and registered are accessable afterwards.
+     * @param \Account\Model\Account $account
+     */
     private function createUserSession(Account $account)
     {
         $session = new Container('user');
@@ -222,6 +233,9 @@ class AccountController extends AbstractActionController
         $session->registered = $account->getDateRegistered();
     }
 
+    /**
+     * Destroys the user session in the user namespace.
+     */
     private function destroyUserSession()
     {
         $session = new Container('user');

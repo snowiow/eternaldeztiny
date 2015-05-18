@@ -329,10 +329,10 @@ class Account
                 return 'User';
             case Role::MEMBER:
                 return 'Member';
-            case Role::CO:
-                return 'Co-Leader';
             case Role::ELDER:
                 return 'Elder';
+            case Role::CO:
+                return 'Co-Leader';
             case Role::LEADER:
                 return 'Leader';
             default:
