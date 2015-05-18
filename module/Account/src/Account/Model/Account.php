@@ -11,7 +11,7 @@ interface Role {
     const NOT_ACTIVATED = 0;
     const USER = 1;
     const MEMBER = 1 << 1;
-    const ELDAR = 1 << 2;
+    const ELDER = 1 << 2;
     const CO  = 1 << 3;
     const LEADER = 1 << 4;
     const ADMIN = 1 << 5;
@@ -331,8 +331,8 @@ class Account
                 return 'Member';
             case Role::CO:
                 return 'Co-Leader';
-            case Role::ELDAR:
-                return 'Eldar';
+            case Role::ELDER:
+                return 'Elder';
             case Role::LEADER:
                 return 'Leader';
             default:

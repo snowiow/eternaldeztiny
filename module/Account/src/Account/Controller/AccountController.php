@@ -156,7 +156,8 @@ class AccountController extends AbstractActionController
         $userhash = $this->params()->fromRoute('id', 0);
         $account = $this->getAccountTable()->getAccountBy(['userhash' => $userhash]);
         if ($account->getRole() == Role::NOT_ACTIVATED) {
-            $account->setRole(Role::ACTIVATED);
+            $account->setRole(Role::USER);
+            $account->setUserHash('');
             $this->accountTable->saveAccount($account);
         }
     }
