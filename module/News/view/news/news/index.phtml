@@ -3,10 +3,8 @@
 $title = 'News';
 ?>
 <div class="col-md-8">
-<?php $this->headTitle($title);?>
-    <p>
-    </p>
-    <?php foreach ($news as $item) : ?>
+    <?php $this->headTitle($title); ?>
+    <?php foreach ($paginator as $item) : ?>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1 class="panel-title"><?php echo $this->escapeHtml($item->getTitle()); ?></h1>
@@ -27,4 +25,11 @@ $title = 'News';
             </div>
         </div>
     <?php endforeach; ?>
+    <?php
+    echo $this->paginationControl($this->paginator, 'sliding', ['partial/paginator.phtml', 'application'],
+        [
+            'route' => 'news'
+        ]
+    );
+    ?>
 </div>

@@ -4,6 +4,7 @@ namespace News\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Paginator;
 
 use News\Model\News;
 use News\Model\NewsTable;
@@ -24,9 +25,12 @@ class NewsController extends AbstractActionController
             $name = $session->name;
         }
 
+        $paginator = $this->getNewsTable()->fetchAll(true);
+        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        $paginator->setItemCountPerPage(5);
         return new ViewModel([
-            'news'        => $this->getNewsTable()->fetchAll(),
             'accountName' => $name,
+            'paginator' => $paginator,
         ]);
     }
 

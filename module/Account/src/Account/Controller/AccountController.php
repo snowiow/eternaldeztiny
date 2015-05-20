@@ -5,14 +5,12 @@ namespace Account\Controller;
 use Application\Constants;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
-
 use Account\Form\RegisterForm;
 use Account\Form\LoginForm;
 use Account\Model\Account;
 use Account\Model\Role;
 use Account\Model\AccountTable;
 use AppMail\Service\AppMailServiceInterface;
-
 
 interface AUTH_RESULT
 {
@@ -85,7 +83,6 @@ class AccountController extends AbstractActionController
                 return ['form' => $form, 'errors' => $errors];
             }
         }
-
         return ['form' => $form];
     }
 

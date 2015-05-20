@@ -4,6 +4,10 @@ namespace News\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\DbSelect;
+
 
 class NewsTable
 {
@@ -25,15 +29,21 @@ class NewsTable
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function fetchAll()
+    public function fetchAll($paginated = false)
     {
-        $resultSet = $this->tableGateway->select(function (Select $select) {
-            $select
-                ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
-                ->order('date_posted DESC');
-        });
-
-        return $resultSet;
+        if ($paginated) {
+            $select = new Select('news');
+            $select->join(['a' => 'account'], 'news.account_id = a.id', ['name'])->order('date_posted DESC');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new News());
+            $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
+            return new Paginator($paginatorAdapter);
+        }
+        return $this->tableGateway->select(function (Select $select) {
+                $select
+                    ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
+                    ->order('date_posted DESC');
+            });
     }
 
     /**
