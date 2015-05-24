@@ -5,7 +5,7 @@ $this->headTitle($title);
 ?>
 <div class="col-md-2">
     <?php
-    echo '<img src="' . $this->basePath() . $session->avatar . '" class="img-responsive img-thumbnail">';
+    echo '<img src="' . $session->avatar . '" class="img-responsive img-thumbnail">';
     ?>
 </div>
 <div class="col-md-2">
@@ -18,7 +18,7 @@ $this->headTitle($title);
 </div>
 <div class="col-md-2">
     <h4>Account Settings</h4>
-    <a href="/account/changeavatar">Change Avatar</a><br/>
+    <a href="/account/uploadavatar">Change Avatar</a><br/>
     <a href="/account/edit">Edit Profile</a><br/>
 </div>
 <div class="col-md-2">

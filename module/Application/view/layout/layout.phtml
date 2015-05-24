@@ -63,7 +63,7 @@ $session = new \Zend\Session\Container('user');
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if (isset($session->avatar)) {
-                    echo '<li><img src="' . $this->basePath() . $session->avatar . '" class="img-responsive img-circle" style="max-width:75px;"></li>';
+                    echo '<li><img src="' . $session->avatar . '" class="img-responsive img-circle" style="max-width:75px; max-height:50px;"></li>';
                 }
                 if (isset($session->name)) {
                 echo '<li><a href = "/account/profile/' . $session->name . '">' . $session->name . '</a></li>';

@@ -2,15 +2,20 @@
 
 namespace Account\Controller;
 
-use Application\Constants;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\FileInput;
+
 use Account\Form\RegisterForm;
 use Account\Form\LoginForm;
+use Account\Form\UploadAvatarForm;
 use Account\Model\Account;
 use Account\Model\Role;
 use Account\Model\AccountTable;
+
 use AppMail\Service\AppMailServiceInterface;
+use Application\Constants;
 
 interface AUTH_RESULT
 {
@@ -44,6 +49,42 @@ class AccountController extends AbstractActionController
     {
     }
 
+    public function uploadAvatarAction()
+    {
+        $form = new UploadavatarForm();
+        $form->get('submit')->setValue('Change Avatar');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $post = array_merge_recursive($request->getPost()->toArray(),
+                $request->getFiles()->toArray());
+
+            $form->setData($post);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                if (strstr($data['file']['type'], 'image')) {
+                    $session = $session = new \Zend\Session\Container('user');
+                    $file = file_get_contents($data['file']['tmp_name']);
+                    file_put_contents(getcwd() . '/public/users/' . $session->name . '/avatar.jpg',
+                        $file);
+                    $account = $this->getAccountTable()->getAccount($session->id);
+                    $filePath = '/users/' . $session->name . '/avatar.jpg';
+                    $account->setAvatar($filePath);
+                    $this->getAccountTable()->saveAccount($account);
+                    $session->avatar = $filePath;
+                    sleep(0.5);
+                    return $this->redirect()->toRoute('account', [
+                            'action' => 'profile',
+                    ]);
+                }
+                else {
+                    return ['form' => $form, 'errors' => $errors = ['file' => 'not_valid']];
+                }
+            }
+        }
+        return ['form' => $form];
+    }
+
     /**
      * the registration action- Either returns the registration page or adds an account to the db and sends out an email.
      *
@@ -74,7 +115,6 @@ class AccountController extends AbstractActionController
                 }
 
                 return $this->redirect()->toRoute('account', [
-                    'controller' => 'account',
                     'action'     => 'registersuccess',
                 ]);
             } else {

@@ -5,7 +5,7 @@ namespace Account\Form;
 use Zend\Form\Form;
 use Zend\Form\Element;
 
-class LoginForm extends Form
+class UploadAvatarForm extends Form
 {
 
     /**
@@ -13,21 +13,13 @@ class LoginForm extends Form
      */
     public function __construct($name = null)
     {
-        parent::__construct('login');
+        parent::__construct('uploadavatar');
 
         $this->add([
-            'name'    => 'name',
-            'type'    => 'Text',
+            'name'    => 'file',
+            'type'    => 'Zend\Form\Element\File',
             'options' => [
-                'label' => 'Username',
-            ],
-        ]);
-
-        $this->add([
-            'name'    => 'password',
-            'type'    => 'Password',
-            'options' => [
-                'label' => 'Password',
+                'label' => 'File Path',
             ],
         ]);
 

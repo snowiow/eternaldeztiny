@@ -70,6 +70,11 @@ class Account
     protected $loginInputFilter;
 
     /**
+    * @var InputFilter
+    */
+    protected $uploadAvatarInputFilter;
+
+    /**
      * @param int
      */
     public function getId() {
@@ -321,6 +326,26 @@ class Account
             $this->loginInputFilter = $inputFilter;
         }
         return $this->loginInputFilter;
+    }
+
+    public function getUploadAvatarInputFilter()
+    {
+        if (!$this->uploadAvatarInputFilter) {
+            $inputFilter = new InputFilter();
+            $fileInput = new InputFilter\FileInput('image-file');
+            $fileInput->setRequired(true);
+            $fileInput->getFilterChain()->attachByName(
+                'filerenameupload',
+                array(
+                    'target'    => './data/tmp/avatar.png',
+                    'randomize' => true,
+                )
+            );
+            $inputFilter->add($fileInput);
+
+            $this->uploadAvatarInputFilter = $inputFilter;
+        }
+        return $this->uploadAvatarInputFilter;
     }
 
     static function convertToRole($int) {
