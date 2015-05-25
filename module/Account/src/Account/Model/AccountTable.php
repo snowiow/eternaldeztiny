@@ -2,6 +2,7 @@
 namespace Account\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
 
 use Application\Constants;
 
@@ -63,6 +64,15 @@ class AccountTable
         }
 
         return $row;
+    }
+
+    public function getMembers()
+    {
+        $resultSet = $this->tableGateway->select(function (Select $select) {
+            $select->where('role > 2')
+                ->order('role DESC');
+        });
+        return $resultSet;
     }
 
     /**

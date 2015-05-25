@@ -1,0 +1,20 @@
+<?php $title = 'Members'; ?>
+<div class="col-md-8">
+    <?php $this->headTitle($title); ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($members as $member) : ?>
+            <tr>
+                <th><?php echo $member['name']; ?></th>
+                <th><?php echo $member['role']; ?></th>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
