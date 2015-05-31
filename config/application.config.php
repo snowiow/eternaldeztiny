@@ -4,6 +4,7 @@ return array(
     'modules' => array(
         'Account',
         'Application',
+        'ApplyNow',
         'AppMail',
         'Members',
         'News',

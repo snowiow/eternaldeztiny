@@ -14,7 +14,7 @@ class MembersController extends AbstractActionController
     public function indexAction()
     {
         $members = $this->getAccountTable()->getMembers()->toArray();
-        
+
         for ($i = 0; $i < count($members); $i++) {
             $members[$i]['role'] = Account::convertToRole($members[$i]['role']);
         }

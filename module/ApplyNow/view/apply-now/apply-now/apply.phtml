@@ -1,0 +1,124 @@
+<?php
+$title = 'Apply Now!';
+$this->headTitle($title);
+?>
+<div class="col-md-8">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <?php
+    $form->setAttribute('action', $this->url('applynow', ['action' => 'apply']));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    ?>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('name')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('name')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('tag')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('tag')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('email')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText(
+            $form->get('email')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('age')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formSelect(
+            $form->get('age')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('th')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formSelect(
+            $form->get('th')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('warStars')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formSelect(
+            $form->get('warStars')
+                ->setAttribute('class', 'form-control'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('info')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formTextarea(
+            $form->get('info')
+                ->setAttribute('class', 'form-control')
+                ->setAttribute('rows', '10'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('strategies')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formTextarea(
+            $form->get('strategies')
+                ->setAttribute('class', 'form-control')
+                ->setAttribute('rows', '10'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('why')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formTextarea(
+            $form->get('why')
+                ->setAttribute('class', 'form-control')
+                ->setAttribute('rows', '10'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('basePic')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formFile(
+            $form->get('basePic')
+                ->setAttribute('class', 'form-control')
+                ->setAttribute('rows', '10'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('profilePic')
+                ->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formFile(
+            $form->get('profilePic')
+                ->setAttribute('class', 'form-control')
+                ->setAttribute('rows', '10'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formSubmit(
+            $form->get('submit')
+                ->setAttribute('class', 'btn btn-success'));
+        ?>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</div>

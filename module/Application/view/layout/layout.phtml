@@ -54,10 +54,10 @@ $session = new \Zend\Session\Container('user');
                     if ($session->role > 1) {
                         echo '<li><a href="#">WarClaim</a></li>';
                     } else {
-                        echo '<li><a href="#">Apply Now</a></li>';
+                        echo '<li><a href="/applynow">Apply Now</a></li>';
                     }
                 } else {
-                    echo '<li><a href="#">Apply Now</a></li>';
+                    echo '<li><a href="/applynow">Apply Now</a></li>';
                 }
                 ?>
             </ul>
