@@ -1,0 +1,17 @@
+CREATE TABLE application (
+id INT NOT NULL auto_increment,
+name VARCHAR(64) NOT NULL,
+tag VARCHAR(64) NOT NULL,
+email VARCHAR(128) NOT NULL,
+age INT NOT NULL,
+th INT NOT NULL,
+warStars INT NOT NULL,
+strategies TEXT,
+infos TEXT,
+why TEXT,
+basepic VARCHAR(64),
+profilePic VARCHAR(64),
+processed BOOL,
+PRIMARY KEY(id)
+);
+
