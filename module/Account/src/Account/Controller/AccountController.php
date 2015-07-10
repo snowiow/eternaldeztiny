@@ -19,10 +19,10 @@ use Application\Constants;
 
 interface AUTH_RESULT
 {
-    const SUCCESS           = 0;
+    const SUCCESS = 0;
     const WRONG_CREDENTIALS = 1;
-    const NOT_FOUND         = 1 << 1;
-    const NOT_CONFIRMED     = 1 << 2;
+    const NOT_FOUND = 1 << 1;
+    const NOT_CONFIRMED = 1 << 2;
 }
 
 class AccountController extends AbstractActionController
@@ -74,10 +74,9 @@ class AccountController extends AbstractActionController
                     $session->avatar = $filePath;
                     sleep(0.5);
                     return $this->redirect()->toRoute('account', [
-                            'action' => 'profile',
+                        'action' => 'profile',
                     ]);
-                }
-                else {
+                } else {
                     return ['form' => $form, 'errors' => $errors = ['file' => 'not_valid']];
                 }
             }
@@ -115,7 +114,7 @@ class AccountController extends AbstractActionController
                 }
 
                 return $this->redirect()->toRoute('account', [
-                    'action'     => 'registersuccess',
+                    'action' => 'registersuccess',
                 ]);
             } else {
                 $errors = $form->getMessages();

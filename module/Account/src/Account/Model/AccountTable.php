@@ -27,9 +27,7 @@ class AccountTable
      */
     public function fetchAll()
     {
-        $resultSet = $this->tableGateway->select();
-
-        return $resultSet;
+        return $this->tableGateway->select();
     }
 
     /**
@@ -40,9 +38,9 @@ class AccountTable
      */
     public function getAccount($id)
     {
-        $id = (int) $id;
+        $id     = (int) $id;
         $rowset = $this->tableGateway->select(['id' => $id]);
-        $row = $rowset->current();
+        $row    = $rowset->current();
         if (!$row) {
             return null;
         }
@@ -56,9 +54,10 @@ class AccountTable
      *
      * @return array|\ArrayObject|null the account with the given email
      */
-    public function getAccountBy($array) {
+    public function getAccountBy($array)
+    {
         $rowset = $this->tableGateway->select($array);
-        $row = $rowset->current();
+        $row    = $rowset->current();
         if (!$row) {
             return null;
         }
@@ -68,11 +67,17 @@ class AccountTable
 
     public function getMembers()
     {
-        $resultSet = $this->tableGateway->select(function (Select $select) {
+        return $this->tableGateway->select(function (Select $select) {
             $select->where('role > 2')
-                ->order('role DESC');
+            ->order('role DESC');
         });
-        return $resultSet;
+    }
+
+    public function getLeadershipMails()
+    {
+        return $this->tableGateway->select(function (Select $select) {
+            $select->where('role > 3')->columns(['email']);
+        });
     }
 
     /**

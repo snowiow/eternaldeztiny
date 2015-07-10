@@ -4,5 +4,5 @@ namespace AppMail\Service;
 
 interface AppMailServiceInterface
 {
-    public function sendMail($to, $subject, $content);
+    public function sendMail(string $to, string $subject, string $content, array $files = []);
 }

@@ -6,6 +6,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
+use Zend\Mime;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
@@ -36,8 +37,8 @@ class AppMailService implements AppMailServiceInterface
      */
     public function __construct(AdapterInterface $dbAdapter, HydratorInterface $hydrator, AppMail $appMailPrototype)
     {
-        $this->dbAdapter = $dbAdapter;
-        $this->hydrator = $hydrator;
+        $this->dbAdapter        = $dbAdapter;
+        $this->hydrator         = $hydrator;
         $this->appMailPrototype = $appMailPrototype;
     }
 
@@ -47,24 +48,43 @@ class AppMailService implements AppMailServiceInterface
      * @param string $subject
      * @param string $content
      */
-    public function sendMail($to, $subject, $content)
+    public function sendMail(string $to, string $subject, string $content, array $files = [])
     {
+        $text              = new Mime\Part($content);
+        $text->type        = 'text/plain';
+        $text->charset     = 'utf-8';
+        $text->disposition = Mime\Mime::DISPOSITION_INLINE;
+
+        $parts[] = $text;
+        foreach ($files as $filePath) {
+            $fileContent             = fopen($filePath, 'r');
+            $attachment              = new Mime\Part($fileContent);
+            $attachment->type        = 'image/' . pathinfo($filePath, PATHINFO_EXTENSION);
+            $attachment->filename    = basename($filePath);
+            $attachment->disposition = Mime\Mime::DISPOSITION_ATTACHMENT;
+            $attachment->encoding    = Mime\Mime::ENCODING_BASE64;
+            $parts[]                 = $attachment;
+        }
+        $mime = new Mime\Message();
+        $mime->setParts($parts);
+
         $appMailData = $this->getAppMailData();
-        $message = new Message();
+        $message     = new Message();
         $message->addTo($to)
-            ->addFrom($appMailData->getLogin())
-            ->setSubject($subject)
-            ->setBody($content);
+                ->addFrom($appMailData->getLogin())
+                ->setSubject($subject)
+                ->setBody($mime)
+                ->setEncoding('utf-8');
 
         $transport = new SmtpTransport();
-        $options = new SmtpOptions([
+        $options   = new SmtpOptions([
             'name'              => $appMailData->getHost(),
             'host'              => $appMailData->getHost(),
             'connection_class'  => 'login',
             'connection_config' => [
                 'username' => $appMailData->getLogin(),
                 'password' => $appMailData->getPassword(),
-                'ssl' => 'tls'
+                'ssl'      => 'tls',
             ],
         ]);
         $transport->setOptions($options);
@@ -78,11 +98,11 @@ class AppMailService implements AppMailServiceInterface
      */
     private function getAppMailData()
     {
-        $sql = new Sql($this->dbAdapter);
+        $sql    = new Sql($this->dbAdapter);
         $select = $sql->select('app_mail');
         $select->where(['name = ?' => 'app']);
 
-        $stmt = $sql->prepareStatementForSqlObject($select);
+        $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows()) {

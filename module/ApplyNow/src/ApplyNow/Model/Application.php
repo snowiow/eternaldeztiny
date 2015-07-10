@@ -9,278 +9,279 @@ use Zend\InputFilter\InputFilterInterface;
 class Application implements InputFilterAwareInterface
 {
     /**
-    * @var InputFilter
-    */
+     * @var InputFilter
+     */
     private $inputFilter;
 
     /**
-    * @var int
-    */
+     * @var int
+     */
     private $id;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $name;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $tag;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $email;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $strategies;
 
     /**
-    * @var int
-    */
+     * @var int
+     */
     private $th;
 
     /**
-    * @var int
-    */
+     * @var int
+     */
     private $warStars;
 
     /**
-    * @var int
-    */
+     * @var int
+     */
     private $age;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $infos;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $why;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $basePic;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $profilePic;
 
     /**
-    * @var bool
-    */
+     * @var bool
+     */
     private $processed;
 
     /**
-    * @return int
-    */
-    public function getId() {
+     * @return int
+     */
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
     /**
-    * @param string $name
-    */
+     * @param string $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getTag()
     {
         return $this->tag;
     }
 
     /**
-    * @param string $tag
-    */
+     * @param string $tag
+     */
     public function setTag($tag)
     {
         $this->tag = $tag;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
     /**
-    * @param string $email
-    */
+     * @param string $email
+     */
     public function setEmail($email)
     {
         $this->email = $email;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getStrategies()
     {
         return $this->strategies;
     }
 
     /**
-    * @param string $strats
-    */
+     * @param string $strats
+     */
     public function setStrategies($strats)
     {
         $this->strategies = $strats;
     }
 
     /**
-    * @return int
-    */
+     * @return int
+     */
     public function getTh()
     {
         return $this->th;
     }
 
     /**
-    * @param int $th
-    */
+     * @param int $th
+     */
     public function setTh($th)
     {
         $this->th = $th;
     }
 
     /**
-    * @return int
-    */
+     * @return int
+     */
     public function getWarStars()
     {
         return $this->warStars;
     }
 
     /**
-    * @param int $warStars
-    */
+     * @param int $warStars
+     */
     public function setWarStars($warStars)
     {
         $this->warStars = $warStars;
     }
 
     /**
-    * @return int
-    */
+     * @return int
+     */
     public function getAge()
     {
         return $this->age;
     }
 
     /**
-    * @param int $age
-    */
+     * @param int $age
+     */
     public function setAge($age)
     {
         $this->age = $age;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getInfos()
     {
         return $this->infos;
     }
 
     /**
-    * @param string $infos
-    */
+     * @param string $infos
+     */
     public function setInfos($infos)
     {
         $this->infos = $infos;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getWhy()
     {
         return $this->why;
     }
 
     /**
-    * @param string $why
-    */
+     * @param string $why
+     */
     public function setWhy($why)
     {
         $this->why = $why;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getBasePic()
     {
         return $this->basePic;
     }
 
     /**
-    * @param string $basePic
-    */
+     * @param string $basePic
+     */
     public function setBasePic($basePic)
     {
         $this->basePic = $basePic;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getProfilePic()
     {
         return $this->profilePic;
     }
 
     /**
-    * @param string $profilePic
-    */
+     * @param string $profilePic
+     */
     public function setProfilePic($profilePic)
     {
         $this->profilePic = $profilePic;
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function isProcessed()
     {
         return $this->processed;
     }
 
     /**
-    * @param bool $processed
-    */
+     * @param bool $processed
+     */
     public function setIsProcessed($processed)
     {
         return $this->processed;
     }
 
     /**
-    * Fills up the model class with the given data
-    * @param array $data The account data needed to fill the model
-    */
+     * Fills up the model class with the given data
+     * @param array $data The account data needed to fill the model
+     */
     public function exchangeArray($data)
     {
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
@@ -295,32 +296,32 @@ class Application implements InputFilterAwareInterface
         $this->why = !empty($data['why']) ? $data['why'] : null;
         $this->basePic = !empty($data['basePic']) ? $data['basePic'] : null;
         $this->profilePic = !empty($data['profilePic']) ? $data['profilePic'] : null;
-        $this->processed = !empty($data['processed']) ? $data['processed'] : null;
+        $this->processed = !empty($data['processed']) ? $data['processed'] : false;
     }
 
     /**
-    * @return array AccountModel as array
-    */
+     * @return array AccountModel as array
+     */
     public function getArrayCopy()
     {
         return get_object_vars($this);
     }
 
     /**
-    * Always throws exception. InputFilter wont be set from outside.
-    * @param \Zend\InputFilter\InputFilterInterface $inputFilter
-    *
-    * @throws \Exception
-    */
+     * Always throws exception. InputFilter wont be set from outside.
+     * @param \Zend\InputFilter\InputFilterInterface $inputFilter
+     *
+     * @throws \Exception
+     */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
 
     /**
-    * Creates the InputFilter for the ApplyNow form.
-    * @return \Zend\InputFilter\InputFilter
-    */
+     * Creates the InputFilter for the ApplyNow form.
+     * @return \Zend\InputFilter\InputFilter
+     */
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
@@ -366,7 +367,7 @@ class Application implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name' => 'strategies',
-                'required' => true,
+                'required' => false,
                 'filters' => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
@@ -402,7 +403,7 @@ class Application implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name' => 'info',
-                'required' => true,
+                'required' => false,
                 'filters' => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
@@ -419,7 +420,7 @@ class Application implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name' => 'why',
-                'required' => true,
+                'required' => false,
                 'filters' => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
@@ -434,39 +435,41 @@ class Application implements InputFilterAwareInterface
                 ],
             ]);
 
-            $inputFilter->add([
-                'name' => 'basePic',
-                'required' => true,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                        ],
-                    ],
-                ],
-            ]);
+            //$inputFilter->add([
+            //'name' => 'basePic',
+            //'required' => true,
+            //'filters' => [
+            //['name' => 'StripTags'],
+            //['name' => 'StringTrim'],
+            //],
+            //'validators' => [
+            //[
+            //'name' => 'StringLength',
+            //'options' => [
+            //'encoding' => 'UTF-8',
+            //'min' => 1,
+            //],
+            //],
+            //],
+            //]);
 
-            $inputFilter->add([
-                'name' => 'profilePic',
-                'required' => true,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                        ],
-                    ],
-                ],
-            ]);
+            //$inputFilter->add([
+            //'name' => 'profilePic',
+            //'required' => true,
+            //'filters' => [
+            //['name' => 'StripTags'],
+            //['name' => 'StringTrim'],
+            //],
+            //'validators' => [
+            //[
+            //'name' => 'StringLength',
+            //'options' => [
+            //'encoding' => 'UTF-8',
+            //'min' => 1,
+            //],
+            //],
+            //],
+            //]);
 
             $inputFilter->add([
                 'name' => 'th',
@@ -476,11 +479,40 @@ class Application implements InputFilterAwareInterface
             $inputFilter->add([
                 'name' => 'warStars',
                 'required' => true,
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 4,
+                        ],
+                    ],
+                ],
+
             ]);
 
             $inputFilter->add([
                 'name' => 'age',
                 'required' => true,
+                'filters' => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 2,
+                        ],
+                    ],
+                ],
             ]);
 
             $this->inputFilter = $inputFilter;
