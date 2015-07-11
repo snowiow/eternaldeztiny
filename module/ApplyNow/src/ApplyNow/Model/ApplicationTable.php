@@ -42,10 +42,17 @@ class ApplicationTable
         return $row;
     }
 
-    public function getOpenApplicationCount()
+    public function getOpenApplications()
     {
         return $this->tableGateway->select(function (Select $select) {
             $select->where('processed = 0');
+        });
+    }
+
+    public function getProcessedApplications()
+    {
+        return $this->tableGateway->select(function (Select $select) {
+            $select->where('processed > 0');
         });
     }
 

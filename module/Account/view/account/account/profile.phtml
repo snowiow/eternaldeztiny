@@ -47,10 +47,12 @@ $this->headTitle($title);
     <a href="#">End current war</a><br/>
 </div>
 <div class="col-md-2">
-    <h4>Applications</h4>
-    <a href="#">New Applications 
-    <?php if($open_applications) 
-        echo '<span class="badge badge-default">' . $open_applications . '</span></a>'; 
+    <?php
+    if ($session->role > 3) {
+        echo '<h4>Applications</h4>';
+        echo '<a href="/applynow/overview">Application Overview';  
+        if($open_applications) 
+            echo '<span class="badge badge-default">' . $open_applications . '</span></a>'; 
+    }
     ?>
-    <a href="#">Application Overview</a><br/>
 </div>

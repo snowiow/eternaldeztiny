@@ -54,7 +54,7 @@ class AccountController extends AbstractActionController
 
     public function profileAction()
     {
-        $open_applications = $this->getApplicationTable()->getOpenApplicationCount();
+        $open_applications = $this->getApplicationTable()->getOpenApplications();
         return new ViewModel([
             'open_applications' => $open_applications->count(),
         ]);

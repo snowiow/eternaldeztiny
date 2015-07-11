@@ -4,6 +4,7 @@ namespace ApplyNow\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\File\Size;
+use Zend\View\Model\ViewModel;
 
 use ApplyNow\Form\ApplicationForm;
 use ApplyNow\Model\Application;
@@ -113,6 +114,19 @@ class ApplyNowController extends AbstractActionController
 
     public function applyfailedAction()
     {
+    }
+
+    public function overviewAction()
+    {
+        $session = new \Zend\Session\Container('user');
+        //TODO: Find a way to include Role
+        if ($session->role < 3) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
+        return new ViewModel([
+            'processed'   => $this->getApplicationTable()->getProcessedApplications(),
+            'unprocessed' => $this->getApplicationTable()->getOpenApplications(),
+        ]);
     }
 
     /**

@@ -7,14 +7,15 @@ use Zend\InputFilter\InputFilterInterface;
 
 use Application\Constants;
 
-interface Role {
+interface Role
+{
     const NOT_ACTIVATED = 0;
-    const USER = 1;
-    const MEMBER = 1 << 1;
-    const ELDER = 1 << 2;
-    const CO  = 1 << 3;
-    const LEADER = 1 << 4;
-    const ADMIN = 1 << 5;
+    const USER          = 1;
+    const MEMBER        = 1 << 1;
+    const ELDER         = 1 << 2;
+    const CO            = 1 << 3;
+    const LEADER        = 1 << 4;
+    const ADMIN         = 1 << 5;
 }
 
 class Account
@@ -70,105 +71,119 @@ class Account
     protected $loginInputFilter;
 
     /**
-    * @var InputFilter
-    */
+     * @var InputFilter
+     */
     protected $uploadAvatarInputFilter;
 
     /**
      * @param int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @param string $name
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
     /**
      * @param string $password
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
     }
 
     /**
      * @return string
      */
-    public function getUserHash() {
+    public function getUserHash()
+    {
         return $this->userhash;
     }
 
     /**
      * @param string $hash
      */
-    public function setUserHash($hash) {
+    public function setUserHash($hash)
+    {
         $this->userhash = $hash;
     }
 
     /**
      * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
     /**
      * @param string $email
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
     /**
      * @return int
      */
-    public function getRole() {
+    public function getRole()
+    {
         return $this->role;
     }
 
     /**
      * @param Role $role
      */
-    public function setRole($role) {
+    public function setRole($role)
+    {
         $this->role = $role;
     }
 
     /**
      * @return string
      */
-    public function getAvatar() {
+    public function getAvatar()
+    {
         return $this->avatar;
     }
 
     /**
      * @param string $avatar
      */
-    public function setAvatar($avatar) {
+    public function setAvatar($avatar)
+    {
         $this->avatar = $avatar;
     }
 
     /**
      * @return string
      */
-    public function getDateRegistered() {
+    public function getDateRegistered()
+    {
         return $this->date_registered;
     }
 
@@ -178,17 +193,17 @@ class Account
      */
     public function exchangeArray($data)
     {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
-        $this->name = !empty($data['name']) ? $data['name'] : null;
+        $this->id       = (!empty($data['id'])) ? $data['id'] : null;
+        $this->name     = !empty($data['name']) ? $data['name'] : null;
         $this->password = !empty($data['password']) ? $data['password'] : null;
         $this->userhash = hash('sha256', $this->name);
-        $this->email = !empty($data['email']) ? $data['email'] : null;
-        $this->role = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
-        $this->avatar = !empty($data['avatar']) ? $data['avatar'] : null;
+        $this->email    = !empty($data['email']) ? $data['email'] : null;
+        $this->role     = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
+        $this->avatar   = !empty($data['avatar']) ? $data['avatar'] : null;
 
-        $date = new \DateTime();
+        $date                  = new \DateTime();
         $this->date_registered = !empty($data['date_registered']) ? $data['date_registered'] :
-            $date->format('Y-m-d H:i:s');
+        $date->format('Y-m-d H:i:s');
     }
 
     /**
@@ -220,57 +235,57 @@ class Account
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [
+                'name'       => 'name',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 3,
-                            'max' => 64,
+                            'min'      => 3,
+                            'max'      => 64,
                         ],
                     ],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'password',
-                'required' => true,
-                'filters' => [
+                'name'       => 'password',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 4,
-                            'max' => 64,
+                            'min'      => 4,
+                            'max'      => 64,
                         ],
                     ],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'email',
-                'required' => true,
-                'filters' => [
+                'name'       => 'email',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 4,
-                            'max' => 255,
+                            'min'      => 4,
+                            'max'      => 255,
                         ],
                     ],
                 ],
@@ -284,20 +299,21 @@ class Account
      * Creates a InputFilter for the loginForm
      * @return \Zend\InputFilter\InputFilter
      */
-    public function getLoginInputFilter() {
+    public function getLoginInputFilter()
+    {
         if (!$this->loginInputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [
+                'name'       => 'name',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
                         ],
@@ -306,19 +322,19 @@ class Account
             ]);
 
             $inputFilter->add([
-                'name' => 'password',
-                'required' => true,
-                'filters' => [
+                'name'       => 'password',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 4,
-                            'max' => 64,
+                            'min'      => 4,
+                            'max'      => 64,
                         ],
                     ],
                 ],
@@ -332,14 +348,14 @@ class Account
     {
         if (!$this->uploadAvatarInputFilter) {
             $inputFilter = new InputFilter();
-            $fileInput = new InputFilter\FileInput('image-file');
+            $fileInput   = new InputFilter\FileInput('image-file');
             $fileInput->setRequired(true);
             $fileInput->getFilterChain()->attachByName(
                 'filerenameupload',
-                array(
+                [
                     'target'    => './data/tmp/avatar.png',
                     'randomize' => true,
-                )
+                ]
             );
             $inputFilter->add($fileInput);
 
@@ -348,8 +364,9 @@ class Account
         return $this->uploadAvatarInputFilter;
     }
 
-    static function convertToRole($int) {
-        switch($int) {
+    public static function convertToRole($int)
+    {
+        switch ($int) {
             case Role::USER:
                 return 'User';
             case Role::MEMBER:
