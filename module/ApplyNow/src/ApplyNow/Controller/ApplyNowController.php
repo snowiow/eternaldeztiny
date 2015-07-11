@@ -71,6 +71,8 @@ class ApplyNowController extends AbstractActionController
                 $basePath = getcwd() . '/public/applications/' . $application->getTag() . '/';
                 if (!file_exists($basePath)) {
                     mkdir($basePath);
+                } else {
+                    return $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
                 }
 
                 $basePic = $application->getBasePic();

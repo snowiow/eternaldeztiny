@@ -10,4 +10,5 @@ composer.lock
 vendor/bin
 ./
 public/users/
+public/applications/
 tags

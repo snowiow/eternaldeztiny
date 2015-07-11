@@ -48,6 +48,9 @@ $this->headTitle($title);
 </div>
 <div class="col-md-2">
     <h4>Applications</h4>
-    <a href="#">New Applications <span class="badge">4</span></a
+    <a href="#">New Applications 
+    <?php if($open_applications) 
+        echo '<span class="badge badge-default">' . $open_applications . '</span></a>'; 
+    ?>
     <a href="#">Application Overview</a><br/>
 </div>

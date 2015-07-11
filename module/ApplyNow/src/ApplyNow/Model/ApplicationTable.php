@@ -3,6 +3,8 @@
 namespace ApplyNow\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 
 class ApplicationTable
 {
@@ -30,14 +32,21 @@ class ApplicationTable
      */
     public function getApplication($id)
     {
-        $id = (int) $id;
+        $id     = (int) $id;
         $rowset = $this->tableGateway->select(['id' => $id]);
-        $row = $rowset->current();
+        $row    = $rowset->current();
         if (!$row) {
             return null;
         }
 
         return $row;
+    }
+
+    public function getOpenApplicationCount()
+    {
+        return $this->tableGateway->select(function (Select $select) {
+            $select->where('processed = 0');
+        });
     }
 
     /**
@@ -48,18 +57,18 @@ class ApplicationTable
     public function saveApplication(Application $application)
     {
         $data = [
-            'name' => $application->getName(),
-            'tag' => $application->getTag(),
-            'email' => $application->getEmail(),
+            'name'       => $application->getName(),
+            'tag'        => $application->getTag(),
+            'email'      => $application->getEmail(),
             'strategies' => $application->getStrategies(),
-            'th' => $application->getTh(),
-            'warStars' => $application->getWarStars(),
-            'age' => $application->getAge(),
-            'infos' => $application->getInfos(),
-            'why' => $application->getWhy(),
-            'basePic' => $application->getBasePic(),
+            'th'         => $application->getTh(),
+            'warStars'   => $application->getWarStars(),
+            'age'        => $application->getAge(),
+            'infos'      => $application->getInfos(),
+            'why'        => $application->getWhy(),
+            'basePic'    => $application->getBasePic(),
             'profilePic' => $application->getProfilePic(),
-            'processed' => $application->isProcessed(),
+            'processed'  => $application->isProcessed(),
         ];
 
         $id = (int) $application->getId();

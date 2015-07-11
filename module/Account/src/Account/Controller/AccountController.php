@@ -2,6 +2,7 @@
 
 namespace Account\Controller;
 
+use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\InputFilter\InputFilter;
@@ -16,13 +17,14 @@ use Account\Model\AccountTable;
 
 use AppMail\Service\AppMailServiceInterface;
 use Application\Constants;
+use ApplyNow\Model\ApplicationTable;
 
 interface AUTH_RESULT
 {
-    const SUCCESS = 0;
+    const SUCCESS           = 0;
     const WRONG_CREDENTIALS = 1;
-    const NOT_FOUND = 1 << 1;
-    const NOT_CONFIRMED = 1 << 2;
+    const NOT_FOUND         = 1 << 1;
+    const NOT_CONFIRMED     = 1 << 2;
 }
 
 class AccountController extends AbstractActionController
@@ -31,6 +33,11 @@ class AccountController extends AbstractActionController
      * @var AccountTable
      */
     protected $accountTable;
+
+    /**
+     * @var ApplicationTable
+     */
+    protected $applicationTable;
 
     /**
      * @var \AppMail\Service\AppMailServiceInterface
@@ -47,6 +54,10 @@ class AccountController extends AbstractActionController
 
     public function profileAction()
     {
+        $open_applications = $this->getApplicationTable()->getOpenApplicationCount();
+        return new ViewModel([
+            'open_applications' => $open_applications->count(),
+        ]);
     }
 
     public function uploadAvatarAction()
@@ -64,10 +75,10 @@ class AccountController extends AbstractActionController
                 $data = $form->getData();
                 if (strstr($data['file']['type'], 'image')) {
                     $session = $session = new \Zend\Session\Container('user');
-                    $file = file_get_contents($data['file']['tmp_name']);
+                    $file    = file_get_contents($data['file']['tmp_name']);
                     file_put_contents(getcwd() . '/public/users/' . $session->name . '/avatar.jpg',
                         $file);
-                    $account = $this->getAccountTable()->getAccount($session->id);
+                    $account  = $this->getAccountTable()->getAccount($session->id);
                     $filePath = '/users/' . $session->name . '/avatar.jpg';
                     $account->setAvatar($filePath);
                     $this->getAccountTable()->saveAccount($account);
@@ -195,7 +206,7 @@ class AccountController extends AbstractActionController
     public function activateAction()
     {
         $userhash = $this->params()->fromRoute('id', 0);
-        $account = $this->getAccountTable()->getAccountBy(['userhash' => $userhash]);
+        $account  = $this->getAccountTable()->getAccountBy(['userhash' => $userhash]);
         if ($account->getRole() == Role::NOT_ACTIVATED) {
             $account->setRole(Role::USER);
             $account->setUserHash('');
@@ -212,11 +223,24 @@ class AccountController extends AbstractActionController
     public function getAccountTable()
     {
         if (!$this->accountTable) {
-            $sm = $this->getServiceLocator();
+            $sm                 = $this->getServiceLocator();
             $this->accountTable = $sm->get('Account\Model\AccountTable');
         }
 
         return $this->accountTable;
+    }
+
+    /**
+     * @return array|ApplicationTable|object
+     */
+    public function getApplicationTable()
+    {
+        if (!$this->applicationTable) {
+            $sm                     = $this->getServiceLocator();
+            $this->applicationTable = $sm->get('ApplyNow\Model\ApplicationTable');
+        }
+
+        return $this->applicationTable;
     }
 
     /**
@@ -261,11 +285,11 @@ class AccountController extends AbstractActionController
      */
     private function createUserSession(Account $account)
     {
-        $session = new Container('user');
-        $session->id = $account->getId();
-        $session->role = $account->getRole();
-        $session->name = $account->getName();
-        $session->avatar = $account->getAvatar();
+        $session             = new Container('user');
+        $session->id         = $account->getId();
+        $session->role       = $account->getRole();
+        $session->name       = $account->getName();
+        $session->avatar     = $account->getAvatar();
         $session->registered = $account->getDateRegistered();
     }
 

@@ -11,7 +11,7 @@ infos TEXT,
 why TEXT,
 basepic VARCHAR(64),
 profilePic VARCHAR(64),
-processed BOOL,
+processed INT NOT NULL,
 PRIMARY KEY(id)
 );
 
