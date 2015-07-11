@@ -68,7 +68,7 @@ class AccountTable
     public function getMembers()
     {
         return $this->tableGateway->select(function (Select $select) {
-            $select->where('role > 2')
+            $select->where('role > 1')
             ->order('role DESC');
         });
     }
