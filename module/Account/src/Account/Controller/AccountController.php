@@ -54,10 +54,26 @@ class AccountController extends AbstractActionController
 
     public function profileAction()
     {
+        $name              = $this->params()->fromRoute('id', '');
+        $session           = new \Zend\Session\Container('user');
+        $self              = false;
         $open_applications = $this->getApplicationTable()->getOpenApplications();
-        return new ViewModel([
-            'open_applications' => $open_applications->count(),
-        ]);
+
+        if ($session->name === $name || empty($name)) {
+            return new ViewModel([
+                'self'              => true,
+                'account'           => $this->getAccountTable()->getAccountBy(['name' => $session->name]),
+                'open_applications' => $open_applications->count(),
+            ]);
+        } else {
+            return new ViewModel([
+                'self'              => false,
+                'account'           => $this->getAccountTable()->getAccountBy(['name' => $name]),
+                'open_applications' => $open_applications->count(),
+            ]);
+
+        }
+
     }
 
     public function uploadAvatarAction()

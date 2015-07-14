@@ -19,18 +19,18 @@ class NewsController extends AbstractActionController
 
     public function indexAction()
     {
-        $name = '';
+        $name    = '';
         $session = $session = new \Zend\Session\Container('user');
         if (isset($session) && !empty($session->name)) {
             $name = $session->name;
         }
 
         $paginator = $this->getNewsTable()->fetchAll(true);
-        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         $paginator->setItemCountPerPage(5);
         return new ViewModel([
             'accountName' => $name,
-            'paginator' => $paginator,
+            'paginator'   => $paginator,
         ]);
     }
 
@@ -78,10 +78,10 @@ class NewsController extends AbstractActionController
      */
     public function editAction()
     {
-        $id = (int)$this->params()->fromRoute('id', 0);
+        $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('news', [
-                'action' => 'add'
+                'action' => 'add',
             ]);
         }
 
@@ -89,7 +89,7 @@ class NewsController extends AbstractActionController
             $news = $this->getNewsTable()->getNews($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('news', [
-                'action' => 'index'
+                'action' => 'index',
             ]);
         }
 
@@ -131,7 +131,7 @@ class NewsController extends AbstractActionController
      */
     public function deleteAction()
     {
-        $id = (int)$this->params()->fromRoute('id', 0);
+        $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('news');
         }
@@ -140,7 +140,7 @@ class NewsController extends AbstractActionController
             $news = $this->getNewsTable()->getNews($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('news', [
-                'action' => 'index'
+                'action' => 'index',
             ]);
         }
         $request = $this->getRequest();
@@ -148,7 +148,7 @@ class NewsController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int)$request->getPost('id');
+                $id = (int) $request->getPost('id');
                 $this->getNewsTable()->deleteNews($id);
             }
 
@@ -176,7 +176,7 @@ class NewsController extends AbstractActionController
     public function getNewsTable()
     {
         if (!$this->newsTable) {
-            $sm = $this->getServiceLocator();
+            $sm              = $this->getServiceLocator();
             $this->newsTable = $sm->get('News\Model\NewsTable');
         }
 

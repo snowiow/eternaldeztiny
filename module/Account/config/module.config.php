@@ -6,30 +6,30 @@ return [
             'AppMail\Service\AppMailServiceInterface' => 'AppMail\Factory\AppMailServiceFactory',
         ],
     ],
-    'controllers' => [
+    'controllers'     => [
         'factories' => [
             'Account\Controller\Account' => 'Account\Factory\AccountControllerFactory',
         ],
     ],
-    'router' => [
+    'router'          => [
         'routes' => [
             'account' => [
-                'type' => 'segment',
+                'type'    => 'segment',
                 'options' => [
-                    'route' => '/account[/:action][/:id]',
+                    'route'       => '/account[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[a-zA-Z0-9]+',
+                        'id'     => '[a-zA-Z0-9]+',
                     ],
-                    'defaults' => [
+                    'defaults'    => [
                         'controller' => 'Account\Controller\Account',
-                        'action' => 'register',
+                        'action'     => 'profile',
                     ],
                 ],
             ],
         ],
     ],
-    'view_manager' => [
+    'view_manager'    => [
         'template_path_stack' => [
             'account' => __DIR__ . '/../view',
         ],
