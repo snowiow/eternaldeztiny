@@ -6,6 +6,26 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
+interface Status
+{
+    const NOT_PROCESSED = 0;
+    const ACCEPTED      = 1;
+    const DECLINED      = 1 << 1;
+
+}
+
+function statusToString(\int $status)
+{
+    switch ($status) {
+        case (Status::ACCEPTED):
+            return 'accepted';
+        case (Status::DECLINED):
+            return 'declined';
+        default:
+            return 'not processed';
+    }
+}
+
 class Application implements InputFilterAwareInterface
 {
     /**
@@ -66,12 +86,12 @@ class Application implements InputFilterAwareInterface
     /**
      * @var string
      */
-    private $basePic;
+    private $basebic;
 
     /**
      * @var string
      */
-    private $profilePic;
+    private $profilebic;
 
     /**
      * @var bool
@@ -79,11 +99,26 @@ class Application implements InputFilterAwareInterface
     private $processed;
 
     /**
+     * @var int
+     */
+    private $processedBy;
+
+    /**
+     * @var string
+     */
+    private $account_name;
+
+    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -233,39 +268,39 @@ class Application implements InputFilterAwareInterface
     /**
      * @return string
      */
-    public function getBasePic()
+    public function getBasepic()
     {
-        return $this->basePic;
+        return $this->basepic;
     }
 
     /**
      * @param string $basePic
      */
-    public function setBasePic($basePic)
+    public function setBasepic($basepic)
     {
-        $this->basePic = $basePic;
+        $this->basepic = $basepic;
     }
 
     /**
      * @return string
      */
-    public function getProfilePic()
+    public function getProfilepic()
     {
-        return $this->profilePic;
+        return $this->profilepic;
     }
 
     /**
      * @param string $profilePic
      */
-    public function setProfilePic($profilePic)
+    public function setProfilepic($profilepic)
     {
-        $this->profilePic = $profilePic;
+        $this->profilepic = $profilepic;
     }
 
     /**
      * @return bool
      */
-    public function isProcessed()
+    public function getProcessed()
     {
         return $this->processed;
     }
@@ -273,30 +308,52 @@ class Application implements InputFilterAwareInterface
     /**
      * @param bool $processed
      */
-    public function setIsProcessed($processed)
+    public function setProcessed($processed)
     {
-        return $this->processed;
+        $this->processed = $processed;
     }
 
+    /**
+     * @param int $processedBy
+     */
+    public function setProcessedBy($id)
+    {
+        $this->processedBy = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProcessedBy()
+    {
+        return $this->processedBy;
+    }
+
+    public function getAccountName()
+    {
+        return $this->account_name;
+    }
     /**
      * Fills up the model class with the given data
      * @param array $data The account data needed to fill the model
      */
     public function exchangeArray($data)
     {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
-        $this->name = !empty($data['name']) ? $data['name'] : null;
-        $this->tag = !empty($data['tag']) ? $data['tag'] : null;
-        $this->email = !empty($data['email']) ? $data['email'] : null;
-        $this->strategies = !empty($data['strategies']) ? $data['strategies'] : null;
-        $this->th = !empty($data['th']) ? $data['th'] : null;
-        $this->warStars = !empty($data['warStars']) ? $data['warStars'] : null;
-        $this->age = !empty($data['age']) ? $data['age'] : null;
-        $this->infos = !empty($data['infos']) ? $data['infos'] : null;
-        $this->why = !empty($data['why']) ? $data['why'] : null;
-        $this->basePic = !empty($data['basePic']) ? $data['basePic'] : null;
-        $this->profilePic = !empty($data['profilePic']) ? $data['profilePic'] : null;
-        $this->processed = !empty($data['processed']) ? $data['processed'] : false;
+        $this->id           = (!empty($data['id'])) ? $data['id'] : null;
+        $this->name         = !empty($data['name']) ? $data['name'] : null;
+        $this->tag          = !empty($data['tag']) ? $data['tag'] : null;
+        $this->email        = !empty($data['email']) ? $data['email'] : null;
+        $this->strategies   = !empty($data['strategies']) ? $data['strategies'] : null;
+        $this->th           = !empty($data['th']) ? $data['th'] : null;
+        $this->warStars     = !empty($data['warStars']) ? $data['warStars'] : null;
+        $this->age          = !empty($data['age']) ? $data['age'] : null;
+        $this->infos        = !empty($data['infos']) ? $data['infos'] : null;
+        $this->why          = !empty($data['why']) ? $data['why'] : null;
+        $this->basepic      = !empty($data['basepic']) ? $data['basepic'] : null;
+        $this->profilepic   = !empty($data['profilepic']) ? $data['profilepic'] : null;
+        $this->processed    = !empty($data['processed']) ? $data['processed'] : 0;
+        $this->processedBy  = !empty($data['processed_by']) ? $data['processed_by'] : null;
+        $this->account_name = !empty($data['account_name']) ? $data['account_name'] : null;
     }
 
     /**
@@ -328,191 +385,160 @@ class Application implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [
+                'name'       => 'name',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 3,
-                            'max' => 64,
+                            'min'      => 3,
+                            'max'      => 64,
                         ],
                     ],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'tag',
-                'required' => true,
-                'filters' => [
+                'name'       => 'tag',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 3,
-                            'max' => 64,
+                            'min'      => 3,
+                            'max'      => 64,
                         ],
                     ],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'strategies',
+                'name'       => 'strategies',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'email',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 4,
+                            'max'      => 255,
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'info',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'why',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'th',
+                'required' => true,
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'warStars',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 4,
+                        ],
+                    ],
+                ],
+
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'age',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 2,
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'processed',
                 'required' => false,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                        ],
-                    ],
-                ],
-            ]);
-
-            $inputFilter->add([
-                'name' => 'email',
-                'required' => true,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min' => 4,
-                            'max' => 255,
-                        ],
-                    ],
-                ],
-            ]);
-
-            $inputFilter->add([
-                'name' => 'info',
-                'required' => false,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                        ],
-                    ],
-                ],
-            ]);
-
-            $inputFilter->add([
-                'name' => 'why',
-                'required' => false,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                        ],
-                    ],
-                ],
-            ]);
-
-            //$inputFilter->add([
-            //'name' => 'basePic',
-            //'required' => true,
-            //'filters' => [
-            //['name' => 'StripTags'],
-            //['name' => 'StringTrim'],
-            //],
-            //'validators' => [
-            //[
-            //'name' => 'StringLength',
-            //'options' => [
-            //'encoding' => 'UTF-8',
-            //'min' => 1,
-            //],
-            //],
-            //],
-            //]);
-
-            //$inputFilter->add([
-            //'name' => 'profilePic',
-            //'required' => true,
-            //'filters' => [
-            //['name' => 'StripTags'],
-            //['name' => 'StringTrim'],
-            //],
-            //'validators' => [
-            //[
-            //'name' => 'StringLength',
-            //'options' => [
-            //'encoding' => 'UTF-8',
-            //'min' => 1,
-            //],
-            //],
-            //],
-            //]);
-
-            $inputFilter->add([
-                'name' => 'th',
-                'required' => true,
-            ]);
-
-            $inputFilter->add([
-                'name' => 'warStars',
-                'required' => true,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 4,
-                        ],
-                    ],
-                ],
-
-            ]);
-
-            $inputFilter->add([
-                'name' => 'age',
-                'required' => true,
-                'filters' => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 2,
-                        ],
-                    ],
-                ],
             ]);
 
             $this->inputFilter = $inputFilter;

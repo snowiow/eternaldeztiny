@@ -134,41 +134,41 @@ echo $this->formTextarea($form->get('strategies')->setAttribute('class', 'form-c
 echo '</div>';
 
 if (isset($errors)) {
-    if (array_key_exists('basePic', $errors)) {
+    if (array_key_exists('fileSizeTooBig', $errors)) {
         echo '<div class="form-group has-error has-feedback">';
-        echo $this->formLabel($form->get('basePic')->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formFile($form->get('basePic')->setAttribute('class', 'form-control'));
+        echo $this->formLabel($form->get('basepic')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formFile($form->get('basepic')->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
-        echo '<p> No valid Image.</p>';
+        echo '<p> No valid Image. Maybe size is too big.</p>';
     } else {
         echo '<div class="form-group has-success has-feedback">';
-        echo $this->formLabel($form->get('basePic')->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formFile($form->get('basePic')->setAttribute('class', 'form-control'));
+        echo $this->formLabel($form->get('basepic')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formFile($form->get('basepic')->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
     }
 } else {
     echo '<div class="form-group">';
-    echo $this->formLabel($form->get('basePic')->setLabelAttributes(['class' => 'control-label']));
-    echo $this->formFile($form->get('basePic')->setAttribute('class', 'form-control'));
+    echo $this->formLabel($form->get('basepic')->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formFile($form->get('basepic')->setAttribute('class', 'form-control'));
 }
 echo '</div>';
 if (isset($errors)) {
-    if (array_key_exists('profilePic', $errors)) {
+    if (array_key_exists('fileSizeTooBig', $errors)) {
         echo '<div class="form-group has-error has-feedback">';
-        echo $this->formLabel($form->get('profilePic')->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formFile($form->get('profilePic')->setAttribute('class', 'form-control'));
+        echo $this->formLabel($form->get('profilepic')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formFile($form->get('profilepic')->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
-        echo '<p> No valid Image.</p>';
+        echo '<p> No valid Image. Maybe size is too big.</p>';
     } else {
         echo '<div class="form-group has-success has-feedback">';
-        echo $this->formLabel($form->get('profilePic')->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formFile($form->get('profilePic')->setAttribute('class', 'form-control'));
+        echo $this->formLabel($form->get('profilepic')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formFile($form->get('profilepic')->setAttribute('class', 'form-control'));
         echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
     }
 } else {
     echo '<div class="form-group">';
-    echo $this->formLabel($form->get('profilePic')->setLabelAttributes(['class' => 'control-label']));
-    echo $this->formFile($form->get('profilePic')->setAttribute('class', 'form-control'));
+    echo $this->formLabel($form->get('profilepic')->setLabelAttributes(['class' => 'control-label']));
+    echo $this->formFile($form->get('profilepic')->setAttribute('class', 'form-control'));
 }
 echo '</div>';
 echo '<div class="form-group">';

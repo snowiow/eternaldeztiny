@@ -160,7 +160,7 @@ class AccountController extends AbstractActionController
                         $this->createUserSession($account);
 
                         return $this->redirect()->toRoute('account', [
-                            'action' => 'loginsuccess',
+                            'action' => 'profile',
                         ]);
                 }
             } else {
@@ -251,7 +251,7 @@ class AccountController extends AbstractActionController
     private function sendConfirmationMail($account)
     {
         $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText = $mailText . "follow the link:\ned.com/account/activate/" . $account->getUserHash();
+        $mailText = $mailText . "follow the link:\n" . Constants::host . "/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
     }

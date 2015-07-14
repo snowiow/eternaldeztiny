@@ -11,6 +11,7 @@ use ApplyNow\Model\Application;
 
 use AppMail\Service\AppMailServiceInterface;
 use Account\Model\AccountTable;
+use Application\Constants;
 
 class ApplyNowController extends AbstractActionController
 {
@@ -54,14 +55,19 @@ class ApplyNowController extends AbstractActionController
             );
 
             $form->setData($post);
+
             if ($form->isValid()) {
+
                 $data = array_merge_recursive(
                     $this->getRequest()->getPost()->toArray(),
                     $this->getRequest()->getFiles()->toArray()
                 );
                 $application->exchangeArray($data);
-                $size = new Size(['min' => 20,
-                    'max'                   => 10000]);
+                $size = new Size([
+                    'min' => 20,
+                    'max' => 200000,
+                ]);
+
                 $adapter = new \Zend\File\Transfer\Adapter\Http();
                 $adapter->setValidators([$size], $application->getProfilePic());
                 $adapter->setValidators([$size], $application->getBasePic());
@@ -69,36 +75,37 @@ class ApplyNowController extends AbstractActionController
                     $errors = $adapter->getMessages();
                     return ['form' => $form, 'errors' => $errors];
                 }
-                $basePath = getcwd() . '/public/applications/' . $application->getTag() . '/';
-                if (!file_exists($basePath)) {
-                    mkdir($basePath);
-                } else {
-                    return $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
+                $path   = '/applications/' . $application->getTag() . '/';
+                $prefix = getcwd() . '/public';
+                if (!file_exists($prefix . $path)) {
+                    mkdir($prefix . $path);
                 }
 
                 $basePic = $application->getBasePic();
                 $ending  = pathinfo($basePic['name'], PATHINFO_EXTENSION);
-                $application->setBasePic($basePath . 'basepic.' . $ending);
+                $application->setBasePic($path . 'basepic.' . $ending);
                 $basePicFile = file_get_contents($basePic['tmp_name']);
-                file_put_contents($application->getBasePic(), $basePicFile);
+                file_put_contents($prefix . $application->getBasePic(), $basePicFile);
 
                 $profilePic = $application->getProfilePic();
                 $ending     = pathinfo($profilePic['name'], PATHINFO_EXTENSION);
-                $application->setProfilePic($basePath . 'profilepic.' . $ending);
+                $application->setProfilePic($path . 'profilepic.' . $ending);
                 $profilePicFile = file_get_contents($profilePic['tmp_name']);
-                file_put_contents($application->getProfilePic(), $profilePicFile);
-
-                $accounts = $this->getAccountTable()->getLeadershipMails();
-
-                foreach ($accounts as $account) {
-                    $this->sendApplicationMail($application, $account->getEmail());
-                }
+                file_put_contents($prefix . $application->getProfilePic(), $profilePicFile);
 
                 try {
                     $this->getApplicationTable()->saveApplication($application);
                 } catch (\Exception $e) {
                     return $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
                 }
+                $id = $this->getApplicationTable()->getLastInsertedId();
+                $application->setId($id);
+                $accounts = $this->getAccountTable()->getLeadershipMails();
+
+                foreach ($accounts as $account) {
+                    $this->sendApplicationMail($application, $account->getEmail());
+                }
+
                 return $this->redirect()->toRoute('applynow', ['action' => 'applysuccess']);
             } else {
                 $errors = $form->getMessages();
@@ -120,13 +127,43 @@ class ApplyNowController extends AbstractActionController
     {
         $session = new \Zend\Session\Container('user');
         //TODO: Find a way to include Role
-        if ($session->role < 3) {
+        if ($session->role < 4) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
+
         return new ViewModel([
             'processed'   => $this->getApplicationTable()->getProcessedApplications(),
             'unprocessed' => $this->getApplicationTable()->getOpenApplications(),
         ]);
+    }
+
+    public function detailAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $session = new \Zend\Session\Container('user');
+
+        if ($session->role < 4) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
+        $form = new ApplicationForm();
+        $form->get('submit')->setValue('Process Application');
+
+        $application = new Application();
+        $form->setInputFilter($application->getInputFilter());
+
+        $application = $this->getApplicationTable()->getApplication($id);
+        $form->setData($application->getArrayCopy());
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $application->setProcessed($data['processed']);
+            $application->setProcessedBy((int) $session->id);
+            $this->getApplicationTable()->saveApplication($application);
+            return $this->redirect()->toRoute('applynow', ['action' => 'overview']);
+        }
+        return ['form' => $form];
     }
 
     /**
@@ -162,8 +199,10 @@ class ApplyNowController extends AbstractActionController
         "Current war stars: " . $application->getWarStars() . "\n" .
         "About me: " . $application->getInfos() . "\n" .
         "Why I want to join ED: " . $application->getWhy() . "\n" .
-        "Strategies: " . $application->getStrategies() . "\n";
+        "Strategies: " . $application->getStrategies() . "\n" .
+        "Process application at: " . Constants::host . '/applynow/detail/' . $application->getId();
+
         $this->appMailService->sendMail($mail_address, 'New application has arrived!', $mailText,
-            [$application->getBasePic(), $application->getProfilePic()]);
+            [getcwd() . '/public' . $application->getBasePic(), getcwd() . '/public' . $application->getProfilePic()]);
     }
 }

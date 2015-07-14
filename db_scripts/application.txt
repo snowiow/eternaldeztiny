@@ -10,8 +10,10 @@ strategies TEXT,
 infos TEXT,
 why TEXT,
 basepic VARCHAR(64),
-profilePic VARCHAR(64),
+profilepic VARCHAR(64),
 processed INT NOT NULL,
-PRIMARY KEY(id)
+processed_by INT,
+PRIMARY KEY(id),
+FOREIGN KEY (processed_by) REFERENCES account(id)
 );
 

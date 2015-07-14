@@ -101,7 +101,7 @@ class ApplicationForm extends Form
         ]);
 
         $this->add([
-            'name'    => 'basePic',
+            'name'    => 'basepic',
             'type'    => 'Zend\Form\Element\File',
             'options' => [
                 'label' => 'A Pic of your current warbase*',
@@ -109,10 +109,23 @@ class ApplicationForm extends Form
         ]);
 
         $this->add([
-            'name'    => 'profilePic',
+            'name'    => 'profilepic',
             'type'    => 'Zend\Form\Element\File',
             'options' => [
                 'label' => 'A Pic of your Profile, where we see your troop levels.*',
+            ],
+        ]);
+
+        $this->add([
+            'name'    => 'processed',
+            'type'    => 'Zend\Form\Element\Select',
+            'options' => [
+                'label'         => 'Status',
+                'value_options' => [
+                    '0' => 'not processed',
+                    '1' => 'accepted',
+                    '2' => 'declined',
+                ],
             ],
         ]);
 

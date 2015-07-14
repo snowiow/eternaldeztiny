@@ -30,9 +30,9 @@ class ApplicationTable
      * Returns the Application by the given id
      * @param int $id
      */
-    public function getApplication($id)
+    public function getApplication(\int $id)
     {
-        $id     = (int) $id;
+        $id     = $id;
         $rowset = $this->tableGateway->select(['id' => $id]);
         $row    = $rowset->current();
         if (!$row) {
@@ -42,6 +42,14 @@ class ApplicationTable
         return $row;
     }
 
+    public function getLastInsertedId()
+    {
+        return $this->tableGateway->lastInsertValue;
+    }
+
+    /**
+     * Returns all open applications
+     */
     public function getOpenApplications()
     {
         return $this->tableGateway->select(function (Select $select) {
@@ -49,10 +57,14 @@ class ApplicationTable
         });
     }
 
+    /**
+     * Returns all accepted and declined applications
+     */
     public function getProcessedApplications()
     {
         return $this->tableGateway->select(function (Select $select) {
-            $select->where('processed > 0');
+            $select->join(['a' => 'account'], 'application.processed_by = a.id', ['account_name' => 'name'])
+            ->where('processed > 0');
         });
     }
 
@@ -64,18 +76,19 @@ class ApplicationTable
     public function saveApplication(Application $application)
     {
         $data = [
-            'name'       => $application->getName(),
-            'tag'        => $application->getTag(),
-            'email'      => $application->getEmail(),
-            'strategies' => $application->getStrategies(),
-            'th'         => $application->getTh(),
-            'warStars'   => $application->getWarStars(),
-            'age'        => $application->getAge(),
-            'infos'      => $application->getInfos(),
-            'why'        => $application->getWhy(),
-            'basePic'    => $application->getBasePic(),
-            'profilePic' => $application->getProfilePic(),
-            'processed'  => $application->isProcessed(),
+            'name'         => $application->getName(),
+            'tag'          => $application->getTag(),
+            'email'        => $application->getEmail(),
+            'strategies'   => $application->getStrategies(),
+            'th'           => $application->getTh(),
+            'warStars'     => $application->getWarStars(),
+            'age'          => $application->getAge(),
+            'infos'        => $application->getInfos(),
+            'why'          => $application->getWhy(),
+            'basepic'      => $application->getBasepic(),
+            'profilepic'   => $application->getProfilepic(),
+            'processed'    => $application->getProcessed(),
+            'processed_by' => $application->getProcessedBy(),
         ];
 
         $id = (int) $application->getId();

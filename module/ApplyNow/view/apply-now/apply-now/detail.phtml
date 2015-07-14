@@ -1,0 +1,72 @@
+<?php
+$title = 'Application Details';
+$this->headTitle($title);
+?>
+<div class="col-md-8">
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('processed')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formSelect($form->get('processed')->setAttribute('class', 'form-control'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('name')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('name')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('tag')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('tag')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('email')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('email')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('age')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('age')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('th')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('th')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('warStars')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('warStars')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('infos')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formTextarea($form->get('infos')->setAttribute('class', 'form-control')
+    ->setAttribute('rows', '10')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('why')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formTextarea($form->get('why')->setAttribute('class', 'form-control')
+    ->setAttribute('rows', '10')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('strategies')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formTextarea($form->get('strategies')->setAttribute('class', 'form-control')
+    ->setAttribute('rows', '10')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('basepic')->setLabelAttributes(['class' => 'control-label']));
+echo '<br />';
+echo '<img src="' . $form->get('basepic')->getValue() . '" class="img-responsive img-thumbnail
+        "style="max-width:600px; max-height:600px;">';
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('profilepic')->setLabelAttributes(['class' => 'control-label']));
+echo '<br />';
+echo '<img src="' . $form->get('profilepic')->getValue() . '" class="img-responsive img-thumbnail
+        "style="max-width:600px; max-height:600px;">';
+echo '</div>';
+echo $this->form()->closeTag();
+?>
+</div>
+
