@@ -166,6 +166,31 @@ class ApplyNowController extends AbstractActionController
         return ['form' => $form];
     }
 
+    public function sendConfirmationMailAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $session = new \Zend\Session\Container('user');
+        if ($session->role < 4 || $id === 0) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
+        $application = $this->getApplicationTable()->getApplication($id);
+
+        $mailText = 'Hello ' . $application->getName() . ' we have processed your application.';
+        if ($application->getProcessed() == \ApplyNow\Model\Status::ACCEPTED) {
+            $mailText .= 'We have decided for you. Please apply ingame under the clan-id: #28PU922.';
+            $application->setProcessed(\ApplyNow\Model\Status::ACCEPTED_MAILED);
+        } else {
+            $mailText .= 'We have decided against you. We are sorry and wish you best of luck in the future.';
+            $application->setProcessed(\ApplyNow\Model\Status::DECLINED_MAILED);
+        }
+
+        $this->getApplicationTable()->saveApplication($application);
+        $this->appMailService->sendMail($application->getEmail(), 'Your application at Eternal Deztiny', $mailText);
+
+        return $this->redirect()->toRoute('applynow', ['action' => 'overview']);
+    }
+
     /**
      * @return array|ApplicationTable|object
      */

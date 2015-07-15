@@ -8,10 +8,11 @@ use Zend\InputFilter\InputFilterInterface;
 
 interface Status
 {
-    const NOT_PROCESSED = 0;
-    const ACCEPTED      = 1;
-    const DECLINED      = 1 << 1;
-
+    const NOT_PROCESSED   = 0;
+    const ACCEPTED        = 1;
+    const DECLINED        = 1 << 1;
+    const ACCEPTED_MAILED = 1 << 2;
+    const DECLINED_MAILED = 1 << 3;
 }
 
 function statusToString(\int $status)
@@ -21,6 +22,10 @@ function statusToString(\int $status)
             return 'accepted';
         case (Status::DECLINED):
             return 'declined';
+        case (Status::ACCEPTED_MAILED):
+            return 'accepted and mail send';
+        case (Status::DECLINED_MAILED):
+            return 'declined and mail send';
         default:
             return 'not processed';
     }

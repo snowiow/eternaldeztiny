@@ -51,7 +51,7 @@ $this->headTitle($title);
     <?php
     if ($session->role > 3) {
         echo '<h4>Applications</h4>';
-        echo '<a href="/applynow/overview">Application Overview';  
+        echo '<a href="/applynow/overview">Application Overview ';  
         if($open_applications) 
             echo '<span class="badge badge-default">' . $open_applications . '</span></a>'; 
     }

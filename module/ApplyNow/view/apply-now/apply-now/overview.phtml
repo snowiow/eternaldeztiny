@@ -34,6 +34,8 @@ $this->headTitle($title);
             <th>Processed</th>
             <th>Processed by</th>
             <th>Details</th>
+            <th>Send mail</th>
+
         </tr>
     </thead>
     <tbody>
@@ -46,6 +48,14 @@ $this->headTitle($title);
             <th> 
             <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
             </th>
+            <?php if($item->getProcessed() == \ApplyNow\Model\Status::ACCEPTED 
+                    || $item->getProcessed() == \ApplyNow\Model\Status::DECLINED) {
+                    echo '<th><a href="' . $this->url('applynow', ['action' => 'sendConfirmationMail', 
+                        'id' => $item->getId()]) . '" class="btn btn-default btn-sm" >Send Mail</a>';
+                } else {
+                    echo '<th><button type="button" class="btn btn-default btn-sm" disabled="disabled">Send Mail</a>';
+                } 
+            ?>
         </tr>
     <?php endforeach; ?>
     </tbody>
