@@ -3,7 +3,7 @@
 $title = 'Register';
 $this->headTitle($title);
 ?>
-<div class="col-md-6">
+<div class="content shadow">
     <h1><?php echo $this->escapeHtml($title); ?></h1>
     <?php
     $form->setAttribute('action', $this->url('account', ['action' => 'register']));

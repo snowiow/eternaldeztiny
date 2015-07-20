@@ -26,6 +26,10 @@ body {
   background-color: #57a900;
 }
 
+body {
+    background-color: #ECF0F1;
+}
+
 .btn-success:active, .btn-success.active {
   background-color: #57a900;
 }
@@ -36,6 +40,26 @@ div.container a.brand {
     padding: 8px 20px 12px 40px;
 }
 
+.content {
+    background-color: #FFF;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.main {
+    margin:0 auto;
+    float: none;
+    margin-top: 50px;
+}
+
+.shadow {
+    moz-box-shadow:    3px 3px 5px 6px #ccc;
+    webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow:         3px 3px 5px 6px #ccc;
+}
+
 .badge-default {
-  background-color: #D9534F;
+    background-color: #D9534F;
 }
