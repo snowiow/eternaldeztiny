@@ -378,7 +378,7 @@ class Account
             case Role::LEADER:
                 return 'Leader';
             default:
-                return 'Admin';
+                return 'Elder';
         }
     }
 }

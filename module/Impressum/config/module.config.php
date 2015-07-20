@@ -8,7 +8,7 @@ return [
     ],
     'router'       => [
         'routes' => [
-            'members' => [
+            'impressum' => [
                 'type'    => 'segment',
                 'options' => [
                     'route'       => '/impressum[/:action]',

@@ -30,7 +30,7 @@ class MembersController extends AbstractActionController
     public function getAccountTable()
     {
         if (!$this->accountTable) {
-            $sm = $this->getServiceLocator();
+            $sm                 = $this->getServiceLocator();
             $this->accountTable = $sm->get('Account\Model\AccountTable');
         }
 

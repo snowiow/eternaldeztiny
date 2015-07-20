@@ -6,8 +6,10 @@ $title = 'News';
     <?php foreach ($paginator as $item) : ?>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h1 class="panel-title"><?php echo $this->escapeHtml($item->getTitle()); ?></h1>
-                by <?php echo $this->escapeHtml($item->getAuthor()); ?>
+                <h1 class="panel-title"><?php echo $item->getTitle(); ?></h1>
+                by <?php echo '<a href="' . 
+                $this->url('account', ['action' => 'profile', 'id' => $item->getAuthor()]) . '">' . 
+                $item->getAuthor() . '</a>'; ?>
             </div>
             <div class="panel-body">
                 <p><?php echo $this->escapeHtml($item->getContent()); ?></p>

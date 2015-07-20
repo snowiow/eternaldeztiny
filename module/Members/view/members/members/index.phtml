@@ -12,7 +12,11 @@
         <tbody>
         <?php foreach ($members as $member) : ?>
             <tr>
-                <th><?php echo $member['name']; ?></th>
+            <th>
+                <?php echo '<a href="' . 
+                $this->url('account', ['action' => 'profile', 'id' => $member['name']]) . '">' . 
+                $member['name'] . '</a>'; ?>
+                </th>
                 <th><?php echo $member['role']; ?></th>
             </tr>
         <?php endforeach; ?>

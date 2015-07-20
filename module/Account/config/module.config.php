@@ -23,7 +23,6 @@ return [
                     ],
                     'defaults'    => [
                         'controller' => 'Account\Controller\Account',
-                        'action'     => 'profile',
                     ],
                 ],
             ],
