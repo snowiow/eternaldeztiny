@@ -2,7 +2,7 @@
 $title = 'Add News';
 $this->headTitle($title);
 ?>
-<div class="col-md-8">
+<div class="content shadow">
     <h1><?php echo $this->escapeHtml($title); ?></h1>
     <?php
     $form->setAttribute('action', $this->url('news', ['action' => 'add']));

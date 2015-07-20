@@ -1,6 +1,4 @@
 body {
-    padding-top: 60px;
-    padding-bottom: 40px;
 }
 
 .zf-green {
@@ -26,8 +24,24 @@ body {
   background-color: #57a900;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
+    margin: 0 0 100px;
+    padding-top: 60px;
+    padding-bottom: 40px;
     background-color: #ECF0F1;
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 25px;
+    width: 100%;
+    background-color: #FCFCFC;
 }
 
 .btn-success:active, .btn-success.active {
