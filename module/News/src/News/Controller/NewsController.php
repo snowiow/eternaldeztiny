@@ -42,6 +42,15 @@ class NewsController extends AbstractActionController
      */
     public function addAction()
     {
+        $session = $session = new \Zend\Session\Container('user');
+        if (!isset($session->role) || $session->role < 4) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
+
         $form = new NewsForm();
         $form->get('submit')->setValue('Add');
 
@@ -53,20 +62,15 @@ class NewsController extends AbstractActionController
 
             if ($form->isValid()) {
                 $news->exchangeArray($form->getData());
-                $this->getNewsTable()->saveNews($news);
+                if ($this->checkWordLengths($news->getContent())) {
+                    $this->getNewsTable()->saveNews($news);
 
-                return $this->redirect()->toRoute('news');
+                    return $this->redirect()->toRoute('news');
+                } else {
+                    return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
+                }
             }
         }
-        $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->role) || $session->role < 4) {
-            return $this->redirect()->toRoute('account',
-                [
-                    'action' => 'noright',
-                ]
-            );
-        }
-
         return ['form' => $form, 'accountId' => $session->id];
     }
 
@@ -92,6 +96,14 @@ class NewsController extends AbstractActionController
                 'action' => 'index',
             ]);
         }
+        $session = $session = new \Zend\Session\Container('user');
+        if (!isset($session->id) || $session->id != $news->getAccountId()) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
 
         $form = new NewsForm();
         $form->bind($news);
@@ -102,18 +114,19 @@ class NewsController extends AbstractActionController
             $form->setInputFilter($news->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $this->getNewsTable()->saveNews($news);
+                if ($this->checkWordLengths($news->getContent())) {
+                    $this->getNewsTable()->saveNews($news);
 
-                return $this->redirect()->toRoute('news');
+                    return $this->redirect()->toRoute('news');
+                } else {
+                    return [
+                        'id'        => $id,
+                        'form'      => $form,
+                        'accountId' => $session->id,
+                        'error'     => 'tooLong',
+                    ];
+                }
             }
-        }
-        $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->id) || $session->id != $news->getAccountId()) {
-            return $this->redirect()->toRoute('account',
-                [
-                    'action' => 'noright',
-                ]
-            );
         }
 
         return [
@@ -181,5 +194,24 @@ class NewsController extends AbstractActionController
         }
 
         return $this->newsTable;
+    }
+
+    /**
+     * Checks the word lengths of all words in a given text.
+     * If any word is longer than 100 chars false is returned,
+     * true otherwise
+     * @param string $string the given text
+     * @return bool true if no word is longer than 100 characters, false otherwise
+     */
+    private function checkWordLengths($string)
+    {
+        $words = explode(' ', $string);
+        foreach ($words as $word) {
+            if (strlen($word) > 100) {
+                return false;
+            }
+
+        }
+        return true;
     }
 }

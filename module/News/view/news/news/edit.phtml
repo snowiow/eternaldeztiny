@@ -37,6 +37,10 @@ $this->headTitle($title);
             $form->get('content')
                 ->setAttribute('class', 'form-control')
                 ->setAttribute('rows', '10'));
+        if ($this->error && $this->error === 'tooLong') {
+            echo '<p> A word in the text is too long.</p>';
+        }
+
         ?>
     </div>
     <div class="form-group">
