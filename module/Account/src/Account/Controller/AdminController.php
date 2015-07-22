@@ -13,6 +13,11 @@ class AdminController extends AbstractActionController
 
     public function setRolesAction()
     {
+        $session = new \Zend\Session\Container('user');
+        if ($session->role < Role::CO) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
+
         $users = $this->getAccountTable()->getUsersAndAbove();
         $roles = Role::getAllRoles();
         return new ViewModel([
