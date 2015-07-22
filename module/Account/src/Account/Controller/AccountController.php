@@ -165,19 +165,19 @@ class AccountController extends AbstractActionController
                 $account->exchangeArray($form->getData());
                 $result = $this->authenticate($account);
                 switch ($result) {
-                    case AUTH_RESULT::NOT_FOUND:
-                        return ['form' => $form, 'errors' => $errors = ['name' => 'name_not_available']];
-                    case AUTH_RESULT::WRONG_CREDENTIALS:
-                        return ['form' => $form, 'errors' => $errors = ['password' => 'wrong_password']];
-                    case AUTH_RESULT::NOT_CONFIRMED:
-                        return ['form' => $form, 'errors' => $errors = ['name' => 'not_confirmed']];
-                    case AUTH_RESULT::SUCCESS:
-                        $account = $this->getAccountTable()->getAccountBy(['name' => $account->getName()]);
-                        $this->createUserSession($account);
+                case AUTH_RESULT::NOT_FOUND:
+                    return ['form' => $form, 'errors' => $errors = ['name' => 'name_not_available']];
+                case AUTH_RESULT::WRONG_CREDENTIALS:
+                    return ['form' => $form, 'errors' => $errors = ['password' => 'wrong_password']];
+                case AUTH_RESULT::NOT_CONFIRMED:
+                    return ['form' => $form, 'errors' => $errors = ['name' => 'not_confirmed']];
+                case AUTH_RESULT::SUCCESS:
+                    $account = $this->getAccountTable()->getAccountBy(['name' => $account->getName()]);
+                    $this->createUserSession($account);
 
-                        return $this->redirect()->toRoute('account', [
-                            'action' => 'profile',
-                        ]);
+                    return $this->redirect()->toRoute('account', [
+                        'action' => 'profile',
+                    ]);
                 }
             } else {
                 $errors = $form->getMessages();
@@ -267,7 +267,7 @@ class AccountController extends AbstractActionController
     private function sendConfirmationMail($account)
     {
         $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText = $mailText . "follow the link:\n" . Constants::host . "/account/activate/" . $account->getUserHash();
+        $mailText = $mailText . "follow the link:\n" . Constants::HOST . "/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
     }

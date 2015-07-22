@@ -8,6 +8,9 @@ use Zend\View\Model\ViewModel;
 use Warlog\Form\WarlogForm;
 use Warlog\Model\Warlog;
 use Warlog\Model\WarlogTable;
+use Account\Model\Role;
+
+use Application\Constants;
 
 class WarlogController extends AbstractActionController
 {
@@ -38,6 +41,11 @@ class WarlogController extends AbstractActionController
 
     public function uploadAction()
     {
+        $session = new \Zend\Session\Container('user');
+        if ($session->role < Role::CO) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
+
         $form = new WarlogForm();
         $form->get('submit')->setValue('Upload Warlog');
 

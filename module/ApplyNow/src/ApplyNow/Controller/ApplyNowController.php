@@ -11,6 +11,7 @@ use ApplyNow\Model\Application;
 
 use AppMail\Service\AppMailServiceInterface;
 use Account\Model\AccountTable;
+use Account\Model\Role;
 use Application\Constants;
 
 class ApplyNowController extends AbstractActionController
@@ -127,7 +128,7 @@ class ApplyNowController extends AbstractActionController
     {
         $session = new \Zend\Session\Container('user');
         //TODO: Find a way to include Role
-        if ($session->role < 4) {
+        if ($session->role < Role::ELDER) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -143,7 +144,7 @@ class ApplyNowController extends AbstractActionController
 
         $session = new \Zend\Session\Container('user');
 
-        if ($session->role < 4) {
+        if ($session->role < Role::ELDER) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
         $form = new ApplicationForm();
@@ -171,7 +172,7 @@ class ApplyNowController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         $session = new \Zend\Session\Container('user');
-        if ($session->role < 4 || $id === 0) {
+        if ($session->role < Role::ELDER || $id === 0) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
         $application = $this->getApplicationTable()->getApplication($id);
@@ -225,7 +226,7 @@ class ApplyNowController extends AbstractActionController
         "About me: " . $application->getInfos() . "\n" .
         "Why I want to join ED: " . $application->getWhy() . "\n" .
         "Strategies: " . $application->getStrategies() . "\n" .
-        "Process application at: " . Constants::host . '/applynow/detail/' . $application->getId();
+        "Process application at: " . Constants::HOST . '/applynow/detail/' . $application->getId();
 
         $this->appMailService->sendMail($mail_address, 'New application has arrived!', $mailText,
             [getcwd() . '/public' . $application->getBasePic(), getcwd() . '/public' . $application->getProfilePic()]);

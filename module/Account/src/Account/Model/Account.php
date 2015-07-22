@@ -7,7 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 
 use Application\Constants;
 
-interface Role
+class Role
 {
     const NOT_ACTIVATED = 0;
     const USER          = 1;

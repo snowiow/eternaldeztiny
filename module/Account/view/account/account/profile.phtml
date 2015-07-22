@@ -29,10 +29,34 @@ $this->headTitle($title);
                 <li class="list-group-item"><a href="/account/edit">Edit Profile</a></li>
             </ul>
         </div>
+        <?php if ($session->role > 3) { ?>
         <div class="col-md-4">
-            <h4>Member Settings</h4>
+            <h4>News</h4>
             <ul class="list-group">
-                <li class="list-group-item"><a href="#">Set Member Roles</a></li>
+                <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h4>Applications</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                <?php if($open_applications) {                    
+                    echo '<span class="badge badge-default">' . $open_applications . '</span> 
+                    <a href="/applynow/overview">Application Overview</a>'; 
+                } else {
+                    echo '<a href="/applynow/overview">Application Overview </a>';
+                }?>
+                </li>
+            </ul>
+        </div>
+       <?php } ?>
+    </div>
+    <div class="row">
+        <?php if ($session->role > 4) { ?>
+        <div class="col-md-4">
+            <h4>User Settings</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#">Set User Roles</a></li>
             </ul>
         </div>
         <div class="col-md-4">
@@ -41,31 +65,7 @@ $this->headTitle($title);
                 <li class="list-group-item"><a href="/warlog/upload">Update current Warlog</a></li>
             </ul>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <h4>News</h4>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
-            </ul>
-        </div>
-        <?php if ($session->role > 3) { 
-            echo '<div class="col-md-4">';
-            echo '<h4>Applications</h4>';
-            echo '<ul class="list-group">';
-            echo '<li class="list-group-item">';
-            if($open_applications) {                    
-                echo '<span class="badge badge-default">' . $open_applications . '</span> 
-                        <a href="/applynow/overview">Application Overview</a>'; 
-            } else {
-                echo '<a href="/applynow/overview">Application Overview ';
-            }
-            echo '</li>';
-            echo '</ul>';
-            echo '</div>';
-        } ?>
-        </ul> 
-        </div>
+    <?php } ?>
     </div>
     <?php } ?>
 </div>
