@@ -1,0 +1,26 @@
+<?php
+$title = 'Warlog';
+$this->headTitle($title);
+?>
+<div class="content shadow">
+<div class="page-header">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+</div>
+<div class="progress">
+    <div class="progress-bar progress-bar-success"  aria-valuenow="<?php echo $win_percentage; ?>" 
+        aria-valuemin="0" aria-valuemax="100" style="max-width: 90%;width: <?php echo $win_percentage; ?>%">
+            <?php echo $warlog->getWins() . ' wins'; ?>
+    </div>
+    <div class="progress-bar progress-bar-warning"  aria-valuenow="<?php echo $draw_percentage; ?>" 
+        aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $draw_percentage; ?>%">
+            <?php echo $warlog->getDraws() . ' draws'; ?>
+    </div>
+    <div class="progress-bar progress-bar-danger" aria-valuenow="<?php echo $loss_percentage; ?>"
+        aria-valuemin="0" aria-valuemax="100" style="min-width: 10%; width: <?php echo $loss_percentage; ?>%;">
+            <?php echo $warlog->getLosses() . ' losses'; ?>
+      </div>
+</div>
+<a href="/img/warlog/warlog.png" class="thumbnail">
+    <img src="/img/warlog/warlog.png" class="img-thumbnail">
+</a>
+</div>

@@ -1,0 +1,7 @@
+ CREATE TABLE warlog (
+   id INT NOT NULL auto_increment,
+   wins INT NOT NULL,
+   losses INT NOT NULL,
+   draws INT NOT NULL,
+   PRIMARY KEY (id)
+ );

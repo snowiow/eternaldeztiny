@@ -77,3 +77,13 @@ div.container a.brand {
 .badge-default {
     background-color: #D9534F;
 }
+
+.panel-href {
+    color: #FFF;
+    font-style: italic;
+}
+
+.panel-href:hover {
+    color: #FFF;
+    text-decoration: underline;
+}

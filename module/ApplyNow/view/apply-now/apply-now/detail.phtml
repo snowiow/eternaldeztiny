@@ -3,7 +3,9 @@ $title = 'Application Details';
 $this->headTitle($title);
 ?>
 <div class="content shadow">
+<div class="page-header">
 <h1><?php echo $this->escapeHtml($title); ?></h1>
+</div>
 <?php
 $form->prepare();
 echo $this->form()->openTag($form);
@@ -57,14 +59,16 @@ echo '</div>';
 echo '<div class="form-group">';
 echo $this->formLabel($form->get('basepic')->setLabelAttributes(['class' => 'control-label']));
 echo '<br />';
-echo '<img src="' . $form->get('basepic')->getValue() . '" class="img-responsive img-thumbnail
-        "style="max-width:600px; max-height:600px;">';
+echo '<a href="' . $form->get('basepic')->getValue() . '" class="thumbnail">';
+echo '<img src="' . $form->get('basepic')->getValue() . '" class="img-responsive img-thumbnail">';
+echo '</a>';
 echo '</div>';
 echo '<div class="form-group">';
 echo $this->formLabel($form->get('profilepic')->setLabelAttributes(['class' => 'control-label']));
 echo '<br />';
-echo '<img src="' . $form->get('profilepic')->getValue() . '" class="img-responsive img-thumbnail
-        "style="max-width:600px; max-height:600px;">';
+echo '<a href="' . $form->get('profilepic')->getValue() . '" class="thumbnail">';
+echo '<img src="' . $form->get('profilepic')->getValue() . '" class="img-responsive img-thumbnail">';
+echo '</a>';
 echo '</div>';
 echo $this->form()->closeTag();
 ?>

@@ -4,11 +4,12 @@ $title = 'News';
 ?>
     <?php $this->headTitle($title); ?>
     <?php foreach ($paginator as $item) : ?>
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h1 class="panel-title"><?php echo $item->getTitle(); ?></h1>
                 by <?php echo '<a href="' . 
-                $this->url('account', ['action' => 'profile', 'id' => $item->getAuthor()]) . '">' . 
+                $this->url('account', ['action' => 'profile', 'id' => $item->getAuthor()]) . 
+                '" class="panel-href">' . 
                 $item->getAuthor() . '</a>'; ?>
             </div>
             <div class="panel-body">
