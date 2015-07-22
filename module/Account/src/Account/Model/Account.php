@@ -7,17 +7,6 @@ use Zend\InputFilter\InputFilterInterface;
 
 use Application\Constants;
 
-class Role
-{
-    const NOT_ACTIVATED = 0;
-    const USER          = 1;
-    const MEMBER        = 1 << 1;
-    const ELDER         = 1 << 2;
-    const CO            = 1 << 3;
-    const LEADER        = 1 << 4;
-    const ADMIN         = 1 << 5;
-}
-
 class Account
 {
     /**
