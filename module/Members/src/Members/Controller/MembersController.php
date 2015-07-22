@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 use Account\Model\Account;
+use Account\Model\Role;
 
 class MembersController extends AbstractActionController
 {
@@ -16,7 +17,7 @@ class MembersController extends AbstractActionController
         $members = $this->getAccountTable()->getMembers()->toArray();
 
         for ($i = 0; $i < count($members); $i++) {
-            $members[$i]['role'] = Account::convertToRole($members[$i]['role']);
+            $members[$i]['role'] = Role::convertToRole((int) $members[$i]['role']);
         }
 
         return new ViewModel([

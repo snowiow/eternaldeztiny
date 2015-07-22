@@ -15,7 +15,8 @@ $this->headTitle($title);
             <h4>Profile</h4>
             <ul class="list-group">
                 <li class="list-group-item"><?php echo $account->getName(); ?></li>
-                <li class="list-group-item">Role: <?php echo Account\Model\Account::convertToRole($account->getRole()); ?></li>
+                <li class="list-group-item">Role: 
+                <?php echo Account\Model\Role::convertToRole((int) $account->getRole()); ?></li>
                 <li class="list-group-item">Registered Since: <?php echo substr($account->getDateRegistered(), 0, 10); ?></li>
             </ul>
         </div>
@@ -56,7 +57,7 @@ $this->headTitle($title);
         <div class="col-md-4">
             <h4>User Settings</h4>
             <ul class="list-group">
-                <li class="list-group-item"><a href="#">Set User Roles</a></li>
+                <li class="list-group-item"><a href="/admin/setroles">Set User Roles</a></li>
             </ul>
         </div>
         <div class="col-md-4">

@@ -7,8 +7,11 @@ return [
         ],
     ],
     'controllers'     => [
-        'factories' => [
+        'factories'  => [
             'Account\Controller\Account' => 'Account\Factory\AccountControllerFactory',
+        ],
+        'invokables' => [
+            'Account\Controller\Admin' => 'Account\Controller\AdminController',
         ],
     ],
     'router'          => [
@@ -26,11 +29,25 @@ return [
                     ],
                 ],
             ],
+            'admin'   => [
+                'type'    => 'segment',
+                'options' => [
+                    'route'       => '/admin[/:action][/:id]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[a-zA-Z]+',
+                    ],
+                    'defaults'    => [
+                        'controller' => 'Account\Controller\Admin',
+                    ],
+                ],
+            ],
         ],
     ],
     'view_manager'    => [
         'template_path_stack' => [
             'account' => __DIR__ . '/../view',
+            'admin'   => __DIR__ . '/../view',
         ],
     ],
 ];

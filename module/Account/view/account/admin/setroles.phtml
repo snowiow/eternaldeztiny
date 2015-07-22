@@ -1,0 +1,44 @@
+<?php
+
+$title = 'Set User Roles';
+$this->headTitle($title);
+?>
+<div class="content shadow" >
+    <div class="page-header">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Current Role</th>
+            <th>New Role</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($users as $user): ?>
+    <tr>
+        <th><?php echo $user->getName(); ?></th>
+        <th><?php echo Account\Model\Role::convertToRole((int) $user->getRole()); ?></th>
+        <form action="/admin/updaterole" method="POST">
+        <div class="form-group">
+        <input type="hidden" name="id" value="<?php echo $user->getId(); ?>">
+        <th>
+        <select class="form-control" name="select">
+            <?php foreach ($roles as $role) {
+                echo '<option value="' . $role . '" '; 
+                if ($role == (int) $user->getRole()) echo 'selected';
+                echo '>' . Account\Model\Role::convertToRole($role) . '</option>';
+            }?>
+        </select>
+        </th>
+        <th><button type="submit" class="btn btn-default btn-sm">Confirm</button></th>
+        </form>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+    </table>
+    <a href="<?php echo $this->url('account', ['action' => 'profile']);?>" class="btn btn-danger">Back</a>
+</div>
+

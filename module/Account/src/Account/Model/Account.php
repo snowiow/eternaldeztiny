@@ -353,21 +353,4 @@ class Account
         return $this->uploadAvatarInputFilter;
     }
 
-    public static function convertToRole($int)
-    {
-        switch ($int) {
-        case Role::USER:
-            return 'User';
-        case Role::MEMBER:
-            return 'Member';
-        case Role::ELDER:
-            return 'Elder';
-        case Role::CO:
-            return 'Co-Leader';
-        case Role::LEADER:
-            return 'Leader';
-        default:
-            return 'Elder';
-        }
-    }
 }

@@ -30,6 +30,15 @@ class AccountTable
         return $this->tableGateway->select();
     }
 
+    public function getUsersAndAbove()
+    {
+        return $this->tableGateway->select(function (Select $select) {
+            $select->where('role > 0 AND role < 32')
+            ->order('role DESC');
+        });
+
+    }
+
     /**
      *
      * @param string|int $id
