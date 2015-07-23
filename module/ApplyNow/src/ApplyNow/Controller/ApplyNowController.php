@@ -132,9 +132,13 @@ class ApplyNowController extends AbstractActionController
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
+        $paginator = $this->getApplicationTable()->getProcessedApplications(true);
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+        $paginator->setItemCountPerPage(20);
+
         return new ViewModel([
-            'processed'   => $this->getApplicationTable()->getProcessedApplications(),
             'unprocessed' => $this->getApplicationTable()->getOpenApplications(),
+            'processed'   => $paginator,
         ]);
     }
 

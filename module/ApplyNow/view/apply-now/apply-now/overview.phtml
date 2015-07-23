@@ -62,4 +62,14 @@ $this->headTitle($title);
     <?php endforeach; ?>
     </tbody>
 </table>
+<?php echo $this->paginationControl($this->processed, 'sliding', 
+[
+    'partial/paginator.phtml', 
+    'application'
+],
+        [
+            'route' => 'overview', 
+        ]
+    );
+?>
 </div>

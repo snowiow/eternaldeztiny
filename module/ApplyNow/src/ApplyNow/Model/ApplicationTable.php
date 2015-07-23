@@ -3,8 +3,11 @@
 namespace ApplyNow\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class ApplicationTable
 {
@@ -60,8 +63,20 @@ class ApplicationTable
     /**
      * Returns all accepted and declined applications
      */
-    public function getProcessedApplications()
+    public function getProcessedApplications($paginated = false)
     {
+        if ($paginated) {
+            $select = new Select('application');
+            $select->join(['a' => 'account'],
+                'application.processed_by = a.id',
+                ['account_name' => 'name']
+            )->where('processed > 0');
+
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new Application());
+            $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
+            return new Paginator($paginatorAdapter);
+        }
         return $this->tableGateway->select(function (Select $select) {
             $select->join(['a' => 'account'], 'application.processed_by = a.id', ['account_name' => 'name'])
             ->where('processed > 0');

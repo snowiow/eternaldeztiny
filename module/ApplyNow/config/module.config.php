@@ -6,30 +6,41 @@ return [
             'AppMail\Service\AppMailServiceInterface' => 'AppMail\Factory\AppMailServiceFactory',
         ],
     ],
-    'controllers' => [
+    'controllers'     => [
         'factories' => [
             'ApplyNow\Controller\ApplyNow' => 'ApplyNow\Factory\ApplyNowControllerFactory',
         ],
     ],
-    'router' => [
+    'router'          => [
         'routes' => [
             'applynow' => [
-                'type' => 'segment',
+                'type'    => 'segment',
                 'options' => [
-                    'route' => '/applynow[/:action][/:id]',
+                    'route'       => '/applynow[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
+                        'id'     => '[0-9]+',
                     ],
+                    'defaults'    => [
+                        'controller' => 'ApplyNow\Controller\ApplyNow',
+                        'action'     => 'index',
+                        'id'         => 1,
+                    ],
+                ],
+            ],
+            'overview' => [
+                'type'    => 'segment',
+                'options' => [
+                    'route'    => '/applynow/overview',
                     'defaults' => [
                         'controller' => 'ApplyNow\Controller\ApplyNow',
-                        'action' => 'index',
+                        'action'     => 'overview',
                     ],
                 ],
             ],
         ],
     ],
-    'view_manager' => [
+    'view_manager'    => [
         'template_path_stack' => [
             'applynow' => __DIR__ . '/../view',
         ],
