@@ -50,6 +50,7 @@ class AppMailService implements AppMailServiceInterface
      */
     public function sendMail(string $to, string $subject, string $content, array $files = [])
     {
+        $content .= "\n\n This is an automated mail. Please don't respond.";
         $text              = new Mime\Part($content);
         $text->type        = 'text/plain';
         $text->charset     = 'utf-8';
@@ -71,10 +72,10 @@ class AppMailService implements AppMailServiceInterface
         $appMailData = $this->getAppMailData();
         $message     = new Message();
         $message->addTo($to)
-                ->addFrom($appMailData->getLogin())
-                ->setSubject($subject)
-                ->setBody($mime)
-                ->setEncoding('utf-8');
+            ->addFrom($appMailData->getAdress())
+            ->setSubject($subject)
+            ->setBody($mime)
+            ->setEncoding('utf-8');
 
         $transport = new SmtpTransport();
         $options   = new SmtpOptions([
@@ -84,7 +85,6 @@ class AppMailService implements AppMailServiceInterface
             'connection_config' => [
                 'username' => $appMailData->getLogin(),
                 'password' => $appMailData->getPassword(),
-                'ssl'      => 'tls',
             ],
         ]);
         $transport->setOptions($options);
