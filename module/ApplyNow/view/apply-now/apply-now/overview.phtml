@@ -4,72 +4,72 @@ $this->headTitle($title);
 ?>
 <div class="content shadow">
     <div class="page-header">
-    <h1><?php echo $this->escapeHtml($title); ?></h1>
+        <h1><?php echo $this->escapeHtml($title); ?></h1>
     </div>
-<div class="alert alert-warning" role="alert">Open Applications</div>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Tag</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($unprocessed as $item) : ?>
-        <tr>
-            <th> <?php echo $item->getName(); ?></th>
-            <th> <?php echo $item->getTag(); ?></th>
-            <th> 
-            <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
-            </th>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-<div class="alert alert-success" role="alert">Processed Applications</div>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Tag</th>
-            <th>Processed</th>
-            <th>Processed by</th>
-            <th>Details</th>
-            <th>Send mail</th>
+    <div class="alert alert-warning" role="alert">Open Applications</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Tag</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($unprocessed as $item) : ?>
+            <tr>
+                <th> <?php echo $item->getName(); ?></th>
+                <th> <?php echo $item->getTag(); ?></th>
+                <th> 
+                    <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
+                </th>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div class="alert alert-success" role="alert">Processed Applications</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Tag</th>
+                <th>Processed</th>
+                <th>Processed by</th>
+                <th>Details</th>
+                <th>Send mail</th>
 
-        </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($processed as $item) : ?>
-        <tr>
-            <th> <?php echo $item->getName(); ?></th>
-            <th> <?php echo $item->getTag(); ?></th>
-            <th> <?php echo \ApplyNow\Model\statusToString((int) $item->getProcessed()); ?></th>
-            <th> <?php echo $item->getAccountName(); ?></th>
-            <th> 
-            <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
-            </th>
-            <?php if($item->getProcessed() == \ApplyNow\Model\Status::ACCEPTED 
-                    || $item->getProcessed() == \ApplyNow\Model\Status::DECLINED) {
-                    echo '<th><a href="' . $this->url('applynow', ['action' => 'sendConfirmationMail', 
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($processed as $item) : ?>
+            <tr>
+                <th> <?php echo $item->getName(); ?></th>
+                <th> <?php echo $item->getTag(); ?></th>
+                <th> <?php echo \ApplyNow\Model\statusToString((int) $item->getProcessed()); ?></th>
+                <th> <?php echo $item->getAccountName(); ?></th>
+                <th> 
+                    <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
+                </th>
+                <?php if($item->getProcessed() == \ApplyNow\Model\Status::ACCEPTED 
+                || $item->getProcessed() == \ApplyNow\Model\Status::DECLINED) {
+                echo '<th><a href="' . $this->url('applynow', ['action' => 'sendConfirmationMail', 
                         'id' => $item->getId()]) . '" class="btn btn-default btn-sm" >Send Mail</a>';
-                } else {
+                    } else {
                     echo '<th><button type="button" class="btn btn-default btn-sm" disabled="disabled">Send Mail</a>';
-                } 
-            ?>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-<?php echo $this->paginationControl($this->processed, 'sliding', 
-[
+                        } 
+                        ?>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php echo $this->paginationControl($this->processed, 'sliding', 
+    [
     'partial/paginator.phtml', 
     'application'
-],
-        [
-            'route' => 'overview', 
-        ]
+    ],
+    [
+    'route' => 'overview', 
+    ]
     );
-?>
+    ?>
 </div>
