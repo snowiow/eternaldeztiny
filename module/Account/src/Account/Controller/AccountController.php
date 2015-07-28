@@ -66,12 +66,16 @@ class AccountController extends AbstractActionController
                 'open_applications' => $open_applications->count(),
             ]);
         } else {
-            return new ViewModel([
-                'self'              => false,
-                'account'           => $this->getAccountTable()->getAccountBy(['name' => $name]),
-                'open_applications' => $open_applications->count(),
-            ]);
+            $account = $this->getAccountTable()->getAccountBy(['name' => $name]);
 
+            if ($account) {
+                return new ViewModel([
+                    'self'              => false,
+                    'account'           => $account,
+                    'open_applications' => $open_applications->count(),
+                ]);
+            }
+            return $this->redirect()->toRoute('account', ['action' => 'nouser']);
         }
 
     }
@@ -211,6 +215,10 @@ class AccountController extends AbstractActionController
     }
 
     public function norightAction()
+    {
+    }
+
+    public function nouserAction()
     {
     }
 
