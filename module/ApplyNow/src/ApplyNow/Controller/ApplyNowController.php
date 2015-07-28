@@ -78,6 +78,9 @@ class ApplyNowController extends AbstractActionController
                 }
                 $path   = '/applications/' . $application->getTag() . '/';
                 $prefix = getcwd() . '/public';
+                if (!file_exists($prefix . '/applications/')) {
+                    mkdir($prefix . '/applications/');
+                }
                 if (!file_exists($prefix . $path)) {
                     mkdir($prefix . $path);
                 }
