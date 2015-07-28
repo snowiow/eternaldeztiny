@@ -69,7 +69,10 @@ class NewsController extends AbstractActionController
                 } else {
                     return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
                 }
+            } else {
+                return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
             }
+
         }
         return ['form' => $form, 'accountId' => $session->id];
     }
@@ -126,6 +129,13 @@ class NewsController extends AbstractActionController
                         'error'     => 'tooLong',
                     ];
                 }
+            } else {
+                return [
+                    'id'        => $id,
+                    'form'      => $form,
+                    'accountId' => $session->id,
+                    'error'     => 'tooLong',
+                ];
             }
         }
 

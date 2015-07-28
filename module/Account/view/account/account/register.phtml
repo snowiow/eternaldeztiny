@@ -24,7 +24,7 @@ $this->headTitle($title);
             if ($errors['name'] === 'name_taken') {
                 echo '<p>Username already taken. Please choose another</p>';
             } else {
-                echo '<p>Username must be between 3 and 64 characters long </p>';
+                echo '<p>Username must be between 3 and 64 characters long and only contains characters, numbers, _ and -</p>';
             }
         } else {
             echo '<div class="form-group has-success has-feedback">';

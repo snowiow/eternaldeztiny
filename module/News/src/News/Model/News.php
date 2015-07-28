@@ -46,67 +46,77 @@ class News implements InputFilterAwareInterface
     /**
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getAccountId() {
+    public function getAccountId()
+    {
         return $this->accountId;
     }
 
     /**
      * @param string $author
      */
-    public function setAccountId($id) {
+    public function setAccountId($id)
+    {
         $this->accountId = $id;
     }
 
     /**
      * @return string
      */
-    public function getAuthor() {
+    public function getAuthor()
+    {
         return $this->author;
     }
 
-    public function setAuthor($author) {
+    public function setAuthor($author)
+    {
         $this->author = $author;
     }
 
     /**
      * @return string
      */
-    public function getTitle()  {
+    public function getTitle()
+    {
         return $this->title;
     }
 
     /**
      * @param string $title
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
     }
 
     /**
      * @return string
      */
-    public function getContent() {
+    public function getContent()
+    {
         return $this->content;
     }
 
     /**
      * @param string $content
      */
-    public function setContent($content) {
+    public function setContent($content)
+    {
         $this->content = $content;
     }
 
     /**
      * @return string
      */
-    public function getDatePosted() {
+    public function getDatePosted()
+    {
         return $this->date_posted;
     }
 
@@ -116,15 +126,15 @@ class News implements InputFilterAwareInterface
      */
     public function exchangeArray($data)
     {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
+        $this->id        = (!empty($data['id'])) ? $data['id'] : null;
         $this->accountId = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->author = (!empty($data['name'])) ? $data['name'] : null;
-        $this->title = (!empty($data['title'])) ? $data['title'] : null;
-        $this->content = (!empty($data['content'])) ? $data['content'] : null;
+        $this->author    = (!empty($data['name'])) ? $data['name'] : null;
+        $this->title     = (!empty($data['title'])) ? $data['title'] : null;
+        $this->content   = (!empty($data['content'])) ? $data['content'] : null;
 
-        $date = new \DateTime();
+        $date              = new \DateTime();
         $this->date_posted = (!empty($data['date_posted'])) ?
-                                                $data['date_posted'] : $date->format('Y-m-d H:i:s');
+        $data['date_posted'] : $date->format('Y-m-d H:i:s');
 
     }
 
@@ -158,52 +168,54 @@ class News implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
-                'name' => 'id',
+                'name'     => 'id',
                 'required' => true,
-                'filters' => [
+                'filters'  => [
                     ['name' => 'Int'],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'account_id',
+                'name'     => 'account_id',
                 'required' => true,
-                'filters' => [
+                'filters'  => [
                     ['name' => 'Int'],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'title',
-                'required' => true,
-                'filters' => [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'min'      => 1,
+                            'max'      => 100,
                         ],
                     ],
                 ],
             ]);
 
             $inputFilter->add([
-                'name' => 'content',
-                'required' => true,
-                'filters' => [
+                'name'       => 'content',
+                'required'   => true,
+                'filters'    => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
                     [
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
+                            'min'      => 10,
+                            'max'      => 10000,
                         ],
                     ],
                 ],

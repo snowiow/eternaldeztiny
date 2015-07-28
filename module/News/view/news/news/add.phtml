@@ -31,7 +31,8 @@ $this->headTitle($title);
                 ->setAttribute('class', 'form-control')
                 ->setAttribute('rows', '10'));
         if ($this->error && $this->error === 'tooLong') {
-            echo '<p> A word in the text is too long.</p>';
+            echo '<p>Words for text must be smaller than 100 characters and the text only contains between 10
+            and 100000 characters.</p>';
         }
         ?>
     </div>
