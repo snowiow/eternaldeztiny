@@ -12,16 +12,16 @@ $this->headTitle($title);
             <tr>
                 <th>Name</th>
                 <th>Tag</th>
-                <th>Details</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($unprocessed as $item) : ?>
             <tr>
-                <th> <?php echo $item->getName(); ?></th>
+                <th>
+                    <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">' .$item->getName() . '<a>'; ?>
+                </th>
                 <th> <?php echo $item->getTag(); ?></th>
                 <th> 
-                    <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
                 </th>
             </tr>
             <?php endforeach; ?>
@@ -31,11 +31,8 @@ $this->headTitle($title);
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Tag</th>
+                <th>Name(Tag)</th>
                 <th>Processed</th>
-                <th>Processed by</th>
-                <th>Details</th>
                 <th>Send mail</th>
 
             </tr>
@@ -43,13 +40,11 @@ $this->headTitle($title);
         <tbody>
             <?php foreach ($processed as $item) : ?>
             <tr>
-                <th> <?php echo $item->getName(); ?></th>
-                <th> <?php echo $item->getTag(); ?></th>
-                <th> <?php echo \ApplyNow\Model\statusToString((int) $item->getProcessed()); ?></th>
-                <th> <?php echo $item->getAccountName(); ?></th>
-                <th> 
-                    <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">Details </a>'; ?>
+                <th>
+                    <?php echo '<a href="' . $this->url('applynow', ['action' => 'detail', 'id' => $item->getId()]) . '">' .$item->getName() . 
+                         "\n" . '(' . $item->getTag() . ')' . '<a>'; ?>
                 </th>
+                <th> <?php echo \ApplyNow\Model\statusToString((int) $item->getProcessed()) . ' by ' . $item->getAccountName();?></th>
                 <?php if($item->getProcessed() == \ApplyNow\Model\Status::ACCEPTED 
                 || $item->getProcessed() == \ApplyNow\Model\Status::DECLINED) {
                 echo '<th><a href="' . $this->url('applynow', ['action' => 'sendConfirmationMail', 
