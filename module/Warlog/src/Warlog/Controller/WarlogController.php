@@ -25,17 +25,20 @@ class WarlogController extends AbstractActionController
         if (!$warlog) {
             return new ViewModel([
                 'warlog'          => new Warlog(),
-                'win_percentage'  => 0,
-                'loss_percentage' => 0,
-                'draw_percentage' => 0,
+                'win_percentage'  => 0.1,
+                'loss_percentage' => 0.1,
+                'draw_percentage' => 0.1,
             ]);
         }
-        $total = $warlog->getWins() + $warlog->getLosses() + $warlog->getDraws();
+        $total           = $warlog->getWins() + $warlog->getLosses() + $warlog->getDraws();
+        $win_percentage  = $warlog->getWins() > 0 ? $warlog->getWins() / $total * 100 : 0.1;
+        $loss_percentage = $warlog->getLosses() > 0 ? $warlog->getLosses() / $total * 100 : 0.1;
+        $draw_percentage = 100 - $win_percentage - $loss_percentage;
         return new ViewModel([
             'warlog'          => $warlog,
-            'win_percentage'  => $warlog->getWins() / $total * 100,
-            'loss_percentage' => $warlog->getLosses() / $total * 100,
-            'draw_percentage' => $warlog->getDraws() / $total * 100,
+            'win_percentage'  => $win_percentage,
+            'loss_percentage' => $loss_percentage,
+            'draw_percentage' => $draw_percentage,
         ]);
     }
 
