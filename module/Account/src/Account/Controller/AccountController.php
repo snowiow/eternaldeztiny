@@ -227,6 +227,10 @@ class AccountController extends AbstractActionController
             $account->setRole(Role::USER);
             $account->setUserHash('');
             $this->accountTable->saveAccount($account);
+
+            if (!file_exists(getcwd() . '/public/users/')) {
+                mkdir(getcwd() . '/public/users/');
+            }
             mkdir(getcwd() . '/public/users/' . $account->getName());
         }
     }

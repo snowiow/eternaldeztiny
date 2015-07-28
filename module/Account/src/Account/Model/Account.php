@@ -238,6 +238,10 @@ class Account
                             'min'      => 3,
                             'max'      => 64,
                         ],
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        ],
                     ],
                 ],
             ]);
@@ -306,6 +310,10 @@ class Account
                         'options' => [
                             'encoding' => 'UTF-8',
                         ],
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        ],
                     ],
                 ],
             ]);
@@ -352,5 +360,4 @@ class Account
         }
         return $this->uploadAvatarInputFilter;
     }
-
 }
