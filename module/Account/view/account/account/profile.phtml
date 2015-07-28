@@ -23,7 +23,7 @@ $this->headTitle($title);
     </div>
     <?php if ($self) { ?>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h4>Account Settings</h4>
             <ul class="list-group">
                 <li class="list-group-item"><a href="/account/uploadavatar">Change Avatar</a></li>
@@ -31,13 +31,13 @@ $this->headTitle($title);
             </ul>
         </div>
         <?php if ($session->role > 3) { ?>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h4>News</h4>
             <ul class="list-group">
                 <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
             </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h4>Applications</h4>
             <ul class="list-group">
                 <li class="list-group-item">
@@ -54,13 +54,13 @@ $this->headTitle($title);
     </div>
     <div class="row">
         <?php if ($session->role > 4) { ?>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h4>User Settings</h4>
             <ul class="list-group">
                 <li class="list-group-item"><a href="/admin/setroles">Set User Roles</a></li>
             </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h4>War Log</h4>
             <ul class="list-group">
                 <li class="list-group-item"><a href="/warlog/upload">Update current Warlog</a></li>
