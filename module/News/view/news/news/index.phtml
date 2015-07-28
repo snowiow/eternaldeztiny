@@ -13,7 +13,7 @@ $title = 'News';
                 $item->getAuthor() . '</a>'; ?>
             </div>
             <div class="panel-body">
-                <p><?php echo $this->escapeHtml($item->getContent()); ?></p>
+                <pre><?php echo $this->escapeHtml($item->getContent()); ?></pre>
                 <?php
                 if ($item->getAuthor() == $accountName) {
                     echo '<a href="' . $this->url('news', ['action' => 'edit', 'id' => $item->getId()]) . '">Edit</a>';
