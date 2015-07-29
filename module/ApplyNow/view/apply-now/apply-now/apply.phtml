@@ -38,20 +38,29 @@ $this->headTitle($title);
             if (array_key_exists('tag', $errors)) {
             echo '<div class="form-group has-error has-feedback">';
                 echo $this->formLabel($form->get('tag')->setLabelAttributes(['class' => 'control-label']));
+                echo '<div class="input-group">';
+                echo '<span class="input-group-addon">#</span>';
                 echo $this->formText($form->get('tag')->setAttribute('class', 'form-control'));
                 echo '<span class="glyphicon glyphicon-remove form-control-feedback" 
                     aria-hidden="true"></span>';
-                echo '<p>Tag must be between 3 and 64 characters long.</p>';
+                echo '</div>';
+                echo '<p>Tag must be between 3 and 64 characters long and only contain characters and numbers.</p>';
                 } else {
                 echo '<div class="form-group has-success has-feedback">';
                     echo $this->formLabel($form->get('tag')->setLabelAttributes(['class' => 'control-label']));
+                    echo '<div class="input-group">';
+                    echo '<span class="input-group-addon">#</span>';
                     echo $this->formText($form->get('tag')->setAttribute('class', 'form-control'));
                     echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+                    echo '</div>';
                     }
                     } else {
                     echo '<div class="form-group">';
                         echo $this->formLabel($form->get('tag')->setLabelAttributes(['class' => 'control-label']));
+                        echo '<div class="input-group">';
+                        echo '<span class="input-group-addon">#</span>';
                         echo $this->formText($form->get('tag')->setAttribute('class', 'form-control'));
+                        echo '</div>';
                         }
                         echo '</div>';
                     if (isset($errors)) {
