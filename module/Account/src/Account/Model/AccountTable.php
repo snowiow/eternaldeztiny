@@ -34,7 +34,7 @@ class AccountTable
     {
         return $this->tableGateway->select(function (Select $select) {
             $select->where('role > 0 AND role < 32')
-            ->order('name DESC');
+            ->order('name ASC');
         });
 
     }
@@ -78,7 +78,7 @@ class AccountTable
     {
         return $this->tableGateway->select(function (Select $select) {
             $select->where('role > 1')
-            ->order('name DESC');
+            ->order('name ASC');
         });
     }
 
