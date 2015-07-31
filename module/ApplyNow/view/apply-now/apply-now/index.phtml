@@ -4,25 +4,65 @@ $this->headTitle($title);
 ?>
 <div class="content shadow">
     <div class="page-header">
-    <h1><?php echo $this->escapeHtml($title); ?></h1>
-    <h2><em>Please read through our rules first. Before you apply.</em></h2>
+        <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+    <h2>Please read each of our rules and expectations carefully before submitting your application.
+    </h2>
+
+    <div class="page-header">
+        <h3>General Requirements</h3>
     </div>
     <div class="row">
         <div class="col-md-4">
             <div class="thumbnail">
                 <img src="/img/applynow/mature.png">
                 <div class="caption">
-                    <h3>Matures only</h3>
-                    <p>We have a general 18+ rule. If your application convinces us, we maybe do exceptions.</p>
+                    <h3>Age</h3>
+                    <p>Eternal Deztiny is a mature, adult-only clan, and we enforce a strict 18+ age requirement.</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="thumbnail">
+                <img src="/img/applynow/townhall.png">
+                <div class="caption">
+                    <h3>Town Halls</h3>
+                    <p>We do not accept rushed town halls, and we expect every member to max all walls, defenses, barracks, and lab items before proceeding to the next level. We are currently accepting TH6 and higher.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="/img/applynow/trophies.png">
+                <div class="caption">
+                    <h3>Trophies</h3>
+                    <p>We have no trophy requirements. Most of our members prioritize resource farming over trophy farming, which helps the entire team to grow and succeed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="/img/applynow/request.png">
+                <div class="caption">
+                    <h3>Donations</h3>
+                    <p>We have no donation requirements. Additionally, members may request as often as they like. We encourage you to donate as long as your troops are a high enough level – generally, this means level 5+ unless the requester indicates otherwise.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-header">
+        <h3>War requirements</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thumbnail">
                 <img src="/img/applynow/noloot.png">
                 <div class="caption">
-                    <h3>Never attack for loot</h3>
-                    <p>Even if we already won, we want our members to do serious practice attacks and don't attack for loot<p>
+                    <h3>No Looting</h3>
+                    <p>War attacks are never used for looting. Even if we have already won, war attacks should be used for practice with the intention of earning 3 stars.</p>
                 </div>
             </div>
         </div>
@@ -30,41 +70,32 @@ $this->headTitle($title);
             <div class="thumbnail">
                 <img src="/img/applynow/useboth.png">
                 <div class="caption">
-                    <h3>Always use both attack</h3>
-                    <p>Even if we already won, we want our members to show activity and therefor use both attacks in every war. No exceuses.<p>
+                    <h3>Use Both Attacks</h3>
+                    <p>Every member is required to use both war attacks in every war. You <b>must</b> let leadership know if you think you will miss an attack – and you better come with a good excuse.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="/img/applynow/cleanup.png">
+                <div class="caption">
+                    <h3>War Targets Are Assigned</h3>
+                    <p>Leadership will assign you your first target in every war. The second attack should be reserved for cleanup or used for practice if cleanup is not needed.</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <img src="/img/applynow/cleanup.png">
-                    <div class="caption">
-                        <h3>Second attack is for cleanup</h3>
-                        <p>Second attack is reserved for cleanup. Talk to an Elder or higher, for an appropiate cleanup target</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <img src="/img/applynow/three.png">
-                    <div class="caption">
-                        <h3>Attack +/- 3 your target</h3>
-                        <p>If there is no cleanuo, the second attack is for practice. Your practice target should be in your range. Normally +/-3 your mirror on the war map.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <img src="/img/applynow/request.png">
-                    <div class="caption">
-                        <h3>No donation requirement</h3>
-                        <p>We are pretty loose about donations. Request anything you need and donate what you can.</p>
-                    </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="/img/applynow/three.png">
+                <div class="caption">
+                    <h3>Practice Attacks</h3>
+                    <p>If you are using your second war attack for practice, you should target an opponent who is +/-3 positions from your mirror and who you think you can defeat for 3 stars.</p>
                 </div>
             </div>
         </div>
-        <a href="/applynow/apply" type="button" class="btn btn-success">Read and understood.</a>
     </div>
+    <a href="/applynow/apply" type="button" class="btn btn-success">I understand and accept the rules</a>
+</div>
 </div>

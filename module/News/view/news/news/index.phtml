@@ -1,5 +1,5 @@
 <?php
-
+$parsedown = new News\Service\Parsedown();
 $title = 'News';
 ?>
     <?php $this->headTitle($title); ?>
@@ -13,7 +13,7 @@ $title = 'News';
                 $item->getAuthor() . '</a>'; ?>
             </div>
             <div class="panel-body">
-                <pre><?php echo $this->escapeHtml($item->getContent()); ?></pre>
+                <p><?php echo $parsedown->text(nl2br($item->getContent())); ?></p>
                 <?php
                 if ($item->getAuthor() == $accountName) {
                     echo '<a href="' . $this->url('news', ['action' => 'edit', 'id' => $item->getId()]) . '">Edit</a>';

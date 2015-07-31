@@ -37,12 +37,8 @@ footer {
     width: 100%;
     background-color: #FCFCFC;
 }
-
-pre {
-     font-family: sans-serif;
-     font-size: 11pt;
-     background-color: #fff;
-     border-style:none;
+p {
+    word-wrap:normal;
 }
 
 .btn-success:active, .btn-success.active {
