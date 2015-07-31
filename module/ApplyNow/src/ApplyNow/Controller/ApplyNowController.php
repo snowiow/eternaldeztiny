@@ -130,8 +130,7 @@ class ApplyNowController extends AbstractActionController
     public function overviewAction()
     {
         $session = new \Zend\Session\Container('user');
-        //TODO: Find a way to include Role
-        if ($session->role < Role::ELDER) {
+        if ($session->role < Role::MEMBER) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -140,6 +139,7 @@ class ApplyNowController extends AbstractActionController
         $paginator->setItemCountPerPage(20);
 
         return new ViewModel([
+            'role'        => $session->role,
             'unprocessed' => $this->getApplicationTable()->getOpenApplications(),
             'processed'   => $paginator,
         ]);
@@ -151,7 +151,7 @@ class ApplyNowController extends AbstractActionController
 
         $session = new \Zend\Session\Container('user');
 
-        if ($session->role < Role::ELDER) {
+        if ($session->role < Role::MEMBER) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
         $form = new ApplicationForm();
@@ -171,7 +171,10 @@ class ApplyNowController extends AbstractActionController
             $this->getApplicationTable()->saveApplication($application);
             return $this->redirect()->toRoute('applynow', ['action' => 'overview']);
         }
-        return ['form' => $form];
+        return new ViewModel([
+            'form' => $form,
+            'role' => $session->role,
+        ]);
     }
 
     public function sendConfirmationMailAction()

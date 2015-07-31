@@ -30,13 +30,7 @@ $this->headTitle($title);
                 <!--<li class="list-group-item"><a href="/account/edit">Edit Profile</a></li>-->
             </ul>
         </div>
-        <?php if ($session->role > 3) { ?>
-        <div class="col-md-3">
-            <h4>News</h4>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
-            </ul>
-        </div>
+        <?php if ($session->role > 1) { ?>
         <div class="col-md-3">
             <h4>Applications</h4>
             <ul class="list-group">
@@ -48,6 +42,14 @@ $this->headTitle($title);
                     echo '<a href="/applynow/overview">Application Overview </a>';
                     }?>
                 </li>
+            </ul>
+        </div>
+        <?php } ?>
+        <?php if ($session->role > 3) { ?>
+        <div class="col-md-3">
+            <h4>News</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
             </ul>
         </div>
         <?php } ?>

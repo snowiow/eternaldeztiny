@@ -45,8 +45,9 @@ $this->headTitle($title);
                          "\n" . '(#' . $item->getTag() . ')' . '<a>'; ?>
                 </th>
                 <th> <?php echo \ApplyNow\Model\statusToString((int) $item->getProcessed()) . ' by ' . $item->getAccountName();?></th>
-                <?php if($item->getProcessed() == \ApplyNow\Model\Status::ACCEPTED 
-                || $item->getProcessed() == \ApplyNow\Model\Status::DECLINED) {
+                <?php if(($item->getProcessed() == \ApplyNow\Model\Status::ACCEPTED 
+                || $item->getProcessed() == \ApplyNow\Model\Status::DECLINED)
+                && $role > \Account\Model\Role::MEMBER) {
                 echo '<th><a href="' . $this->url('applynow', ['action' => 'sendConfirmationMail', 
                         'id' => $item->getId()]) . '" class="btn btn-default btn-sm" >Send Mail</a>';
                     } else {

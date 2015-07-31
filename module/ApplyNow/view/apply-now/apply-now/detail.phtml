@@ -12,10 +12,19 @@ echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 echo '<div class="form-group">';
 echo $this->formLabel($form->get('processed')->setLabelAttributes(['class' => 'control-label']));
-echo $this->formSelect($form->get('processed')->setAttribute('class', 'form-control'));
+$form_elem = $form->get('processed');
+$form_elem->setAttribute('class', 'form-control');
+
+$form_submit = $form->get('submit');
+$form_submit->setAttribute('class', 'btn btn-success');
+if ($role < Account\Model\Role::ELDER) {
+    $form_elem->setAttribute('disabled', 'disabled');
+    $form_submit->setAttribute('disabled', 'disabled');
+}
+echo $this->formSelect($form_elem);
 echo '</div>';
 echo '<div class="form-group">';
-echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success'));
+echo $this->formSubmit($form_submit);
 echo '</div>';
 echo '<div class="form-group">';
 echo $this->formLabel($form->get('name')->setLabelAttributes(['class' => 'control-label']));
