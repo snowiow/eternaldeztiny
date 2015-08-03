@@ -15,6 +15,7 @@ return array(
         'News',
         'Impressum',
         'Warlog',
+        'Warclaim',
     ),
     'module_listener_options' => array(
         'module_paths' => array(

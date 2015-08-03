@@ -1,0 +1,4 @@
+ CREATE TABLE news (
+   id INT NOT NULL auto_increment,
+   assignments TEXT NOT NULL,
+ );

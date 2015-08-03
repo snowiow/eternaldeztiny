@@ -1,0 +1,72 @@
+<?php
+$title = 'Create new War';
+$this->headTitle($title);
+?>
+<div class="content shadow">
+    <div class="page-header">
+        <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+    <br />
+    <form action="create" method="post" class="form-inline">
+        <div class="form-group">
+            <label class="control-label">War Size:</label>
+            <select name="select" class="form-control">
+                <option value="10" <?php if ($size == 10) echo 'selected'; ?>>10 vs 10</option>
+                <option value="15" <?php if ($size == 15) echo 'selected'; ?>>15 vs 15</option>
+                <option value="20" <?php if ($size == 20) echo 'selected'; ?>>20 vs 20</option>
+                <option value="25" <?php if ($size == 25) echo 'selected'; ?>>25 vs 25</option>
+                <option value="30" <?php if ($size == 30) echo 'selected'; ?>>30 vs 30</option>
+                <option value="35" <?php if ($size == 35) echo 'selected'; ?>>35 vs 35</option>
+                <option value="40" <?php if ($size == 40) echo 'selected'; ?>>40 vs 40</option>
+                <option value="45" <?php if ($size == 45) echo 'selected'; ?>>45 vs 45</option>
+                <option value="50" <?php if ($size == 50) echo 'selected'; ?>>50 vs 50</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+    </form>
+    <br />
+    <?php
+    $form->setAttribute('action', $this->url('warclaim', ['action' => 'create']));
+    $form->setAttribute('class', 'form-horizontal');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    for ($i = 0; $i < $size; $i++) {
+        if (isset($errors)) { 
+            if (array_key_exists('name', $errors)) {
+                echo '<div class="form-group has-error has-feedback">';
+                echo $this->formLabel($form->get($i)->setLabelAttributes(
+                    ['class' => 'control-label col-sm-1']
+                ));
+                echo '<div class="col-sm-11">';
+                echo $this->formText($form->get($i)->setAttribute('class', 'form-control'));
+                echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+                echo '</div>';
+                echo '<p> No valid name. Only characters and numbers allowed</p>';
+            } else {
+                echo '<div class="form-group has-success has-feedback">';
+                echo $this->formLabel($form->get($i)->setLabelAttributes(
+                    ['class' => 'control-label col-sm-1']
+                ));
+                echo '<div class="col-sm-11">';
+                echo $this->formText($form->get($i)->setAttribute('class', 'form-control'));
+                echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+                echo '</div>';
+            }
+        } else {
+            echo '<div class="form-group">';
+            echo $this->formLabel($form->get($i)->setLabelAttributes(
+                ['class' => 'control-label col-sm-1']
+            ));
+            echo '<div class="col-sm-11">';
+            echo $this->formText($form->get($i)->setAttribute('class', 'form-control'));
+            echo '</div>';
+        }
+        echo '</div>';
+    }
+    ?>
+    <br />
+    <div class="form-group">
+    <?php echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success')); ?>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+    </div>

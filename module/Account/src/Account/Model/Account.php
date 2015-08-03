@@ -52,17 +52,17 @@ class Account
     /**
      * @var InputFilter
      */
-    protected $registerInputFilter;
+    private $registerInputFilter;
 
     /**
      * @var InputFilter
      */
-    protected $loginInputFilter;
+    private $loginInputFilter;
 
     /**
      * @var InputFilter
      */
-    protected $uploadAvatarInputFilter;
+    private $uploadAvatarInputFilter;
 
     /**
      * @param int
@@ -309,6 +309,8 @@ class Account
                         'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
+                            'min'      => 3,
+                            'max'      => 64,
                         ],
                         'name'    => 'Regex',
                         'options' => [
