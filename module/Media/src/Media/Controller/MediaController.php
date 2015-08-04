@@ -1,21 +1,21 @@
 <?php
 
-namespace News\Controller;
+namespace Media\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Paginator;
 
-use News\Model\News;
-use News\Model\NewsTable;
-use News\Form\NewsForm;
+use Media\Model\Media;
+use Media\Model\MediaTable;
+use Media\Form\MediaForm;
 
-class NewsController extends AbstractActionController
+class MediaController extends AbstractActionController
 {
     /**
      * @var NewsTable
      */
-    protected $newsTable;
+    protected $mediaTable;
 
     public function indexAction()
     {
@@ -25,7 +25,7 @@ class NewsController extends AbstractActionController
             $name = $session->name;
         }
 
-        $paginator = $this->getNewsTable()->fetchAll(true);
+        $paginator = $this->getMediaTable()->fetchAll(true);
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         $paginator->setItemCountPerPage(5);
         return new ViewModel([
@@ -43,7 +43,7 @@ class NewsController extends AbstractActionController
     public function addAction()
     {
         $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->role) || $session->role < \Account\Model\Role::ELDER) {
+        if (!isset($session->role) || $session->role < \Account\Model\Role::MEMBER) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -51,28 +51,23 @@ class NewsController extends AbstractActionController
             );
         }
 
-        $form = new NewsForm();
-        $form->get('submit')->setValue('Add');
+        $form = new MediaForm();
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $news = new News();
-            $form->setInputFilter($news->getInputFilter());
+            $media = new Media();
+            $form->setInputFilter($media->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $news->exchangeArray($form->getData());
-                if ($this->checkWordLengths($news->getContent())) {
-                    $this->getNewsTable()->saveNews($news);
+                $media->exchangeArray($form->getData());
+                $this->getMediaTable()->saveMedia($media);
 
-                    return $this->redirect()->toRoute('news');
-                } else {
-                    return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
-                }
+                return $this->redirect()->toRoute('media');
             } else {
-                return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
+                $errors = $form->getMessages();
+                return ['form' => $form, 'accountId' => $session->id, 'errors' => $errors];
             }
-
         }
         return ['form' => $form, 'accountId' => $session->id];
     }
@@ -87,15 +82,15 @@ class NewsController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('news', [
+            return $this->redirect()->toRoute('media', [
                 'action' => 'add',
             ]);
         }
 
         try {
-            $news = $this->getNewsTable()->getNews($id);
+            $media = $this->getMediaTable()->getMedia($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('news', [
+            return $this->redirect()->toRoute('media', [
                 'action' => 'index',
             ]);
         }
@@ -108,37 +103,28 @@ class NewsController extends AbstractActionController
             );
         }
 
-        $form = new NewsForm();
-        $form->bind($news);
+        $form = new MediaForm();
+        $form->bind($media);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($news->getInputFilter());
+            $form->setInputFilter($media->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                if ($this->checkWordLengths($news->getContent())) {
-                    $this->getNewsTable()->saveNews($news);
+                $this->getMediaTable()->saveMedia($media);
 
-                    return $this->redirect()->toRoute('news');
-                } else {
-                    return [
-                        'id'        => $id,
-                        'form'      => $form,
-                        'accountId' => $session->id,
-                        'error'     => 'tooLong',
-                    ];
-                }
+                return $this->redirect()->toRoute('news');
             } else {
+                $errors = $form->getMessages();
                 return [
                     'id'        => $id,
                     'form'      => $form,
                     'accountId' => $session->id,
-                    'error'     => 'tooLong',
+                    'errors'    => $errors,
                 ];
             }
         }
-
         return [
             'id'        => $id,
             'form'      => $form,
@@ -156,13 +142,13 @@ class NewsController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('news');
+            return $this->redirect()->toRoute('media');
         }
 
         try {
-            $news = $this->getNewsTable()->getNews($id);
+            $media = $this->getMediaTable()->getMedia($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('news', [
+            return $this->redirect()->toRoute('media', [
                 'action' => 'index',
             ]);
         }
@@ -172,10 +158,10 @@ class NewsController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getNewsTable()->deleteNews($id);
+                $this->getMediaTable()->deleteMedia($id);
             }
 
-            return $this->redirect()->toRoute('news');
+            return $this->redirect()->toRoute('media');
         }
 
         $session = $session = new \Zend\Session\Container('user');
@@ -188,40 +174,35 @@ class NewsController extends AbstractActionController
         }
 
         return [
-            'id'   => $id,
-            'news' => $this->getNewsTable()->getNews($id),
+            'id'    => $id,
+            'media' => $this->getMediaTable()->getMedia($id),
         ];
     }
 
     /**
      * @return array|NewsTable|object
      */
-    public function getNewsTable()
+    public function getMediaTable()
     {
-        if (!$this->newsTable) {
-            $sm              = $this->getServiceLocator();
-            $this->newsTable = $sm->get('News\Model\NewsTable');
+        if (!$this->mediaTable) {
+            $sm               = $this->getServiceLocator();
+            $this->mediaTable = $sm->get('Media\Model\MediaTable');
         }
 
-        return $this->newsTable;
+        return $this->mediaTable;
     }
 
-    /**
-     * Checks the word lengths of all words in a given text.
-     * If any word is longer than 100 chars false is returned,
-     * true otherwise
-     * @param string $string the given text
-     * @return bool true if no word is longer than 100 characters, false otherwise
-     */
-    private function checkWordLengths($string)
+    private function embedVideo($url)
     {
-        $words = explode(' ', $string);
-        foreach ($words as $word) {
-            if (strlen($word) > 100) {
-                return false;
-            }
-
+        if (substr($url, 0, 7) === 'youtube') {
+            $url = 'https://www.' . $url;
         }
-        return true;
+
+        if (substr($url, 0, 4) === 'www.') {
+            $url = 'https://' . $url;
+        }
+
+        $url = substr_replace($url, '', 23, 8);
+
     }
 }

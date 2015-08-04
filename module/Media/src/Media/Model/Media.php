@@ -1,12 +1,12 @@
 <?php
 
-namespace News\Model;
+namespace Media\Model;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class News implements InputFilterAwareInterface
+class Media implements InputFilterAwareInterface
 {
     /**
      * @var int
@@ -14,25 +14,25 @@ class News implements InputFilterAwareInterface
     private $id;
 
     /**
-     * @var string
+     * @var int
      */
-    private $accountId;
+    private $account_id;
 
     /**
-     * NOTE: still needed for showing of the name in the view
+     * NOTE: still needed because will be filled with name for the view
      * @var string
      */
     private $author;
 
     /**
-     * @var string
+     * @var int
      */
     private $title;
 
     /**
-     * @var string
+     * @var strin
      */
-    private $content;
+    private $url;
 
     /**
      * @var string
@@ -42,7 +42,7 @@ class News implements InputFilterAwareInterface
     /**
      * @var InputFilter
      */
-    protected $inputFilter;
+    private $inputFilter;
 
     /**
      * @return int
@@ -57,15 +57,15 @@ class News implements InputFilterAwareInterface
      */
     public function getAccountId()
     {
-        return $this->accountId;
+        return $this->account_id;
     }
 
     /**
-     * @param string $author
+     * @param string $creator
      */
-    public function setAccountId($id)
+    public function setAccountId($account_id)
     {
-        $this->accountId = $id;
+        $this->account_id = $account_id;
     }
 
     /**
@@ -76,6 +76,9 @@ class News implements InputFilterAwareInterface
         return $this->author;
     }
 
+    /**
+     * @param string $author
+     */
     public function setAuthor($author)
     {
         $this->author = $author;
@@ -100,17 +103,17 @@ class News implements InputFilterAwareInterface
     /**
      * @return string
      */
-    public function getContent()
+    public function getUrl()
     {
-        return $this->content;
+        return $this->url;
     }
 
     /**
-     * @param string $content
+     * @param string
      */
-    public function setContent($content)
+    public function setUrl($url)
     {
-        $this->content = $content;
+        $this->url = $url;
     }
 
     /**
@@ -122,26 +125,32 @@ class News implements InputFilterAwareInterface
     }
 
     /**
+     * @param string $date_posted
+     */
+    public function setDatePosted($date_posted)
+    {
+        $this->date_posted = $date_posted;
+    }
+
+    /**
      * Fills up the model class with the given data
      * @param array $data
      */
     public function exchangeArray($data)
     {
-        $this->id        = (!empty($data['id'])) ? $data['id'] : null;
-        $this->accountId = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->author    = (!empty($data['name'])) ? $data['name'] : null;
-        $this->title     = (!empty($data['title'])) ? $data['title'] : null;
-        $this->content   = (!empty($data['content'])) ? $data['content'] : null;
+        $this->id         = (!empty($data['id'])) ? $data['id'] : null;
+        $this->account_id = (!empty($data['account_id'])) ? $data['account_id'] : null;
+        $this->title      = (!empty($data['title'])) ? $data['title'] : null;
+        $this->url        = (!empty($data['url'])) ? $data['url'] : null;
 
         $date              = new \DateTime();
         $this->date_posted = (!empty($data['date_posted'])) ?
         $data['date_posted'] : $date->format('Y-m-d H:i:s');
-
     }
 
     /**
      *
-     * @return array NewsModel as array
+     * @return array MediaModel as array
      */
     public function getArrayCopy()
     {
@@ -159,10 +168,6 @@ class News implements InputFilterAwareInterface
         throw new \Exception("Not used");
     }
 
-    /**
-     * Creates the InputFilter for an NewsModel.
-     * @return InputFilter
-     */
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
@@ -196,7 +201,7 @@ class News implements InputFilterAwareInterface
                         'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min'      => 1,
+                            'min'      => 3,
                             'max'      => 100,
                         ],
                     ],
@@ -204,7 +209,7 @@ class News implements InputFilterAwareInterface
             ]);
 
             $inputFilter->add([
-                'name'       => 'content',
+                'name'       => 'url',
                 'required'   => true,
                 'filters'    => [
                     ['name' => 'StripTags'],
@@ -215,8 +220,12 @@ class News implements InputFilterAwareInterface
                         'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'min'      => 10,
-                            'max'      => 10000,
+                            'min'      => 12,
+                            'max'      => 256,
+                        ],
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '/(https:\/\/)?(www\.)?youtube\.com\/watch\?.*v=([a-zA-Z0-9]+)/',
                         ],
                     ],
                 ],
@@ -225,4 +234,5 @@ class News implements InputFilterAwareInterface
         }
         return $this->inputFilter;
     }
+
 }

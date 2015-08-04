@@ -1,0 +1,37 @@
+<?php
+$title = 'Media';
+?>
+    <?php $this->headTitle($title); ?>
+    <?php foreach ($paginator as $item) : ?>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title"><?php echo $item->getTitle(); ?></h1>
+                by <?php echo '<a href="' . 
+                $this->url('account', ['action' => 'profile', 'id' => $item->getAuthor()]) . 
+                '" class="panel-href">' . 
+                $item->getAuthor() . '</a>'; ?>
+            </div>
+            <div class="panel-body">
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="<?php echo $item->getUrl(); ?>" allowfullscreen></iframe>
+            </div>
+                <?php
+                if ($item->getAuthor() == $accountName) {
+                    echo '<a href="' . $this->url('media', ['action' => 'edit', 'id' => $item->getId()]) . '">Edit</a>';
+                    echo "\t";
+                    echo '<a href="' . $this->url('media', ['action' => 'delete', 'id' => $item->getId()]) . '">Delete</a>';
+                }
+                ?>
+            </div>
+            <div class="panel-footer">
+                posted on <?php echo substr($item->getDatePosted(), 0, -3); ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    <?php
+    echo $this->paginationControl($this->paginator, 'sliding', ['partial/paginator.phtml', 'application'],
+        [
+            'route' => 'media'
+        ]
+    );
+    ?>
