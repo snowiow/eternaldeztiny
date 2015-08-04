@@ -8,8 +8,8 @@ $this->headTitle($title);
     </div>
 
     <p>Are you sure that you want to delete
-        '<?php echo $this->escapeHtml($news->getTitle()); ?>' by
-        '<?php echo $this->escapeHtml($news->getAuthor()); ?>'?
+        '<?php echo $this->escapeHtml($media->getTitle()); ?>' by
+        '<?php echo $this->escapeHtml($media->getAuthor()); ?>'?
     </p>
     <?php
     $url = $this->url('media', [

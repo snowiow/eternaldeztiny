@@ -61,6 +61,7 @@ class MediaController extends AbstractActionController
 
             if ($form->isValid()) {
                 $media->exchangeArray($form->getData());
+                $media->setUrl($this->embedVideo($media->getUrl()));
                 $this->getMediaTable()->saveMedia($media);
 
                 return $this->redirect()->toRoute('media');
@@ -95,7 +96,7 @@ class MediaController extends AbstractActionController
             ]);
         }
         $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->id) || $session->id != $news->getAccountId()) {
+        if (!isset($session->id) || $session->id != $media->getAccountId()) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -112,9 +113,10 @@ class MediaController extends AbstractActionController
             $form->setInputFilter($media->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
+                $media->setUrl($this->embedVideo($media->getUrl()));
                 $this->getMediaTable()->saveMedia($media);
 
-                return $this->redirect()->toRoute('news');
+                return $this->redirect()->toRoute('media');
             } else {
                 $errors = $form->getMessages();
                 return [
@@ -165,7 +167,7 @@ class MediaController extends AbstractActionController
         }
 
         $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->id) || $session->id != $news->getAccountId()) {
+        if (!isset($session->id) || $session->id != $media->getAccountId()) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -196,13 +198,10 @@ class MediaController extends AbstractActionController
     {
         if (substr($url, 0, 7) === 'youtube') {
             $url = 'https://www.' . $url;
-        }
-
-        if (substr($url, 0, 4) === 'www.') {
+        } else if (substr($url, 0, 4) === 'www.') {
             $url = 'https://' . $url;
         }
 
-        $url = substr_replace($url, '', 23, 8);
-
+        return preg_replace('/watch\?v=(.+?)$/i', 'embed/$1', $url);
     }
 }

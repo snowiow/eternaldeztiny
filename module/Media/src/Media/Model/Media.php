@@ -140,8 +140,10 @@ class Media implements InputFilterAwareInterface
     {
         $this->id         = (!empty($data['id'])) ? $data['id'] : null;
         $this->account_id = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->title      = (!empty($data['title'])) ? $data['title'] : null;
-        $this->url        = (!empty($data['url'])) ? $data['url'] : null;
+
+        $this->author = (!empty($data['name'])) ? $data['name'] : null;
+        $this->title  = (!empty($data['title'])) ? $data['title'] : null;
+        $this->url    = (!empty($data['url'])) ? $data['url'] : null;
 
         $date              = new \DateTime();
         $this->date_posted = (!empty($data['date_posted'])) ?
@@ -225,7 +227,7 @@ class Media implements InputFilterAwareInterface
                         ],
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '/(https:\/\/)?(www\.)?youtube\.com\/watch\?.*v=([a-zA-Z0-9]+)/',
+                            'pattern' => '/(https:\/\/)?(www\.)?youtube\.com\/((watch\?.*v=)|(embed\/))([a-zA-Z0-9]+)/',
                         ],
                     ],
                 ],

@@ -41,7 +41,7 @@ $this->headTitle($title);
             echo '<div class="form-group">';
             echo $this->formLabel($form->get('url')->setLabelAttributes(['class' => 'control-label']));
             echo $this->formText($form->get('url')->setAttribute('class', 'form-control'));
-            echo '<p>Must be a valid youtube url.</p>';
+            echo '<p>Must be a valid youtube url in one of these formats(...youtube.com/watch?v=... or ...youtube.com/embed/...)</p>';
         } else {
             echo '<div class="form-group has-success has-feedback">';
             echo $this->formLabel($form->get('url')->setLabelAttributes(['class' => 'control-label']));

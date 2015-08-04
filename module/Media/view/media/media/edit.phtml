@@ -13,7 +13,7 @@ $this->headTitle($title);
     $form->setAttribute('action', $this->url(
         'media',
         [
-            'action' => 'media',
+            'action' => 'edit',
             'id'     => $this->id,
         ]
     ));
@@ -36,30 +36,30 @@ $this->headTitle($title);
         }
     } else {
         echo '<div class="form-group">';
-        $this->formLabel($form->get('title')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formLabel($form->get('title')->setLabelAttributes(['class' => 'control-label']));
         echo $this->formText($form->get('title')->setAttribute('class', 'form-control'));
     }
     ?>
     </div>
     <?php
     if (isset($errors)) {
-        if (array_key_exists('title', $errors)) {
+        if (array_key_exists('url', $errors)) {
             echo '<div class="form-group has-error has-feedback">';
 
             echo '<div class="form-group">';
-            <?php echo $this->formLabel($form->get('url')->setLabelAttributes(['class' => 'control-label']));
-            echo $this->formText($form->get('url')->setAttribute('class', 'form-control');
-            echo '<p>Must be a valid youtube url.</p>';
+            echo $this->formLabel($form->get('url')->setLabelAttributes(['class' => 'control-label']));
+            echo $this->formText($form->get('url')->setAttribute('class', 'form-control'));
+            echo '<p>Must be a valid youtube url in one of these formats(...youtube.com/watch?v=... or ...youtube.com/embed/...)</p>';
         } else {
             echo '<div class="form-group has-success has-feedback">';
-            echo $this->formLabel($form->get('title')->setLabelAttributes(['class' => 'control-label']));
-            echo $this->formText($form->get('title')->setAttribute('class', 'form-control'));
+            echo $this->formLabel($form->get('url')->setLabelAttributes(['class' => 'control-label']));
+            echo $this->formText($form->get('url')->setAttribute('class', 'form-control'));
             echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
         }
     } else {
         echo '<div class="form-group">';
-        $this->formLabel($form->get('title')->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formText($form->get('title')->setAttribute('class', 'form-control'));
+        echo $this->formLabel($form->get('url')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formText($form->get('url')->setAttribute('class', 'form-control'));
     }
     ?>
     </div>
