@@ -51,15 +51,15 @@ $this->headTitle($title);
             </ul>
         </div>
         <?php } ?>
-            </div>
+    </div>
     <div class="row">
         <?php if ($session->role > 3) { ?>
-            <div class="col-md-3">
-                <h4>News</h4>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
-                </ul>
-            </div>
+        <div class="col-md-3">
+            <h4>News</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
+            </ul>
+        </div>
         <?php } ?>
         <?php if ($session->role > 4) { ?>
         <div class="col-md-3">
@@ -75,13 +75,15 @@ $this->headTitle($title);
             </ul>
         </div>
         <?php } ?>
-        <!--<div class="col-md-3">-->
-            <!--<h4>Warclaim</h4>-->
-            <!--<ul class="list-group">-->
-                <!--<li class="list-group-item"><a href="/warclaim/index">Current war</a></li>-->
-                <!--<li class="list-group-item"><a href="/warclaim/create">Create new war</a></li>-->
-            <!--</ul>-->
-        <!--</div>-->
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h4>Warclaim</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="/warclaim/index">Current war</a></li>
+                <li class="list-group-item"><a href="/warclaim/create">Create new war</a></li>
+            </ul>
+        </div>
     </div>
     <?php } ?>
 </div>
