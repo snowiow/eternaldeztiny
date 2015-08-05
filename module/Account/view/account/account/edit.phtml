@@ -1,0 +1,81 @@
+<?php
+$title = 'Edit Profile';
+$this->headTitle($title);
+?>
+<div class="content shadow">
+    <div class="page-header">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+<?php
+$form->setAttribute('action', $this->url('account', [
+    'action' => 'edit',
+    'id' => $id,
+]));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+echo $this->form()->openTag($form);
+if (isset($errors)) {
+    if (array_key_exists('file', $errors)) {
+        echo '<div class="form-group has-error has-feedback">';
+        echo $this->formLabel($form->get('file')->setLabelAttributes(['class' => 'control-label col-sm-3']));
+        echo '<div class="col-sm-9">';
+        echo $this->formFile($form->get('file')->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-remove form-control-feedback"
+            aria-hidden="true"></span>';
+        echo '</div>';
+        echo '<p>No valid image file</p>';
+    } else {
+        echo '<div class="form-group has-success has-feedback">';
+        echo $this->formLabel($form->get('file')->setLabelAttributes(['class' => 'control-label col-sm-3']));
+        echo '<div class="col-sm-9">';
+        echo $this->formFile($form->get('file')->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+        echo '</div>';
+    }
+} else {
+    echo '<div class="form-group">';
+    echo $this->formLabel($form->get('file')->setLabelAttributes(['class' => 'control-label col-sm-3']));
+    echo '<div class="col-sm-9">';
+    echo $this->formFile($form->get('file')->setAttribute('class', 'form-control'));
+    echo '</div>';
+}
+echo '</div>';
+if (isset($errors)) {
+    if (array_key_exists('mini', $errors)) {
+        echo '<div class="form-group has-error has-feedback">';
+        echo $this->formLabel($form->get('mini')->setLabelAttributes(['class' => 'control-label col-sm-3']));
+        echo '<div class="col-sm-9">';
+        echo $this->formText($form->get('mini')->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-remove form-control-feedback"
+            aria-hidden="true"></span>';
+        echo '</div>';
+        echo '<p>No valid name(Must only contain characters, numbers and _ or -)</p>';
+    } else {
+        echo '<div class="form-group has-success has-feedback">';
+        echo $this->formLabel($form->get('mini')->setLabelAttributes(['class' => 'control-label col-sm-3']));
+        echo '<div class="col-sm-9">';
+        echo $this->formText($form->get('mini')->setAttribute('class', 'form-control'));
+        echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+        echo '</div>';
+    }
+    } else {
+    echo '<div class="form-group">';
+    echo $this->formLabel($form->get('mini')->setLabelAttributes(['class' => 'control-label col-sm-3']));
+    echo '<div class="col-sm-9">';
+    echo $this->formText($form->get('mini')->setAttribute('class', 'form-control'));
+    echo '</div>';
+}
+echo '</div>';
+?>
+<br />
+<div class="form-group">
+<div class="col-sm-3">
+    </div>
+<div class="col-sm-9">
+<?php
+echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success'));
+echo '</div>';
+echo $this->form()->closeTag();
+?>
+</div>
+</div>

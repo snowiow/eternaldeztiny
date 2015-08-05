@@ -105,6 +105,7 @@ class AccountTable
             'role'            => $account->getRole(),
             'avatar'          => $account->getAvatar(),
             'date_registered' => $account->getDateRegistered(),
+            'mini'            => $account->getMini(),
         ];
         if (!$account->getId()) {
             $data['password'] = hash('sha256', $account->getPassword()) . Constants::SALT;

@@ -10,18 +10,25 @@ use Warclaim\Model\Warclaim;
 
 class WarclaimController extends AbstractActionController
 {
-    public $warclaimTable;
+    private $warclaimTable;
+    private $accountTable;
 
     public function createAction()
     {
         $form    = new WarclaimForm();
         $request = $this->getRequest();
 
+        $members = $this->getAccountTable()->getMembers();
+        $names   = [];
+        foreach ($members as $member) {
+            $names[] = $member->getName();
+        }
         if ($request->isPost()) {
             if (array_key_exists('select', $request->getPost())) {
                 return new ViewModel([
-                    'form' => $form,
-                    'size' => $request->getPost()['select'],
+                    'form'  => $form,
+                    'size'  => $request->getPost()['select'],
+                    'names' => $names,
                 ]);
             }
             $warclaim = new Warclaim();
@@ -39,13 +46,15 @@ class WarclaimController extends AbstractActionController
                     'form'   => $form,
                     'size'   => 10,
                     'errors' => $errors,
+                    'names'  => $names,
                 ]);
             }
         }
         return new ViewModel(
             [
-                'form' => $form,
-                'size' => 10,
+                'form'  => $form,
+                'size'  => 10,
+                'names' => $names,
             ]
         );
     }
@@ -62,4 +71,17 @@ class WarclaimController extends AbstractActionController
 
         return $this->warclaimTable;
     }
+
+    /**
+     * @return array|AccountTable|object
+     */
+    public function getAccountTable()
+    {
+        if (!$this->accountTable) {
+            $sm                 = $this->getServiceLocator();
+            $this->accountTable = $sm->get('Account\Model\AccountTable');
+        }
+        return $this->accountTable;
+    }
+
 }

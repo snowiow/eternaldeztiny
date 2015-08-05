@@ -5,7 +5,7 @@ namespace Account\Form;
 use Zend\Form\Form;
 use Zend\Form\Element;
 
-class UploadAvatarForm extends Form
+class EditProfileForm extends Form
 {
 
     /**
@@ -13,13 +13,21 @@ class UploadAvatarForm extends Form
      */
     public function __construct($name = null)
     {
-        parent::__construct('uploadavatar');
+        parent::__construct('editprofile');
 
         $this->add([
             'name'    => 'file',
             'type'    => 'Zend\Form\Element\File',
             'options' => [
-                'label' => 'File Path',
+                'label' => 'Avatar:',
+            ],
+        ]);
+
+        $this->add([
+            'name'    => 'mini',
+            'type'    => 'Text',
+            'options' => [
+                'label' => 'Name of Mini-Account:',
             ],
         ]);
 
@@ -31,5 +39,6 @@ class UploadAvatarForm extends Form
                 'id'    => 'submitbutton',
             ],
         ]);
+
     }
 }

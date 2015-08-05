@@ -8,6 +8,8 @@ use Zend\Db\ResultSet\ResultSet;
 
 use Warclaim\Model\Warclaim;
 use Warclaim\Model\WarclaimTable;
+use Account\Model\Account;
+use Account\Model\AccountTable;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -41,6 +43,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Warclaim());
                     return new TableGateway('warclaim', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Account\Model\AccountTable'   => function ($sm) {
+                    $tableGateway = $sm->get('AccountTableGateway');
+                    $table = new AccountTable($tableGateway);
+                    return $table;
+                },
+                'AccountTableGateway'          => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Account());
+                    return new TableGateway('account', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

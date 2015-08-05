@@ -10,7 +10,7 @@ use Zend\InputFilter\FileInput;
 
 use Account\Form\RegisterForm;
 use Account\Form\LoginForm;
-use Account\Form\UploadAvatarForm;
+use Account\Form\EditProfileForm;
 use Account\Model\Account;
 use Account\Model\Role;
 use Account\Model\AccountTable;
@@ -80,39 +80,60 @@ class AccountController extends AbstractActionController
 
     }
 
-    public function uploadAvatarAction()
+    public function editAction()
     {
-        $form = new UploadavatarForm();
-        $form->get('submit')->setValue('Change Avatar');
+        $id      = (int) $this->params()->fromRoute('id', 0);
+        $session = $session = new \Zend\Session\Container('user');
+        if (!$id || $session->id != $id) {
+            return $this->redirect()->toRoute('account', [
+                'action' => 'noright',
+            ]);
+        }
+
+        try {
+            $account = $this->getAccountTable()->getAccount($session->id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('account', [
+                'action' => 'noright',
+            ]);
+        }
+
+        $form = new EditProfileForm();
+        $form->bind($account);
+        $form->get('submit')->setValue('Edit');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $post = array_merge_recursive($request->getPost()->toArray(),
+            //Needs to be rebinded, because everything that won't get binded by the form will
+            //be deleted
+            $account = $this->getAccountTable()->getAccount($session->id);
+            $post    = array_merge_recursive($request->getPost()->toArray(),
                 $request->getFiles()->toArray());
-
             $form->setData($post);
             if ($form->isValid()) {
                 $data = $form->getData();
-                if (strstr($data['file']['type'], 'image')) {
-                    $session = $session = new \Zend\Session\Container('user');
-                    $file    = file_get_contents($data['file']['tmp_name']);
+                $account->setMini($data->getMini('mini'));
+                $file_arr = $request->getFiles()->toArray();
+                if (strstr($file_arr['file']['type'], 'image')) {
+                    $file = file_get_contents($file_arr['file']['tmp_name']);
                     file_put_contents(getcwd() . '/public/users/' . $session->name . '/avatar.jpg',
                         $file);
-                    $account  = $this->getAccountTable()->getAccount($session->id);
                     $filePath = '/users/' . $session->name . '/avatar.jpg';
                     $account->setAvatar($filePath);
-                    $this->getAccountTable()->saveAccount($account);
                     $session->avatar = $filePath;
                     sleep(0.5);
-                    return $this->redirect()->toRoute('account', [
-                        'action' => 'profile',
-                    ]);
-                } else {
-                    return ['form' => $form, 'errors' => $errors = ['file' => 'not_valid']];
                 }
+                $this->getAccountTable()->saveAccount($account);
+                return $this->redirect()->toRoute('account', [
+                    'action' => 'profile',
+                ]);
+
+            } else {
+                $errors = $form->getMessages();
+                return ['form' => $form, 'errors' => $errors, 'id' => $session->id];
             }
         }
-        return ['form' => $form];
+        return ['form' => $form, 'id' => $session->id];
     }
 
     /**

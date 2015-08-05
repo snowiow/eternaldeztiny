@@ -10,7 +10,7 @@ use Account\Model\Role;
 
 class MembersController extends AbstractActionController
 {
-    protected $accountTable;
+    private $accountTable;
 
     public function indexAction()
     {

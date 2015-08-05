@@ -50,6 +50,11 @@ class Account
     private $date_registered;
 
     /**
+     * @var string
+     */
+    private $mini;
+
+    /**
      * @var InputFilter
      */
     private $registerInputFilter;
@@ -62,7 +67,7 @@ class Account
     /**
      * @var InputFilter
      */
-    private $uploadAvatarInputFilter;
+    private $editProfileInputFilter;
 
     /**
      * @param int
@@ -177,6 +182,22 @@ class Account
     }
 
     /**
+     * @return string
+     */
+    public function getMini()
+    {
+        return $this->mini;
+    }
+
+    /**
+     * @param string
+     */
+    public function setMini($mini)
+    {
+        $this->mini = $mini;
+    }
+
+    /**
      * Fills up the model class with the given data
      * @param array $data The account data needed to fill the model
      */
@@ -189,6 +210,7 @@ class Account
         $this->email    = !empty($data['email']) ? $data['email'] : null;
         $this->role     = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
         $this->avatar   = !empty($data['avatar']) ? $data['avatar'] : null;
+        $this->mini     = !empty($data['mini']) ? $data['mini'] : null;
 
         $date                  = new \DateTime();
         $this->date_registered = !empty($data['date_registered']) ? $data['date_registered'] :
@@ -343,12 +365,12 @@ class Account
         return $this->loginInputFilter;
     }
 
-    public function getUploadAvatarInputFilter()
+    public function getEditProfileInputFilter()
     {
-        if (!$this->uploadAvatarInputFilter) {
+        if (!$this->editProfileInputFilter) {
             $inputFilter = new InputFilter();
             $fileInput   = new InputFilter\FileInput('image-file');
-            $fileInput->setRequired(true);
+            $fileInput->setRequired(false);
             $fileInput->getFilterChain()->attachByName(
                 'filerenameupload',
                 [
@@ -358,8 +380,29 @@ class Account
             );
             $inputFilter->add($fileInput);
 
-            $this->uploadAvatarInputFilter = $inputFilter;
+            $inputFilter->add([
+                'name'       => 'mini',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    'name'    => 'StringLength',
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min'      => 3,
+                        'max'      => 64,
+                    ],
+                    'name'    => 'Regex',
+                    'options' => [
+                        'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                    ],
+                ],
+            ]);
+
+            $this->editProfileInputFilter = $inputFilter;
         }
-        return $this->uploadAvatarInputFilter;
+        return $this->editProfileInputFilter;
     }
 }
