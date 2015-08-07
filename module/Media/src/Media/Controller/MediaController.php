@@ -181,6 +181,11 @@ class MediaController extends AbstractActionController
         ];
     }
 
+    public function liveAction()
+    {
+
+    }
+
     /**
      * @return array|NewsTable|object
      */
