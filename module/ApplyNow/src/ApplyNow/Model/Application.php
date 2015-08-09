@@ -109,6 +109,21 @@ class Application implements InputFilterAwareInterface
     private $processedBy;
 
     /**
+     * @var int
+     */
+    private $niceAndTidy;
+
+    /**
+     * @var int
+     */
+    private $spoilsOfWar;
+
+    /**
+     * @var int
+     */
+    private $goldGrab;
+
+    /**
      * @var string
      */
     private $account_name;
@@ -303,6 +318,54 @@ class Application implements InputFilterAwareInterface
     }
 
     /**
+     * @return int
+     */
+    public function getNiceAndTidy()
+    {
+        return $this->niceAndTidy;
+    }
+
+    /**
+     * @param int $nice_and_tidy
+     */
+    public function setNiceAndTidy(int $nice_and_tidy)
+    {
+        $this->niceAndTidy = $nice_and_tidy;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSpoilsOfWar()
+    {
+        return $this->spoilsOfWar;
+    }
+
+    /**
+     * @param int
+     */
+    public function setSpoilsOfWar($spoils_of_war)
+    {
+        $this->spoilsOfWar = $spoils_of_war;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGoldGrab()
+    {
+        return $this->goldGrab;
+    }
+
+    /**
+     * @param int $gold_grab
+     */
+    public function setGoldGrab($gold_grab)
+    {
+        $this->goldGrab = $gold_grab;
+    }
+
+    /**
      * @return bool
      */
     public function getProcessed()
@@ -356,6 +419,9 @@ class Application implements InputFilterAwareInterface
         $this->why          = !empty($data['why']) ? $data['why'] : null;
         $this->basepic      = !empty($data['basepic']) ? $data['basepic'] : null;
         $this->profilepic   = !empty($data['profilepic']) ? $data['profilepic'] : null;
+        $this->goldGrab     = !empty($data['goldGrab']) ? $data['goldGrab'] : null;
+        $this->niceAndTidy  = !empty($data['niceAndTidy']) ? $data['niceAndTidy'] : null;
+        $this->spoilsOfWar  = !empty($data['spoilsOfWar']) ? $data['spoilsOfWar'] : null;
         $this->processed    = !empty($data['processed']) ? $data['processed'] : 0;
         $this->processedBy  = !empty($data['processed_by']) ? $data['processed_by'] : null;
         $this->account_name = !empty($data['account_name']) ? $data['account_name'] : null;
@@ -423,9 +489,15 @@ class Application implements InputFilterAwareInterface
                             'min'      => 3,
                             'max'      => 64,
                         ],
+                    ],
+                    [
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '/^[a-zA-Z0-9]+$/',
+                            'pattern'  => '/^[a-zA-Z0-9]+$/',
+                            'messages' => [
+                                'regexNotMatch' => 'Only characters and numbers allowed.',
+                            ],
+
                         ],
 
                     ],
@@ -525,6 +597,63 @@ class Application implements InputFilterAwareInterface
                     ],
                 ],
 
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'spoilsOfWar',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 10,
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'goldGrab',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 9,
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'niceAndTidy',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 3,
+                        ],
+                    ],
+                ],
             ]);
 
             $inputFilter->add([

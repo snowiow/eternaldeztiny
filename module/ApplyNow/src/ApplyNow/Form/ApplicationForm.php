@@ -16,41 +16,59 @@ class ApplicationForm extends Form
         ]);
 
         $this->add([
-            'name'    => 'name',
-            'type'    => 'Text',
-            'options' => [
+            'name'       => 'name',
+            'type'       => 'Text',
+            'options'    => [
                 'label' => 'Ingame Name*',
             ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
         ]);
 
         $this->add([
-            'name'    => 'tag',
-            'type'    => 'Text',
-            'options' => [
+            'name'       => 'tag',
+            'type'       => 'Text',
+            'options'    => [
                 'label' => 'Ingame Tag*',
             ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+
         ]);
 
         $this->add([
-            'name'    => 'email',
-            'type'    => 'Zend\Form\Element\Email',
-            'options' => [
+            'name'       => 'email',
+            'type'       => 'Zend\Form\Element\Email',
+            'options'    => [
                 'label' => 'E-Mail Adress*',
             ],
-        ]);
-
-        $this->add([
-            'name'    => 'age',
-            'type'    => 'Zend\Form\Element\Text',
-            'options' => [
-                'label' => 'Age*',
+            'attributes' => [
+                'class'    => 'form-control',
+                'type'     => 'email',
+                'required' => 'required',
             ],
         ]);
 
         $this->add([
-            'name'    => 'th',
-            'type'    => 'Zend\Form\Element\Select',
-            'options' => [
+            'name'       => 'age',
+            'type'       => 'Zend\Form\Element\Text',
+            'options'    => [
+                'label' => 'Age*',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'th',
+            'type'       => 'Zend\Form\Element\Select',
+            'options'    => [
                 'label'         => 'Town-Hall Level*',
                 'value'         => '8',
                 'value_options' => [
@@ -66,60 +84,124 @@ class ApplicationForm extends Form
                     '10' => '10',
                 ],
             ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
         ]);
 
         $this->add([
-            'name'    => 'warStars',
-            'type'    => 'Zend\Form\Element\Text',
-            'options' => [
+            'name'       => 'warStars',
+            'type'       => 'Zend\Form\Element\Text',
+            'options'    => [
                 'label' => 'Current war stars(War-Hero Archivement)*',
             ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
         ]);
 
         $this->add([
-            'name'    => 'infos',
-            'type'    => 'Text',
-            'options' => [
+            'name'       => 'niceAndTidy',
+            'type'       => 'Zend\Form\Element\Text',
+            'options'    => [
+                'label' => 'Current count in the nice and tidy archievement*',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'goldGrab',
+            'type'       => 'Zend\Form\Element\Text',
+            'options'    => [
+                'label' => 'Current count in the gold grab archievement*',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'spoilsOfWar',
+            'type'       => 'Zend\Form\Element\Text',
+            'options'    => [
+                'label' => 'Current count in the spoils of war archievement*',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'infos',
+            'type'       => 'TextArea',
+            'options'    => [
                 'label' => 'Tell us something about you',
             ],
-        ]);
-
-        $this->add([
-            'name'    => 'strategies',
-            'type'    => 'Text',
-            'options' => [
-                'label' => 'Tell us about your war strategies. With whom are you familiar with, what do you want to learn in the near future.',
+            'attributes' => [
+                'class' => 'form-control',
+                'rows'  => 10,
             ],
         ]);
 
         $this->add([
-            'name'    => 'why',
-            'type'    => 'Text',
-            'options' => [
+            'name'       => 'strategies',
+            'type'       => 'TextArea',
+            'options'    => [
+                'label' => 'Tell us about your war strategies.',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+                'rows'  => 10,
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'why',
+            'type'       => 'TextArea',
+            'options'    => [
                 'label' => 'Why do you want to join us?',
             ],
+            'attributes' => [
+                'class' => 'form-control',
+                'rows'  => 10,
+            ],
         ]);
 
         $this->add([
-            'name'    => 'basepic',
-            'type'    => 'Zend\Form\Element\File',
-            'options' => [
+            'name'       => 'basepic',
+            'type'       => 'Zend\Form\Element\File',
+            'options'    => [
                 'label' => 'A Pic of your current warbase*',
             ],
-        ]);
-
-        $this->add([
-            'name'    => 'profilepic',
-            'type'    => 'Zend\Form\Element\File',
-            'options' => [
-                'label' => 'A Pic of your Profile, where we see your troop levels.*',
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
             ],
         ]);
 
         $this->add([
-            'name'    => 'processed',
-            'type'    => 'Zend\Form\Element\Select',
-            'options' => [
+            'name'       => 'profilepic',
+            'type'       => 'Zend\Form\Element\File',
+            'options'    => [
+                'label' => 'A Pic of your Profile, where we see your troop levels.*',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'processed',
+            'type'       => 'Zend\Form\Element\Select',
+            'options'    => [
                 'label'         => 'Status',
                 'value_options' => [
                     '0' => 'not processed',
@@ -127,14 +209,17 @@ class ApplicationForm extends Form
                     '2' => 'declined',
                 ],
             ],
+            'attributes' => [
+                'class' => 'form-control',
+            ],
         ]);
 
         $this->add([
             'name'       => 'submit',
             'type'       => 'Submit',
             'attributes' => [
-                'value' => 'Go',
                 'id'    => 'submitbutton',
+                'class' => 'btn btn-success',
             ],
         ]);
     }

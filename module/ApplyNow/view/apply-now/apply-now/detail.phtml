@@ -51,6 +51,18 @@ echo $this->formLabel($form->get('warStars')->setLabelAttributes(['class' => 'co
 echo $this->formText($form->get('warStars')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
 echo '</div>';
 echo '<div class="form-group">';
+echo $this->formLabel($form->get('spoilsOfWar')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('spoilsOfWar')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('goldGrab')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('goldGrab')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
+echo $this->formLabel($form->get('niceAndTidy')->setLabelAttributes(['class' => 'control-label']));
+echo $this->formText($form->get('niceAndTidy')->setAttribute('class', 'form-control')->setAttribute('readonly', 'readonly'));
+echo '</div>';
+echo '<div class="form-group">';
 echo $this->formLabel($form->get('infos')->setLabelAttributes(['class' => 'control-label']));
 echo $this->formTextarea($form->get('infos')->setAttribute('class', 'form-control')
     ->setAttribute('rows', '10')->setAttribute('readonly', 'readonly'));

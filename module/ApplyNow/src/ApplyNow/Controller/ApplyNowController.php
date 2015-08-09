@@ -233,6 +233,9 @@ class ApplyNowController extends AbstractActionController
         "Age: " . $application->getAge() . "\n" .
         "Town-Hall Level: " . $application->getTh() . "\n" .
         "Current war stars: " . $application->getWarStars() . "\n" .
+        "Current spoils of war status: " . $application->getSpoilsOfWar() . "\n" .
+        "Current gold grab status: " . $application->getGoldGrab() . "\n" .
+        "Current nice and tidy status: " . $application->getNiceAndTidy() . "\n" .
         "About me: " . $application->getInfos() . "\n" .
         "Why I want to join ED: " . $application->getWhy() . "\n" .
         "Strategies: " . $application->getStrategies() . "\n" .
