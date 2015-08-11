@@ -1,4 +1,7 @@
- CREATE TABLE news (
+ CREATE TABLE warclaim (
    id INT NOT NULL auto_increment,
+   strategy TEXT,
    assignments TEXT NOT NULL,
+   open bool NOT NULL,
+   PRIMARY KEY(id)
  );

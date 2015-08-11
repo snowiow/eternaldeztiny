@@ -3,8 +3,9 @@ $title = 'Create new War';
 $this->headTitle($title);
 ?>
 <datalist id="members">
-    <?php foreach($names as $name): ?>
-    <option value="<?php echo $name; ?>" />
+    <?php foreach($members as $member): ?>
+    <option value="<?php echo $member->getName(); ?>" />
+    <option value="<?php echo $member->getMini(); ?>" />
     <?php endforeach; ?>
 </datalist>
 <div class="content shadow">
@@ -12,7 +13,7 @@ $this->headTitle($title);
         <h1><?php echo $this->escapeHtml($title); ?></h1>
     </div>
     <br />
-    <form action="create" method="post" class="form-inline">
+    <form action="create" method="post" class="form-inline center">
         <div class="form-group">
             <label class="control-label">War Size:</label>
             <select name="select" class="form-control">
@@ -35,14 +36,40 @@ $this->headTitle($title);
     $form->setAttribute('class', 'form-horizontal');
     $form->prepare();
     echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    if (isset($errors)) {
+        if (array_key_exists('strategy', $errors)) {
+            echo '<div class="form-group has-error has-feedback">';
+            echo $this->formLabel($form->get('strategy')->setLabelAttributes(['class' => 'control-label col-sm-2']));
+            echo '<div class="col-sm-10">';
+            echo $this->formTextArea($form->get('strategy'));
+            echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+            echo '</div>';
+            echo $this->formErrors('strategy');
+        } else {
+            echo '<div class="form-group has-success has-feedback">';
+            echo $this->formLabel($form->get('strategy')->setLabelAttributes(['class' => 'control-label col-sm-2']));
+            echo '<div class="col-sm-10">';
+            echo $this->formTextArea($form->get('strategy'));
+            echo '</div>';
+            echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
+        }
+    } else {
+        echo '<div class="form-group">';
+        echo $this->formLabel($form->get('strategy')->setLabelAttributes(['class' => 'control-label col-sm-2']));
+        echo '<div class="col-sm-10">';
+        echo $this->formTextArea($form->get('strategy'));
+        echo '</div>';
+    }
+    echo '</div>';
     for ($i = 0; $i < $size; $i++) {
     if (isset($errors)) { 
     if (array_key_exists('name', $errors)) {
     echo '<div class="form-group has-error has-feedback">';
         echo $this->formLabel($form->get($i)->setLabelAttributes(
-        ['class' => 'control-label col-sm-1']
+        ['class' => 'control-label col-sm-2']
         ));
-        echo '<div class="col-sm-11">';
+        echo '<div class="col-sm-10">';
             echo $this->formSearch($form->get($i)->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
             echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
             echo '</div>';
@@ -50,9 +77,9 @@ $this->headTitle($title);
         } else {
         echo '<div class="form-group has-success has-feedback">';
             echo $this->formLabel($form->get($i)->setLabelAttributes(
-            ['class' => 'control-label col-sm-1']
+            ['class' => 'control-label col-sm-2']
             ));
-            echo '<div class="col-sm-11">';
+            echo '<div class="col-sm-10">';
                 echo $this->formSearch($form->get($i)->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
                 echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
                 echo '</div>';
@@ -60,9 +87,9 @@ $this->headTitle($title);
             } else {
             echo '<div class="form-group">';
                 echo $this->formLabel($form->get($i)->setLabelAttributes(
-                ['class' => 'control-label col-sm-1']
+                ['class' => 'control-label col-sm-2']
                 ));
-                echo '<div class="col-sm-11">';
+                echo '<div class="col-sm-10">';
                     echo $this->formSearch($form->get($i)->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
                     echo '</div>';
                 }

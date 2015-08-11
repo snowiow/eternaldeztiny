@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 
 use Warclaim\Form\WarclaimForm;
 use Warclaim\Model\Warclaim;
+use Warclaim\Model\WarclaimTable;
 
 class WarclaimController extends AbstractActionController
 {
@@ -19,20 +20,17 @@ class WarclaimController extends AbstractActionController
         $request = $this->getRequest();
 
         $members = $this->getAccountTable()->getMembers();
-        $names   = [];
-        foreach ($members as $member) {
-            $names[] = $member->getName();
-        }
+        $size    = $request->getPost()['select'];
         if ($request->isPost()) {
             if (array_key_exists('select', $request->getPost())) {
                 return new ViewModel([
-                    'form'  => $form,
-                    'size'  => $request->getPost()['select'],
-                    'names' => $names,
+                    'form'    => $form,
+                    'size'    => $size,
+                    'members' => $members,
                 ]);
             }
             $warclaim = new Warclaim();
-            $form->setInputFilter($warclaim->getInputFilter());
+            $form->setInputFilter($warclaim->getInputFilter($size));
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $warclaim->exchangeArray($form->getData());
@@ -43,18 +41,18 @@ class WarclaimController extends AbstractActionController
                 $errors = $form->getMessages();
 
                 return new ViewModel([
-                    'form'   => $form,
-                    'size'   => 10,
-                    'errors' => $errors,
-                    'names'  => $names,
+                    'form'    => $form,
+                    'size'    => $size,
+                    'errors'  => $errors,
+                    'members' => $members,
                 ]);
             }
         }
         return new ViewModel(
             [
-                'form'  => $form,
-                'size'  => 10,
-                'names' => $names,
+                'form'    => $form,
+                'size'    => 10,
+                'members' => $members,
             ]
         );
     }
@@ -66,7 +64,7 @@ class WarclaimController extends AbstractActionController
     {
         if (!$this->warclaimTable) {
             $sm                  = $this->getServiceLocator();
-            $this->warclaimTable = $sm->get('ApplyNow\Model\ApplicationTable');
+            $this->warclaimTable = $sm->get('Warclaim\Model\WarclaimTable');
         }
 
         return $this->warclaimTable;

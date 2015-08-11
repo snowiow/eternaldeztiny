@@ -24,18 +24,19 @@ class WarclaimTable
     public function saveWarclaim(Warclaim $warclaim)
     {
         $data = [
-            'name'     => $warclaim->getId(),
-            'password' => $warclaim->getAssignments(),
+            'id'          => $warclaim->getId(),
+            'strategy'    => $warclaim->getStrategy(),
+            'assignments' => serialize($warclaim->getAssignments()),
+            'open'        => $warclaim->isOpen(),
         ];
-        if (!$account->getId()) {
+        if (!$warclaim->getId()) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getAccount($warclaim->getId())) {
+            if ($this->getWarclaim($warclaim->getId())) {
                 $this->tableGateway->update($data, ['id' => $warclaim->getId()]);
             } else {
                 throw new \Exception('Warclaim id does not exist');
             }
         }
     }
-
 }

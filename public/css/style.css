@@ -76,3 +76,9 @@ p {
     color: #FFF;
     text-decoration: underline;
 }
+
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+}   

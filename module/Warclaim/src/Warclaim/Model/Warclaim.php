@@ -6,10 +6,28 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 
-class Warclaim implements InputFilterAwareInterface
+class Warclaim
 {
+    /**
+     * @var int
+     */
     private $id;
+
+    /**
+     * @var string
+     */
+    private $strategy;
+
+    /**
+     * @var string
+     */
     private $assignments;
+
+    /**
+     * @var bool
+     */
+    private $open;
+
     private $inputFilter;
 
     public function getId()
@@ -27,11 +45,43 @@ class Warclaim implements InputFilterAwareInterface
         $this->assignments = $assignments;
     }
 
+    public function getStrategy()
+    {
+        return $this->strategy;
+    }
+
+    public function setStrategy($strategy)
+    {
+        $this->strategy = $strategy;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen()
+    {
+        return $this->open;
+    }
+
+    /**
+     * @param bool $open
+     */
+    public function setOpen($open)
+    {
+        $this->open = $open;
+    }
+
     public function exchangeArray($data)
     {
 
-        $this->id          = (!empty($data['id'])) ? data['id'] : null;
-        $this->assignments = (!empty($data['assignments'])) ? data['assignments'] : null;
+        $this->id       = (!empty($data['id'])) ? $data['id'] : null;
+        $this->strategy = (!empty($data['strategy'])) ? $data['strategy'] : null;
+        $assignments    = [];
+        for ($i = 0; $i < 50; $i++) {
+            $assignments[$i] = $data[$i] ? $data[$i] : '';
+        }
+        $this->assignments = $assignments;
+        $this->open        = (!empty($data['open'])) ? $data['open'] : true;
     }
 
     /**
@@ -54,13 +104,30 @@ class Warclaim implements InputFilterAwareInterface
         throw new \Exception("Not used");
     }
 
-    public function getInputFilter()
+    public function getInputFilter($size)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+            $inputFilter->add([
+                'name'       => 'strategy',
+                'filter'     => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'max'      => 500,
+                        ],
+                    ],
+                ],
+            ]);
+
             //50 is maximum possible size in clanwars
-            for ($i = 0; $i < 50; $i++) {
+            for ($i = 0; $i < $size; $i++) {
                 $inputFilter->add([
                     'name'       => $i,
                     'filters'    => [
