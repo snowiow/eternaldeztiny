@@ -11,10 +11,11 @@ return [
             'warclaim' => [
                 'type'    => 'segment',
                 'options' => [
-                    'route'       => '/warclaim[/:action][/:id]',
+                    'route'       => '/warclaim[/:action][/:size][/:opponent]',
                     'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'size'     => '[0-9]+',
+                        'opponent' => '[\w\%\d_-]*',
                     ],
                     'defaults'    => [
                         'controller' => 'Warclaim\Controller\Warclaim',

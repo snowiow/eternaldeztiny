@@ -14,6 +14,16 @@ class Warclaim
     private $id;
 
     /**
+     * @var int
+     */
+    private $size;
+
+    /**
+     * @var string
+     */
+    private $opponent;
+
+    /**
      * @var string
      */
     private $strategy;
@@ -28,11 +38,45 @@ class Warclaim
      */
     private $open;
 
-    private $inputFilter;
+    private $createInputFilter;
+
+    private $precautionsInputFilter;
 
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOpponent()
+    {
+        return $this->opponent;
+    }
+
+    /**
+     * @param string $opponent
+     */
+    public function setOpponent($opponent)
+    {
+        $this->opponent = $opponent;
     }
 
     public function getAssignments()
@@ -73,12 +117,19 @@ class Warclaim
 
     public function exchangeArray($data)
     {
-
         $this->id       = (!empty($data['id'])) ? $data['id'] : null;
+        $this->size     = (!empty($data['size'])) ? $data['size'] : null;
         $this->strategy = (!empty($data['strategy'])) ? $data['strategy'] : null;
-        $assignments    = [];
-        for ($i = 0; $i < 50; $i++) {
-            $assignments[$i] = $data[$i] ? $data[$i] : '';
+        $this->opponent = (!empty($data['opponent'])) ? $data['opponent'] : null;
+
+        $assignments = [];
+        //Comes from db
+        if (array_key_exists('assignments', $data)) {
+            $assignments = unserialize($data['assignments']);
+        } else {
+            for ($i = 0; $i < $this->size; $i++) {
+                $assignments[$i] = $data[$i] ? $data[$i] : '';
+            }
         }
         $this->assignments = $assignments;
         $this->open        = (!empty($data['open'])) ? $data['open'] : true;
@@ -104,9 +155,36 @@ class Warclaim
         throw new \Exception("Not used");
     }
 
-    public function getInputFilter($size)
+    public function getPrecautionsInputFilter()
     {
-        if (!$this->inputFilter) {
+        if (!$this->precautionsInputFilter) {
+            $inputFilter = new InputFilter();
+
+            $inputFilter->add([
+                'name'       => 'opponent',
+                'filter'     => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 3,
+                            'max'      => 255,
+                        ],
+                    ],
+                ],
+            ]);
+            $this->precautionsInputFilter = $inputFilter;
+        }
+        return $this->precautionsInputFilter;
+    }
+
+    public function getCreateInputFilter($size)
+    {
+        if (!$this->createInputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
@@ -150,8 +228,8 @@ class Warclaim
                     ],
                 ]);
             }
-            $this->inputFilter = $inputFilter;
+            $this->createInputFilter = $inputFilter;
         }
-        return $this->inputFilter;
+        return $this->createInputFilter;
     }
 }

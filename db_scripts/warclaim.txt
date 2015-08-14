@@ -1,5 +1,7 @@
  CREATE TABLE warclaim (
    id INT NOT NULL auto_increment,
+   size INT NOT NULL,
+   opponent VARCHAR(255) NOT NULL,
    strategy TEXT,
    assignments TEXT NOT NULL,
    open bool NOT NULL,

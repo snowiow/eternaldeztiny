@@ -3,15 +3,26 @@
 namespace Warclaim\Form;
 
 use Zend\Form\Form;
+use Zend\Form\Element;
 
-class WarclaimForm extends Form
+class CreateForm extends Form
 {
-    public function __construct($name = null)
+    public function __construct($size)
     {
-        parent::__construct('warclaim');
+        parent::__construct('create');
 
         $this->add([
             'name' => 'id',
+            'type' => 'Hidden',
+        ]);
+
+        $this->add([
+            'name' => 'size',
+            'type' => 'Hidden',
+        ]);
+
+        $this->add([
+            'name' => 'opponent',
             'type' => 'Hidden',
         ]);
 
@@ -27,10 +38,10 @@ class WarclaimForm extends Form
             ],
         ]);
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < $size; $i++) {
             $this->add([
                 'name'       => $i,
-                'type'       => 'Zend\Form\Element\Text',
+                'type'       => 'Text',
                 'options'    => [
                     'label' => ($i + 1) . '.',
 
