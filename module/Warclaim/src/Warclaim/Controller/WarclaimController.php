@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 use Warclaim\Form\CreateForm;
+use Warclaim\Form\CurrentForm;
 use Warclaim\Form\PrecautionsForm;
 use Warclaim\Model\Warclaim;
 use Warclaim\Model\WarclaimTable;
@@ -86,14 +87,14 @@ class WarclaimController extends AbstractActionController
     public function currentAction()
     {
         $warclaim = $this->getWarclaimTable()->getCurrentWar();
-        var_dump($warclaim->getAssignments());
-        exit;
+        if (!$warclaim) {
+            $this->redirect()->toRoute('news');
+        }
 
-        return new ViewModel(
-            [
-                'warclaim' => $warclaim,
-            ]
-        );
+        $form = new CurrentForm($warclaim->getSize());
+        $form->bind($warclaim);
+
+        return ['form' => $form, 'warclaim' => $warclaim];
     }
 
     /**

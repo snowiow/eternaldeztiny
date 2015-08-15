@@ -4,6 +4,8 @@
    opponent VARCHAR(255) NOT NULL,
    strategy TEXT,
    assignments TEXT NOT NULL,
+   cleanup TEXT NOT NULL,
+   info TEXT NOT NULL,
    open bool NOT NULL,
    PRIMARY KEY(id)
  );
