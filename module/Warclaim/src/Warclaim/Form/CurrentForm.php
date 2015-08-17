@@ -7,7 +7,7 @@ use Warclaim\Form\CreateForm;
 class CurrentForm extends CreateForm
 {
 
-    public function __construct($size)
+    public function __construct($size, $role)
     {
         parent::__construct($size);
 
@@ -27,6 +27,15 @@ class CurrentForm extends CreateForm
                 ],
             ]);
         }
+
+        if ($role < \Account\Model\Role::CO) {
+            $this->get('strategy')->setAttribute('readonly', 'readonly');
+
+            for ($i = 0; $i < $size; $i++) {
+                $this->get($i)->setAttribute('readonly', 'readonly');
+            }
+        }
+
         $this->get('submit')->setAttribute('value', 'Update');
     }
 }

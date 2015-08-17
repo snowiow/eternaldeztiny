@@ -18,6 +18,11 @@ class WarclaimController extends AbstractActionController
 
     public function createAction()
     {
+        $session = new \Zend\Session\Container('user');
+        if (!$session || $session->role < \Account\Model\Role::CO) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
+
         $size     = (int) $this->params()->fromRoute('size', 10);
         $opponent = $this->params()->fromRoute('opponent', '');
         $form     = new CreateForm($size);
@@ -60,6 +65,11 @@ class WarclaimController extends AbstractActionController
 
     public function precautionsAction()
     {
+
+        $session = new \Zend\Session\Container('user');
+        if (!$session || $session->role < \Account\Model\Role::CO) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+        }
         $form    = new PrecautionsForm();
         $request = $this->getRequest();
 
@@ -86,15 +96,20 @@ class WarclaimController extends AbstractActionController
 
     public function currentAction()
     {
+        $session  = new \Zend\Session\Container('user');
         $warclaim = $this->getWarclaimTable()->getCurrentWar();
-        if (!$warclaim) {
-            $this->redirect()->toRoute('news');
+        if (!$warclaim || !$session || $session->role < \Account\Model\Role::MEMBER) {
+            return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
-        $form = new CurrentForm($warclaim->getSize());
+        $form = new CurrentForm($warclaim->getSize(), $session->role);
         $form->bind($warclaim);
 
-        return ['form' => $form, 'warclaim' => $warclaim];
+        return ['form' => $form, 'warclaim' => $warclaim, 'user' => $session];
+    }
+
+    public function nowarAction()
+    {
     }
 
     /**

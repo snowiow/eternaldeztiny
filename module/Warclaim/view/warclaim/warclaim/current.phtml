@@ -122,7 +122,9 @@ $this->headTitle($title);
             </table>
             <div class="form-group">
                 <?php echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success')) ?>
-                <button class="btn btn-danger">Close War</button>
+                <?php if ($user->role > \Account\Model\Role::ELDER): ?>
+                <a href="<?php $this->url('warclaim', ['action' => 'close', 'id' => $warclaim->getId()]); ?>" class="btn btn-danger">Close War</a>
+                <?php endif; ?>
             </div>
             <?php echo $this->form()->closeTag(); ?>
                             </div>

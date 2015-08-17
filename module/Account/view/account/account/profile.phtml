@@ -82,7 +82,9 @@ $this->headTitle($title);
             <h4>Warclaim</h4>
             <ul class="list-group">
                 <li class="list-group-item"><a href="/warclaim/current">Current war</a></li>
+                <?php if ($session->role > \Account\Model\Role::ELDER): ?>
                 <li class="list-group-item"><a href="/warclaim/precautions">Create new war</a></li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
