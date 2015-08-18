@@ -42,7 +42,7 @@ class WarclaimController extends AbstractActionController
                 $warclaim->exchangeArray($form->getData());
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
 
-                return $this->redirect()->toRoute('news');
+                return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
             } else {
                 $errors = $form->getMessages();
 
@@ -114,9 +114,25 @@ class WarclaimController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $warclaim->exchangeArray($form->getData());
+                //Validate if info is filled out if a cleanup was set
+                $errors = [];
+                for ($i = 0; $i < $warclaim->getSize(); $i++) {
+                    if ($warclaim->getCleanup()[$i] !== '' && $warclaim->getInfo()[$i] === '') {
+                        $errors[$i . 'i'] = 'You have to give an info, when you attack.';
+                    }
+                }
+                if ($errors) {
+                    return [
+                        'form'     => $form,
+                        'warclaim' => $warclaim,
+                        'errors'   => $errors,
+                        'members'  => $members,
+                        'user'     => $session,
+                    ];
+                }
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
 
-                return $this->redirect()->toRoute('news');
+                return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
             } else {
                 $errors = $form->getMessages();
 

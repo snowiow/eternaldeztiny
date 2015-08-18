@@ -70,15 +70,15 @@ $this->headTitle($title);
                                 echo '</td>';
                                 echo '<td>';
                                     echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
-                                echo '<p> No valid name. Only characters and numbers allowed</p>';
+                                    echo array_key_exists($i, $errors) ? '<p>' . $errors[$i] . '</p>' : '';
                                 echo '</td>';
                                 echo '<td>';
                                     echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
-                                echo '<p> No valid name. Only characters and numbers allowed</p>';
+                                    echo array_key_exists($i . 'c', $errors) ? '<p>' . $errors[$i . 'c'] . '</p>' : '';
                                 echo '</td>';
                                 echo '<td>';
                                     echo $this->formText($form->get($i . 'i'));
-                                echo '<p>No valid description</p>';
+                                    echo array_key_exists($i . 'i', $errors) ? '<p>' . $errors[$i . 'i'] . '</p>' : '';
                                 echo '</td>';
 
                             } else {
