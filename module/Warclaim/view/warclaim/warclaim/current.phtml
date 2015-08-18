@@ -53,7 +53,7 @@ $this->headTitle($title);
                         <th>#</th>
                         <th>Assigned</th>
                         <th>Cleaup</th>
-                        <th>Info</th>
+                        <th>Time mirror until attack</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,22 +61,23 @@ $this->headTitle($title);
                     for ($i = 0; $i < $warclaim->getSize(); $i++) {
                     echo '<tr>';
                         if (isset($errors)) { 
-                        if (array_key_exists('name', $errors)) {
+                        if (array_key_exists($i, $errors) || array_key_exists($i . 'c', $errors) ||
+                            array_key_exists($i . 'i', $errors)) {
                             echo '<td>';
                                 echo $this->formLabel($form->get($i)->setLabelAttributes(
                                 ['class' => 'control-label']
                                 ));
                                 echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i)->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
                                 echo '<p> No valid name. Only characters and numbers allowed</p>';
                                 echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
                                 echo '<p> No valid name. Only characters and numbers allowed</p>';
                                 echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'i')->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formText($form->get($i . 'i'));
                                 echo '<p>No valid description</p>';
                                 echo '</td>';
 
@@ -87,15 +88,14 @@ $this->headTitle($title);
                                     ));
                                     echo '</td>';
                                     echo '<td>';
-                                        echo $this->formSearch($form->get($i)->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                        echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
                                     echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
                                 echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'i')->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formText($form->get($i . 'i'));
                                 echo '</td>';
-
                                 }
                                 } else {
                                     echo '<td>';
@@ -104,16 +104,14 @@ $this->headTitle($title);
                                         ));
                                         echo '</td>';
                                     echo '<td>';
-                                        echo $this->formSearch($form->get($i)->setAttribute('class', 'form-control')->setAttribute('list', 'members')
-                                        ->setValue($warclaim->getAssignments()[$i]));
+                                        echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
                                     echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
                                 echo '</td>';
                                 echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'i')->setAttribute('class', 'form-control')->setAttribute('list', 'members'));
+                                    echo $this->formText($form->get($i . 'i'));
                                 echo '</td>';
-
                                 }
                             echo '</th>';
                         }

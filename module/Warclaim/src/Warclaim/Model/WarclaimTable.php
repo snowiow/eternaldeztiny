@@ -17,6 +17,25 @@ class WarclaimTable
     }
 
     /**
+     * Get the warclaim with the corresponding id
+     *
+     * @param int|string $id
+     *
+     * @return array|\ArrayObject|null
+     * @throws \Exception
+     */
+    public function getWarclaim(int $id)
+    {
+        $rowset = $this->tableGateway->select(['id' => $id]);
+        $row    = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $id");
+        }
+
+        return $row;
+    }
+
+    /**
      *
      * @param string|int $id
      *
@@ -50,12 +69,14 @@ class WarclaimTable
             'opponent'    => $warclaim->getOpponent(),
             'strategy'    => $warclaim->getStrategy(),
             'assignments' => serialize($warclaim->getAssignments()),
+            'cleanup'     => serialize($warclaim->getCleanup()),
+            'info'        => serialize($warclaim->getInfo()),
             'open'        => $warclaim->isOpen(),
         ];
         if (!$warclaim->getId()) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getWarclaim($warclaim->getId())) {
+            if ($this->getWarclaim((int) $warclaim->getId())) {
                 $this->tableGateway->update($data, ['id' => $warclaim->getId()]);
             } else {
                 throw new \Exception('Warclaim id does not exist');

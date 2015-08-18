@@ -34,6 +34,16 @@ class Warclaim
     private $assignments;
 
     /**
+     * @var string
+     */
+    private $cleanup;
+
+    /**
+     * @var string
+     */
+    private $info;
+
+    /**
      * @var bool
      */
     private $open;
@@ -41,6 +51,8 @@ class Warclaim
     private $createInputFilter;
 
     private $precautionsInputFilter;
+
+    private $currentInputFilter;
 
     public function getId()
     {
@@ -79,14 +91,52 @@ class Warclaim
         $this->opponent = $opponent;
     }
 
+    /**
+     * @return array
+     */
     public function getAssignments()
     {
         return $this->assignments;
     }
 
+    /**
+     * @param array $assignments
+     */
     public function setAssignments($assignments)
     {
         $this->assignments = $assignments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCleanup()
+    {
+        return $this->cleanup;
+    }
+
+    /**
+     * @param array $cleanup
+     */
+    public function setCleanup($cleanup)
+    {
+        $this->cleanup = $cleanup;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * @param array
+     */
+    public function setInfo($info)
+    {
+        $this->info = $info;
     }
 
     public function getStrategy()
@@ -123,15 +173,25 @@ class Warclaim
         $this->opponent = (!empty($data['opponent'])) ? $data['opponent'] : null;
 
         $assignments = [];
+        $cleanup     = [];
+        $info        = [];
         //Comes from db
-        if (array_key_exists('assignments', $data)) {
+        if (array_key_exists('assignments', $data) &&
+            array_key_exists('cleanup', $data) &&
+            array_key_exists('info', $data)) {
             $assignments = unserialize($data['assignments']);
+            $cleanup     = unserialize($data['cleanup']);
+            $info        = unserialize($data['info']);
         } else {
             for ($i = 0; $i < $this->size; $i++) {
                 $assignments[$i] = $data[$i] ? $data[$i] : '';
+                $cleanup[$i]     = $data[$i . 'c'] ? $data[$i . 'c'] : '';
+                $info[$i]        = $data[$i . 'i'] ? $data[$i . 'i'] : '';
             }
         }
         $this->assignments = $assignments;
+        $this->cleanup     = $cleanup;
+        $this->info        = $info;
         $this->open        = (!empty($data['open'])) ? $data['open'] : true;
     }
 
@@ -141,7 +201,17 @@ class Warclaim
      */
     public function getArrayCopy()
     {
-        return get_object_vars($this);
+        $data['id']       = $this->getId();
+        $data['size']     = $this->getSize();
+        $data['strategy'] = $this->getStrategy();
+        $data['opponent'] = $this->getOpponent();
+        $data['open']     = $this->isOpen();
+        for ($i = 0; $i < $this->getSize(); $i++) {
+            $data[$i]       = array_key_exists($i, $this->getAssignments()) ? $this->getAssignments()[$i] : '';
+            $data[$i . 'c'] = array_key_exists($i, $this->getCleanup()) ? $this->getCleanup()[$i] : '';
+            $data[$i . 'i'] = array_key_exists($i, $this->getInfo()) ? $this->getInfo()[$i] : '';
+        }
+        return $data;
     }
 
     /**
@@ -204,7 +274,6 @@ class Warclaim
                 ],
             ]);
 
-            //50 is maximum possible size in clanwars
             for ($i = 0; $i < $size; $i++) {
                 $inputFilter->add([
                     'name'       => $i,
@@ -231,5 +300,53 @@ class Warclaim
             $this->createInputFilter = $inputFilter;
         }
         return $this->createInputFilter;
+    }
+
+    public function getCurrentInputFilter($size)
+    {
+
+        if (!$this->currentInputFilter) {
+            $inputFilter = $this->getCreateInputFilter($size);
+            for ($i = 0; $i < $size; $i++) {
+                $inputFilter->add([
+                    'name'       => $i . 'c',
+                    'required'   => false,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'StringLength',
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min'      => 3,
+                                'max'      => 64,
+                            ],
+                        ],
+                    ],
+                ]);
+                $inputFilter->add([
+                    'name'       => $i . 'i',
+                    'required'   => false,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'StringLength',
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min'      => 3,
+                                'max'      => 255,
+                            ],
+                        ],
+                    ],
+                ]);
+            }
+            $this->currentInputFilter = $inputFilter;
+        }
+        return $this->currentInputFilter;
     }
 }

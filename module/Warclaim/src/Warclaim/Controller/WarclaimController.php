@@ -34,10 +34,12 @@ class WarclaimController extends AbstractActionController
 
         $members = $this->getAccountTable()->getMembers();
         if ($request->isPost()) {
+            $size = $request->getPost()['size'];
+            $form = new CreateForm($size);
             $form->setInputFilter($warclaim->getCreateInputFilter($size));
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $warclaim = $form->getData();
+                $warclaim->exchangeArray($form->getData());
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
 
                 return $this->redirect()->toRoute('news');
@@ -102,10 +104,32 @@ class WarclaimController extends AbstractActionController
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
-        $form = new CurrentForm($warclaim->getSize(), $session->role);
-        $form->bind($warclaim);
+        $members = $this->getAccountTable()->getMembers();
+        $form    = new CurrentForm($warclaim->getSize(), $session->role);
+        $form->setData($warclaim->getArrayCopy());
 
-        return ['form' => $form, 'warclaim' => $warclaim, 'user' => $session];
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($warclaim->getCurrentInputFilter($warclaim->getSize()));
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $warclaim->exchangeArray($form->getData());
+                $this->getWarclaimTable()->saveWarclaim($warclaim);
+
+                return $this->redirect()->toRoute('news');
+            } else {
+                $errors = $form->getMessages();
+
+                return [
+                    'form'     => $form,
+                    'warclaim' => $warclaim,
+                    'errors'   => $errors,
+                    'members'  => $members,
+                    'user'     => $session,
+                ];
+            }
+        }
+        return ['form' => $form, 'warclaim' => $warclaim, 'user' => $session, 'members' => $members];
     }
 
     public function nowarAction()
