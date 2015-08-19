@@ -90,6 +90,26 @@ class AccountTable
     }
 
     /**
+     * Returns accounts which names or minis fit to the given array
+     * @param array $names the names or minis of which the accounts are needed
+     * @return null|Account the found accounts or null
+     */
+    public function getAccountsFromNames(array $names)
+    {
+        if (!$names) {
+            return null;
+        }
+        $where = 'name = "' . $names[0] . '" OR mini = "' . $names[0] . '"';
+        for ($i = 1; $i < count($names); $i++) {
+            $where .= ' OR name = "' . $names[$i] . '"';
+            $where .= ' OR mini = "' . $names[$i] . '"';
+        }
+        return $this->tableGateway->select(function (Select $select) use ($where) {
+            $select->where($where);
+        });
+    }
+
+    /**
      * Saves an account to the db. If the id exists the given dataset will be updated
      * @param \Account\Model\Account $account
      *

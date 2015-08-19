@@ -289,10 +289,6 @@ class Warclaim
                                 'min'      => 3,
                                 'max'      => 64,
                             ],
-                            'name'    => 'Regex',
-                            'options' => [
-                                'pattern' => '/^[a-zA-Z0-9_-]+/',
-                            ],
                         ],
                     ],
                 ]);

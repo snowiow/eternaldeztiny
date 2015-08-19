@@ -1,12 +1,17 @@
 <?php
 
 return [
-    'controllers'  => [
-        'invokables' => [
-            'Warclaim\Controller\Warclaim' => 'Warclaim\Controller\WarclaimController',
+    'service_manager' => [
+        'factories' => [
+            'AppMail\Service\AppMailServiceInterface' => 'AppMail\Factory\AppMailServiceFactory',
         ],
     ],
-    'router'       => [
+    'controllers'     => [
+        'factories' => [
+            'Warclaim\Controller\Warclaim' => 'Warclaim\Factory\WarclaimControllerFactory',
+        ],
+    ],
+    'router'          => [
         'routes' => [
             'warclaim' => [
                 'type'    => 'segment',
@@ -20,13 +25,13 @@ return [
                     ],
                     'defaults'    => [
                         'controller' => 'Warclaim\Controller\Warclaim',
-                        'action'     => 'index',
+                        'action'     => 'current',
                     ],
                 ],
             ],
         ],
     ],
-    'view_manager' => [
+    'view_manager'    => [
         'template_path_stack' => [
             'warclaim' => __DIR__ . '/../view',
         ],

@@ -11,10 +11,34 @@ use Warclaim\Form\PrecautionsForm;
 use Warclaim\Model\Warclaim;
 use Warclaim\Model\WarclaimTable;
 
+use AppMail\Service\AppMailServiceInterface;
+use Account\Model\Account;
+use Application\Constants;
+
 class WarclaimController extends AbstractActionController
 {
+    /**
+     * @var WarclaimTable
+     */
     private $warclaimTable;
+
+    /**
+     * @var AccountTable
+     */
     private $accountTable;
+
+    /**
+     * @var AppMailServiceInterface
+     */
+    private $appMailService;
+
+    /**
+     * @param AppMailServiceInterface $appMailService
+     */
+    public function __construct(AppMailServiceInterface $appMailService)
+    {
+        $this->appMailService = $appMailService;
+    }
 
     public function createAction()
     {
@@ -24,7 +48,7 @@ class WarclaimController extends AbstractActionController
         }
 
         if ($this->getWarclaimTable()->getCurrentWar()) {
-            return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+            return $this->redirect()->toRoute('warclaim');
         }
 
         $size     = (int) $this->params()->fromRoute('size', 10);
@@ -44,29 +68,35 @@ class WarclaimController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $warclaim->exchangeArray($form->getData());
-                $this->getWarclaimTable()->saveWarclaim($warclaim);
+                $accounts = $this->getAccountTable()->getAccountsFromNames($warclaim->getAssignments());
+                //Normalize targets to 1-.. from 0-..
+                $assignments = [];
+                foreach ($warclaim->getAssignments() as $k => $v) {
+                    $assignments[$k + 1] = $v;
+                }
+                foreach ($accounts as $account) {
+                    $this->sendAssignmentMail($account, $assignments);
+                }
 
-                return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+                $this->getWarclaimTable()->saveWarclaim($warclaim);
+                return $this->redirect()->toRoute('warclaim');
             } else {
                 $errors = $form->getMessages();
-
-                return new ViewModel([
+                return [
                     'form'     => $form,
                     'size'     => $size,
                     'errors'   => $errors,
                     'members'  => $members,
                     'opponent' => $opponent,
-                ]);
+                ];
             }
         }
-        return new ViewModel(
-            [
-                'form'     => $form,
-                'size'     => $size,
-                'members'  => $members,
-                'opponent' => $opponent,
-            ]
-        );
+        return [
+            'form'     => $form,
+            'size'     => $size,
+            'members'  => $members,
+            'opponent' => $opponent,
+        ];
     }
 
     public function closeAction()
@@ -91,7 +121,7 @@ class WarclaimController extends AbstractActionController
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
                 return $this->redirect()->toRoute('account', ['action' => 'profile']);
             }
-            return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+            return $this->redirect()->toRoute('warclaim');
         }
 
         $session = $session = new \Zend\Session\Container('user');
@@ -116,7 +146,7 @@ class WarclaimController extends AbstractActionController
         }
 
         if ($this->getWarclaimTable()->getCurrentWar()) {
-            return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+            return $this->redirect()->toRoute('warclaim');
         }
         $form    = new PrecautionsForm();
         $request = $this->getRequest();
@@ -180,7 +210,7 @@ class WarclaimController extends AbstractActionController
                 }
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
 
-                return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+                return $this->redirect()->toRoute('warclaim');
             } else {
                 $errors = $form->getMessages();
 
@@ -223,5 +253,25 @@ class WarclaimController extends AbstractActionController
             $this->accountTable = $sm->get('Account\Model\AccountTable');
         }
         return $this->accountTable;
+    }
+
+    private function sendAssignmentMail(Account $account, array $assignments)
+    {
+        $target_main = implode(',', array_keys($assignments, $account->getName()));
+        $target_mini = implode(',', array_keys($assignments, $account->getMini()));
+
+        $text = 'Hello ' . $account->getName() . ". Your targets are:\n";
+
+        if ($target_main) {
+            $text .= $account->getName() . ': ' . $target_main . "\n";
+        }
+        if ($target_mini) {
+            $text .= $account->getMini() . ': ' . $target_mini . "\n";
+        }
+
+        $text .= 'Good Luck. Further information can be found under ' .
+        Constants::HOST . '/warclaim/';
+
+        $this->appMailService->sendMail($account->getEmail(), 'A new war has started!', $text);
     }
 }
