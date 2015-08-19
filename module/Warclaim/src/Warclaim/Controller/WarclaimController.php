@@ -23,6 +23,10 @@ class WarclaimController extends AbstractActionController
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
+        if ($this->getWarclaimTable()->getCurrentWar()) {
+            return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+        }
+
         $size     = (int) $this->params()->fromRoute('size', 10);
         $opponent = $this->params()->fromRoute('opponent', '');
         $form     = new CreateForm($size);
@@ -110,6 +114,10 @@ class WarclaimController extends AbstractActionController
         if (!$session || $session->role < \Account\Model\Role::CO) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
+
+        if ($this->getWarclaimTable()->getCurrentWar()) {
+            return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+        }
         $form    = new PrecautionsForm();
         $request = $this->getRequest();
 
@@ -123,6 +131,7 @@ class WarclaimController extends AbstractActionController
                 $opponent = $data['opponent'];
                 $this->redirect()->toRoute('warclaim', [
                     'action'   => 'create',
+                    'id'       => 0,
                     'size'     => $size,
                     'opponent' => $opponent,
                 ]);
@@ -156,7 +165,8 @@ class WarclaimController extends AbstractActionController
                 $errors = [];
                 for ($i = 0; $i < $warclaim->getSize(); $i++) {
                     if ($warclaim->getCleanup()[$i] !== '' && $warclaim->getInfo()[$i] === '') {
-                        $errors[$i . 'i'] = 'You have to give an info, when you attack.';
+                        $errors[$i . 'i'] = ['no_info' => 'You have to give an info, when you attack.'];
+                        $form->get($i . 'i')->setMessages($errors);
                     }
                 }
                 if ($errors) {

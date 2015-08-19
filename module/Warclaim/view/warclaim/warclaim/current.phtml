@@ -29,7 +29,7 @@ $this->headTitle($title);
             echo $this->formTextArea($form->get('strategy'));
             echo '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
             echo '</div>';
-        echo $this->formErrors('strategy');
+        echo $this->formElementErrors($form->get('strategy'));
         } else {
         echo '<div class="form-group has-success has-feedback">';
             echo $this->formLabel($form->get('strategy')->setLabelAttributes(['class' => 'control-label col-sm-2']));
@@ -70,15 +70,15 @@ $this->headTitle($title);
                                 echo '</td>';
                                 echo '<td>';
                                     echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
-                                    echo array_key_exists($i, $errors) ? '<p>' . $errors[$i] . '</p>' : '';
+                                    echo $this->formElementErrors($form->get($i));
                                 echo '</td>';
                                 echo '<td>';
                                     echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
-                                    echo array_key_exists($i . 'c', $errors) ? '<p>' . $errors[$i . 'c'] . '</p>' : '';
+                                    echo $this->formElementErrors($form->get($i . 'c'));
                                 echo '</td>';
                                 echo '<td>';
                                     echo $this->formText($form->get($i . 'i'));
-                                    echo array_key_exists($i . 'i', $errors) ? '<p>' . $errors[$i . 'i'] . '</p>' : '';
+                                    echo $this->formElementErrors($form->get($i . 'i'));
                                 echo '</td>';
 
                             } else {

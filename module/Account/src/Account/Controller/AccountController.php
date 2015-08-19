@@ -18,6 +18,7 @@ use Account\Model\AccountTable;
 use AppMail\Service\AppMailServiceInterface;
 use Application\Constants;
 use ApplyNow\Model\ApplicationTable;
+use Warclaim\Model\WarclaimTable;
 
 interface AUTH_RESULT
 {
@@ -32,12 +33,17 @@ class AccountController extends AbstractActionController
     /**
      * @var AccountTable
      */
-    protected $accountTable;
+    private $accountTable;
+
+    /**
+     * @var WarclaimTable
+     */
+    private $warclaimTable;
 
     /**
      * @var ApplicationTable
      */
-    protected $applicationTable;
+    private $applicationTable;
 
     /**
      * @var \AppMail\Service\AppMailServiceInterface
@@ -58,12 +64,13 @@ class AccountController extends AbstractActionController
         $session           = new \Zend\Session\Container('user');
         $self              = false;
         $open_applications = $this->getApplicationTable()->getOpenApplications();
-
+        $open_war          = $this->getWarclaimTable()->getCurrentWar();
         if ($session->name === $name || empty($name)) {
             return new ViewModel([
                 'self'              => true,
                 'account'           => $this->getAccountTable()->getAccountBy(['name' => $session->name]),
                 'open_applications' => $open_applications->count(),
+                'war'               => $open_war ? true : false,
             ]);
         } else {
             $account = $this->getAccountTable()->getAccountBy(['name' => $name]);
@@ -73,6 +80,7 @@ class AccountController extends AbstractActionController
                     'self'              => false,
                     'account'           => $account,
                     'open_applications' => $open_applications->count(),
+                    'war'               => $open_war ? true : false,
                 ]);
             }
             return $this->redirect()->toRoute('account', ['action' => 'nouser']);
@@ -290,6 +298,15 @@ class AccountController extends AbstractActionController
         }
 
         return $this->applicationTable;
+    }
+
+    public function getWarclaimTable()
+    {
+        if (!$this->warclaimTable) {
+            $sm                  = $this->getServiceLocator();
+            $this->warclaimTable = $sm->get('Warclaim\Model\WarclaimTable');
+        }
+        return $this->warclaimTable;
     }
 
     /**

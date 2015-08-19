@@ -81,8 +81,15 @@ $this->headTitle($title);
         <div class="col-md-3">
             <h4>Warclaim</h4>
             <ul class="list-group">
+                <?php if ($war): ?>
+                <li class="list-group-item">
+                    <a href="/warclaim/current">Current war</a>
+                    <span class="glyphicon glyphicon-flash"  style="color:blue"></span>
+                </li>
+                <?php else: ?>
                 <li class="list-group-item"><a href="/warclaim/current">Current war</a></li>
-                <?php if ($session->role > \Account\Model\Role::ELDER): ?>
+                <?php endif; ?>
+                <?php if ($session->role > \Account\Model\Role::ELDER && !$war): ?>
                 <li class="list-group-item"><a href="/warclaim/precautions">Create new war</a></li>
                 <?php endif; ?>
             </ul>

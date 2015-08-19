@@ -44,7 +44,6 @@ class CreateForm extends Form
                 'type'       => 'Text',
                 'options'    => [
                     'label' => ($i + 1) . '.',
-
                 ],
                 'attributes' => [
                     'class'    => 'form-control',

@@ -31,17 +31,17 @@ class Warclaim
     /**
      * @var string
      */
-    private $assignments;
+    private $assignments = [];
 
     /**
      * @var string
      */
-    private $cleanup;
+    private $cleanup = [];
 
     /**
      * @var string
      */
-    private $info;
+    private $info = [];
 
     /**
      * @var bool
@@ -184,9 +184,9 @@ class Warclaim
             $info        = unserialize($data['info']);
         } else {
             for ($i = 0; $i < $this->size; $i++) {
-                $assignments[$i] = $data[$i] ? $data[$i] : '';
-                $cleanup[$i]     = $data[$i . 'c'] ? $data[$i . 'c'] : '';
-                $info[$i]        = $data[$i . 'i'] ? $data[$i . 'i'] : '';
+                $assignments[$i] = array_key_exists($i, $data) ? $data[$i] : '';
+                $cleanup[$i]     = array_key_exists($i . 'c', $data) ? $data[$i . 'c'] : '';
+                $info[$i]        = array_key_exists($i . 'i', $data) ? $data[$i . 'i'] : '';
             }
         }
         $this->assignments = $assignments;
