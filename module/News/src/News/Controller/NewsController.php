@@ -162,9 +162,7 @@ class NewsController extends AbstractActionController
         try {
             $news = $this->getNewsTable()->getNews($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('news', [
-                'action' => 'index',
-            ]);
+            return $this->redirect()->toRoute('news');
         }
         $request = $this->getRequest();
         if ($request->isPost()) {

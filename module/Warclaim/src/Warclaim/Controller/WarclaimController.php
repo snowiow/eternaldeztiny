@@ -65,9 +65,47 @@ class WarclaimController extends AbstractActionController
         );
     }
 
+    public function closeAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('news');
+        }
+        try {
+            $warclaim = $this->getWarclaimTable()->getWarclaim($id);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('news');
+        }
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $close = $request->getPost('close', 'No');
+
+            if ($close === 'Yes') {
+                $id       = (int) $request->getPost('id');
+                $warclaim = $this->getWarclaimTable()->getWarclaim($id);
+                $warclaim->setOpen(false);
+                $this->getWarclaimTable()->saveWarclaim($warclaim);
+                return $this->redirect()->toRoute('account', ['action' => 'profile']);
+            }
+            return $this->redirect()->toRoute('warclaim', ['action' => 'current']);
+        }
+
+        $session = $session = new \Zend\Session\Container('user');
+        if (!$session || $session->role < \Account\Model\Role::CO) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
+
+        return [
+            'warclaim' => $warclaim,
+        ];
+    }
+
     public function precautionsAction()
     {
-
         $session = new \Zend\Session\Container('user');
         if (!$session || $session->role < \Account\Model\Role::CO) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
@@ -101,7 +139,7 @@ class WarclaimController extends AbstractActionController
         $session  = new \Zend\Session\Container('user');
         $warclaim = $this->getWarclaimTable()->getCurrentWar();
         if (!$warclaim || !$session || $session->role < \Account\Model\Role::MEMBER) {
-            return $this->redirect()->toRoute('account', ['action' => 'noright']);
+            return $this->redirect()->toRoute('warclaim', ['action' => 'nowar']);
         }
 
         $members = $this->getAccountTable()->getMembers();
@@ -153,7 +191,7 @@ class WarclaimController extends AbstractActionController
     }
 
     /**
-     * @return array|ApplicationTable|object
+     * @return array|WarclaimTable|object
      */
     public function getWarclaimTable()
     {

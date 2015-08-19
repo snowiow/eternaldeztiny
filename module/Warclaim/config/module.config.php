@@ -11,9 +11,10 @@ return [
             'warclaim' => [
                 'type'    => 'segment',
                 'options' => [
-                    'route'       => '/warclaim[/:action][/:size][/:opponent]',
+                    'route'       => '/warclaim[/:action][/:id][/:size][/:opponent]',
                     'constraints' => [
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'       => '[0-9]+',
                         'size'     => '[0-9]+',
                         'opponent' => '[\w\%\d_-]*',
                     ],

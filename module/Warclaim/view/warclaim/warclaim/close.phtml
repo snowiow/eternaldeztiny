@@ -1,0 +1,24 @@
+<?php
+$title = 'Close War';
+$this->headTitle($title);
+?>
+<div class="content shadow">
+    <div class="page-header">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+
+    <p>Are you sure that you want to close the current war against <?php echo $warclaim->getOpponent(); ?></p>
+    <?php
+    $url = $this->url('warclaim', [
+        'action' => 'close',
+        'id'     => $warclaim->getId(),
+    ]);
+    ?>
+    <form action="<?php echo $url; ?>" method="post">
+        <div>
+            <input type="hidden" name="id" value="<?php echo $warclaim->getId() ?>"/>
+            <input type="submit" class="btn btn-danger" name="close" value="Yes"/>
+            <input type="submit" class="btn btn-primary" name="close" value="No"/>
+        </div>
+    </form>
+</div>
