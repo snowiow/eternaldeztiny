@@ -194,9 +194,12 @@ class WarclaimController extends AbstractActionController
                 //Validate if info is filled out if a cleanup was set
                 $errors = [];
                 for ($i = 0; $i < $warclaim->getSize(); $i++) {
-                    if ($warclaim->getCleanup()[$i] !== '' && $warclaim->getInfo()[$i] === '') {
+                    if (($warclaim->getCleanup()[$i] !== '' && $warclaim->getInfo()[$i] === '')) {
                         $errors[$i . 'i'] = ['no_info' => 'You have to give an info, when you attack.'];
                         $form->get($i . 'i')->setMessages($errors);
+                    } elseif ($warclaim->getCleanup()[$i] === '' && $warclaim->getInfo()[$i] !== '') {
+                        $errors[$i . 'c'] = ['no_info' => 'You have to give a cleanup, when you give an info.'];
+                        $form->get($i . 'c')->setMessages($errors);
                     }
                 }
                 if ($errors) {
