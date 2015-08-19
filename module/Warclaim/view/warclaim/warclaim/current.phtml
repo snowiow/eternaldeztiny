@@ -47,13 +47,14 @@ $this->headTitle($title);
                 }
                 echo '</div>';
             ?>
+            <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Assigned</th>
-                        <th>Cleaup</th>
-                        <th>Time mirror until attack</th>
+                        <th class="col-xs-1">#</th>
+                        <th class="col-xs-4 name">Assigned</th>
+                        <th class="col-xs-4 name">Cleanup</th>
+                        <th class="col-xs-3">Time mirror until attack</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,6 +119,7 @@ $this->headTitle($title);
                         ?>
                 </tbody>
             </table>
+            </div>
             <div class="form-group">
                 <?php echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success')) ?>
                 <?php if ($user->role > \Account\Model\Role::ELDER): ?>

@@ -28,6 +28,7 @@ $this->headTitle($title);
         </tbody>
     </table>
     <div class="alert alert-success" role="alert">Processed Applications</div>
+    <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -58,6 +59,7 @@ $this->headTitle($title);
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <?php echo $this->paginationControl($this->processed, 'sliding', 
     [
     'partial/paginator.phtml', 

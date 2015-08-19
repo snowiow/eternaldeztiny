@@ -37,8 +37,18 @@ footer {
     width: 100%;
     background-color: #FCFCFC;
 }
+
 p {
     word-wrap:normal;
+}
+
+span.profile-icon {
+    color: blue;
+    float: right;
+}
+
+th.name {
+    min-width: 200px;
 }
 
 .btn-success:active, .btn-success.active {
