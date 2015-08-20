@@ -206,7 +206,7 @@ class Account
         $this->id       = (!empty($data['id'])) ? $data['id'] : null;
         $this->name     = !empty($data['name']) ? $data['name'] : null;
         $this->password = !empty($data['password']) ? $data['password'] : null;
-        $this->userhash = hash('sha256', $this->name);
+        $this->userhash = !empty($data['userhash']) ? $data['userhash'] : null;
         $this->email    = !empty($data['email']) ? $data['email'] : null;
         $this->role     = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
         $this->avatar   = !empty($data['avatar']) ? $data['avatar'] : null;

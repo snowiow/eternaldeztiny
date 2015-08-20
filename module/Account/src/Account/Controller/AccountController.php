@@ -115,7 +115,8 @@ class AccountController extends AbstractActionController
             //Needs to be rebinded, because everything that won't get binded by the form will
             //be deleted
             $account = $this->getAccountTable()->getAccount($session->id);
-            $post    = array_merge_recursive($request->getPost()->toArray(),
+
+            $post = array_merge_recursive($request->getPost()->toArray(),
                 $request->getFiles()->toArray());
             $form->setData($post);
             if ($form->isValid()) {
@@ -164,6 +165,7 @@ class AccountController extends AbstractActionController
                 $account->exchangeArray($form->getData());
                 if (!$this->getAccountTable()->getAccountBy(['name' => $account->getName()])) {
                     if (!$this->getAccountTable()->getAccountBy(['email' => $account->getEmail()])) {
+                        $account->setUserHash(hash('sha256', $account->getName()));
                         $this->getAccountTable()->saveAccount($account);
                         $this->sendConfirmationMail($account);
                     } else {
