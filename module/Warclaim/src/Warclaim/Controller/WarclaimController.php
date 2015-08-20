@@ -43,7 +43,7 @@ class WarclaimController extends AbstractActionController
     public function createAction()
     {
         $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!$session || $session->role < \Account\Model\Role::ELDER) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -125,7 +125,7 @@ class WarclaimController extends AbstractActionController
         }
 
         $session = $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!$session || $session->role < \Account\Model\Role::ELDER) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -141,7 +141,7 @@ class WarclaimController extends AbstractActionController
     public function precautionsAction()
     {
         $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!$session || $session->role < \Account\Model\Role::ELDER) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
