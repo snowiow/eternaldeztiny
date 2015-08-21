@@ -21,7 +21,7 @@ return [
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9]+',
                         'size'     => '[0-9]+',
-                        'opponent' => '[\w\%\d_-]*',
+                        'opponent' => '[\w\%\d\.,_-]*',
                     ],
                     'defaults'    => [
                         'controller' => 'Warclaim\Controller\Warclaim',
