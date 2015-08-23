@@ -85,6 +85,69 @@ class WarlogController extends AbstractActionController
         return ['form' => $form];
     }
 
+    public function winAction()
+    {
+        $session = $session = new \Zend\Session\Container('user');
+        if (!$session || $session->role < \Account\Model\Role::CO) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
+        $warlog = $this->getWarlogTable()->getWarlog();
+        if (!$warlog) {
+            return $this->redirect()->toRoute('account', ['action' => 'profile']);
+        }
+        $warlog->setWins($warlog->getWins() + 1);
+        $this->getWarlogTable()->saveWarlog($warlog);
+
+        return $this->redirect()->toRoute('warlog');
+    }
+
+    public function lossAction()
+    {
+        $session = $session = new \Zend\Session\Container('user');
+        if (!$session || $session->role < \Account\Model\Role::CO) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
+
+        $warlog = $this->getWarlogTable()->getWarlog();
+        if (!$warlog) {
+            return $this->redirect()->toRoute('account', ['action' => 'profile']);
+        }
+        $warlog->setLosses($warlog->getLosses() + 1);
+        $this->getWarlogTable()->saveWarlog($warlog);
+
+        return $this->redirect()->toRoute('warlog');
+    }
+
+    public function drawAction()
+    {
+        $session = $session = new \Zend\Session\Container('user');
+        if (!$session || $session->role < \Account\Model\Role::CO) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
+
+        $warlog = $this->getWarlogTable()->getWarlog();
+        if (!$warlog) {
+            return $this->redirect()->toRoute('account', ['action' => 'profile']);
+        }
+
+        $warlog->setDraws($warlog->getDraws() + 1);
+        $this->getWarlogTable()->saveWarlog($warlog);
+
+        return $this->redirect()->toRoute('warlog');
+    }
+
     /**
      * @return array|WarlogTable|object
      */

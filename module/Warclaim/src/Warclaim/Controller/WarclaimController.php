@@ -112,14 +112,23 @@ class WarclaimController extends AbstractActionController
         }
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $close = $request->getPost('close', 'No');
+            $close = $request->getPost('close', 'Abort');
 
-            if ($close === 'Yes') {
+            if ($close !== 'Abort') {
                 $id       = (int) $request->getPost('id');
                 $warclaim = $this->getWarclaimTable()->getWarclaim($id);
                 $warclaim->setOpen(false);
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
-                return $this->redirect()->toRoute('account', ['action' => 'profile']);
+                switch ($close) {
+                case 'Close':
+                    return $this->redirect()->toRoute('account', ['action' => 'profile']);
+                case 'Win':
+                    return $this->redirect()->toRoute('warlog', ['action' => 'win']);
+                case 'Loss':
+                    return $this->redirect()->toRoute('warlog', ['action' => 'loss']);
+                case 'Draw':
+                    return $this->redirect()->toRoute('warlog', ['action' => 'draw']);
+                }
             }
             return $this->redirect()->toRoute('warclaim');
         }

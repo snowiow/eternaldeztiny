@@ -7,7 +7,8 @@ $this->headTitle($title);
     <h1><?php echo $this->escapeHtml($title); ?></h1>
     </div>
 
-    <p>Are you sure that you want to close the current war against <?php echo $warclaim->getOpponent(); ?></p>
+    <p>Are you sure that you want to close the current war against <?php echo $warclaim->getOpponent(); ?>? 
+    You can update the warlog automatically by chosing win, draw or loss. Close doesn't effect the warlog.</p>
     <?php
     $url = $this->url('warclaim', [
         'action' => 'close',
@@ -17,8 +18,11 @@ $this->headTitle($title);
     <form action="<?php echo $url; ?>" method="post">
         <div>
             <input type="hidden" name="id" value="<?php echo $warclaim->getId() ?>"/>
-            <input type="submit" class="btn btn-danger" name="close" value="Yes"/>
-            <input type="submit" class="btn btn-primary" name="close" value="No"/>
+            <input type="submit" class="btn btn-success" name="close" value="Win"/>
+            <input type="submit" class="btn btn-warning" name="close" value="Draw"/>
+            <input type="submit" class="btn btn-danger" name="close" value="Loss"/>
+            <input type="submit" class="btn btn-primary" name="close" value="Close"/>
+            <input type="submit" class="btn btn-default" name="close" value="Abort"/>
         </div>
     </form>
 </div>
