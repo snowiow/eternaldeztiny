@@ -50,7 +50,7 @@ class AppMailService implements AppMailServiceInterface
      */
     public function sendMail(string $to, string $subject, string $content, array $files = [])
     {
-        $content .= "\n\n This is an automated mail. Please don't respond.";
+        $content .= "\n\nThis is an automated mail. Please don't respond.";
         $text              = new Mime\Part($content);
         $text->type        = 'text/plain';
         $text->charset     = 'utf-8';

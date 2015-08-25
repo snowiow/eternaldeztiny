@@ -92,3 +92,7 @@ th.name {
     width: 60%;
     padding: 10px;
 }   
+
+.longer {
+    min-height: 80%
+}

@@ -61,7 +61,7 @@ class AccountController extends AbstractActionController
     public function profileAction()
     {
         $name              = $this->params()->fromRoute('id', '');
-        $session           = new \Zend\Session\Container('user');
+        $session           = new Container('user');
         $self              = false;
         $open_applications = $this->getApplicationTable()->getOpenApplications();
         $open_war          = $this->getWarclaimTable()->getCurrentWar();
@@ -91,7 +91,7 @@ class AccountController extends AbstractActionController
     public function editAction()
     {
         $id      = (int) $this->params()->fromRoute('id', 0);
-        $session = $session = new \Zend\Session\Container('user');
+        $session = $session = new Container('user');
         if (!$id || $session->id != $id) {
             return $this->redirect()->toRoute('account', [
                 'action' => 'noright',

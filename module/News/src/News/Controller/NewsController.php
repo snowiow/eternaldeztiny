@@ -6,6 +6,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Paginator;
 
+use Account\Model\Role;
+use Account\Service\PermissionChecker;
 use News\Model\News;
 use News\Model\NewsTable;
 use News\Form\NewsForm;
@@ -43,7 +45,7 @@ class NewsController extends AbstractActionController
     public function addAction()
     {
         $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->role) || $session->role < \Account\Model\Role::ELDER) {
+        if (!PermissionChecker::check(Role::ELDER)) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',

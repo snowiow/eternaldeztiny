@@ -23,7 +23,7 @@ $this->headTitle($title);
             </ul>
         </div>
     </div>
-    <?php if ($self) { ?>
+    <?php if ($self): ?>
     <div class="row">
         <div class="col-md-3">
             <h4>Account Settings</h4>
@@ -31,7 +31,7 @@ $this->headTitle($title);
                 <li class="list-group-item"><a href="/account/edit/<?php echo $account->getId(); ?>">Edit Profile</a></li>
             </ul>
         </div>
-        <?php if ($session->role > 1) { ?>
+        <?php if (\Account\Service\PermissionChecker::check(\Account\Model\Role::MEMBER)): ?>
         <div class="col-md-3">
             <h4>Media</h4>
             <ul class="list-group">
@@ -42,27 +42,27 @@ $this->headTitle($title);
             <h4>Applications</h4>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <?php if($open_applications) {                    
-                    echo '<span class="badge badge-default">' . $open_applications . '</span> 
-                    <a href="/applynow/overview">Application Overview</a>'; 
-                    } else {
-                    echo '<a href="/applynow/overview">Application Overview </a>';
-                    }?>
+                    <?php if($open_applications): ?>
+                    <span class="badge badge-default"><?php echo $open_applications; ?></span> 
+                    <a href="/applynow/overview">Application Overview</a>
+                    <?php else: ?>
+                    <a href="/applynow/overview">Application Overview</a>
+                    <?php endif; ?>
                 </li>
             </ul>
         </div>
-        <?php } ?>
+        <?php endif; ?>
     </div>
     <div class="row">
-        <?php if ($session->role > 3) { ?>
+        <?php if (\Account\Service\PermissionChecker::check(\Account\Model\Role::ELDER)): ?>
         <div class="col-md-3">
             <h4>News</h4>
             <ul class="list-group">
                 <li class="list-group-item"><a href="<?php echo $this->url('news', ['action' => 'add']); ?>">Add news</a></li>
             </ul>
         </div>
-        <?php } ?>
-        <?php if ($session->role > 4) { ?>
+        <?php endif; ?>
+        <?php if (\Account\Service\PermissionChecker::check(\Account\Model\Role::CO)): ?>
         <div class="col-md-3">
             <h4>User Settings</h4>
             <ul class="list-group">
@@ -75,7 +75,7 @@ $this->headTitle($title);
                 <li class="list-group-item"><a href="/warlog/upload">Update current Warlog</a></li>
             </ul>
         </div>
-        <?php } ?>
+        <?php endif; ?>
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -89,11 +89,11 @@ $this->headTitle($title);
                 <?php else: ?>
                 <li class="list-group-item"><a href="/warclaim/current">Current war</a></li>
                 <?php endif; ?>
-                <?php if ($session->role > \Account\Model\Role::ELDER && !$war): ?>
+                <?php if (\Account\Service\PermissionChecker::check(\Account\Model\Role::CO) && !$war): ?>
                 <li class="list-group-item"><a href="/warclaim/precautions">Create new war</a></li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
-    <?php } ?>
+    <?php endif; ?>
 </div>

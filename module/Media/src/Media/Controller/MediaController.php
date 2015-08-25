@@ -5,7 +5,10 @@ namespace Media\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Paginator;
+use Zend\Session\Container;
 
+use Account\Service\PermissionChecker;
+use Account\Model\Role;
 use Media\Model\Media;
 use Media\Model\MediaTable;
 use Media\Form\MediaForm;
@@ -20,7 +23,7 @@ class MediaController extends AbstractActionController
     public function indexAction()
     {
         $name    = '';
-        $session = $session = new \Zend\Session\Container('user');
+        $session = $session = new Container('user');
         if (isset($session) && !empty($session->name)) {
             $name = $session->name;
         }
@@ -42,8 +45,7 @@ class MediaController extends AbstractActionController
      */
     public function addAction()
     {
-        $session = $session = new \Zend\Session\Container('user');
-        if (!isset($session->role) || $session->role < \Account\Model\Role::MEMBER) {
+        if (!PermissionChecker::check(Role::MEMBER)) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -70,6 +72,7 @@ class MediaController extends AbstractActionController
                 return ['form' => $form, 'accountId' => $session->id, 'errors' => $errors];
             }
         }
+        $session = new Container('user');
         return ['form' => $form, 'accountId' => $session->id];
     }
 
@@ -95,7 +98,7 @@ class MediaController extends AbstractActionController
                 'action' => 'index',
             ]);
         }
-        $session = $session = new \Zend\Session\Container('user');
+        $session = new Container('user');
         if (!isset($session->id) || $session->id != $media->getAccountId()) {
             return $this->redirect()->toRoute('account',
                 [
@@ -166,7 +169,7 @@ class MediaController extends AbstractActionController
             return $this->redirect()->toRoute('media');
         }
 
-        $session = $session = new \Zend\Session\Container('user');
+        $session = $session = new Container('user');
         if (!isset($session->id) || $session->id != $media->getAccountId()) {
             return $this->redirect()->toRoute('account',
                 [

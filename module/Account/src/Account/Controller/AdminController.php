@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 use Account\Model\Role;
+use Account\Service\PermissionChecker;
 
 class AdminController extends AbstractActionController
 {
@@ -13,8 +14,7 @@ class AdminController extends AbstractActionController
 
     public function setRolesAction()
     {
-        $session = new \Zend\Session\Container('user');
-        if ($session->role < Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 

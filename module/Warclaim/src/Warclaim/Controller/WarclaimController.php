@@ -13,6 +13,8 @@ use Warclaim\Model\WarclaimTable;
 
 use AppMail\Service\AppMailServiceInterface;
 use Account\Model\Account;
+use Account\Model\Role;
+use Account\Service\PermissionChecker;
 use Application\Constants;
 
 class WarclaimController extends AbstractActionController
@@ -42,8 +44,7 @@ class WarclaimController extends AbstractActionController
 
     public function createAction()
     {
-        $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -133,8 +134,7 @@ class WarclaimController extends AbstractActionController
             return $this->redirect()->toRoute('warclaim');
         }
 
-        $session = $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -149,8 +149,7 @@ class WarclaimController extends AbstractActionController
 
     public function precautionsAction()
     {
-        $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -184,13 +183,13 @@ class WarclaimController extends AbstractActionController
 
     public function currentAction()
     {
-        $session  = new \Zend\Session\Container('user');
         $warclaim = $this->getWarclaimTable()->getCurrentWar();
-        if (!$warclaim || !$session || $session->role < \Account\Model\Role::MEMBER) {
+        if (!$warclaim || !PermissionChecker::check(Role::MEMBER)) {
             return $this->redirect()->toRoute('warclaim', ['action' => 'nowar']);
         }
 
         $members = $this->getAccountTable()->getMembers();
+        $session = new \Zend\Session\Container('user');
         $form    = new CurrentForm($warclaim->getSize(), $session->role);
         $form->setData($warclaim->getArrayCopy());
 

@@ -4,14 +4,15 @@ namespace ApplyNow\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\File\Size;
+use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
 use ApplyNow\Form\ApplicationForm;
 use ApplyNow\Model\Application;
-
 use AppMail\Service\AppMailServiceInterface;
 use Account\Model\AccountTable;
 use Account\Model\Role;
+use Account\Service\PermissionChecker;
 use Application\Constants;
 
 class ApplyNowController extends AbstractActionController
@@ -129,8 +130,7 @@ class ApplyNowController extends AbstractActionController
 
     public function overviewAction()
     {
-        $session = new \Zend\Session\Container('user');
-        if ($session->role < Role::MEMBER) {
+        if (!PermissionChecker::check(Role::MEMBER)) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -138,6 +138,7 @@ class ApplyNowController extends AbstractActionController
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         $paginator->setItemCountPerPage(20);
 
+        $session = new Container('user');
         return new ViewModel([
             'role'        => $session->role,
             'unprocessed' => $this->getApplicationTable()->getOpenApplications(),
@@ -149,9 +150,7 @@ class ApplyNowController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $session = new \Zend\Session\Container('user');
-
-        if ($session->role < Role::MEMBER) {
+        if (!PermissionChecker::check(Role::MEMBER)) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
         $form = new ApplicationForm();
@@ -164,6 +163,7 @@ class ApplyNowController extends AbstractActionController
         $form->setData($application->getArrayCopy());
 
         $request = $this->getRequest();
+        $session = new Container('user');
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             $application->setProcessed($data['processed']);
@@ -181,8 +181,7 @@ class ApplyNowController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $session = new \Zend\Session\Container('user');
-        if ($session->role < Role::ELDER || $id === 0) {
+        if (!PermissionChecker::check(Role::ELDER) || $id === 0) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
         $application = $this->getApplicationTable()->getApplication($id);

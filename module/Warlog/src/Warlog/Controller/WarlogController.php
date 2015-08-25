@@ -5,12 +5,12 @@ namespace Warlog\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+use Account\Model\Role;
+use Account\Service\PermissionChecker;
+use Application\Constants;
 use Warlog\Form\WarlogForm;
 use Warlog\Model\Warlog;
 use Warlog\Model\WarlogTable;
-use Account\Model\Role;
-
-use Application\Constants;
 
 class WarlogController extends AbstractActionController
 {
@@ -44,8 +44,7 @@ class WarlogController extends AbstractActionController
 
     public function uploadAction()
     {
-        $session = new \Zend\Session\Container('user');
-        if ($session->role < Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
@@ -87,8 +86,7 @@ class WarlogController extends AbstractActionController
 
     public function winAction()
     {
-        $session = $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -107,8 +105,7 @@ class WarlogController extends AbstractActionController
 
     public function lossAction()
     {
-        $session = $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
@@ -128,8 +125,7 @@ class WarlogController extends AbstractActionController
 
     public function drawAction()
     {
-        $session = $session = new \Zend\Session\Container('user');
-        if (!$session || $session->role < \Account\Model\Role::CO) {
+        if (!PermissionChecker::check(Role::CO)) {
             return $this->redirect()->toRoute('account',
                 [
                     'action' => 'noright',
