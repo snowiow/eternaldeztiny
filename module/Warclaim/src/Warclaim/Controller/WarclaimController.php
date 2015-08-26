@@ -10,6 +10,7 @@ use Warclaim\Form\CurrentForm;
 use Warclaim\Form\PrecautionsForm;
 use Warclaim\Model\Warclaim;
 use Warclaim\Model\WarclaimTable;
+use Warclaim\Service\WarclaimService;
 
 use AppMail\Service\AppMailServiceInterface;
 use Account\Model\Account;
@@ -198,7 +199,11 @@ class WarclaimController extends AbstractActionController
             $form->setInputFilter($warclaim->getCurrentInputFilter($warclaim->getSize()));
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $warclaim->exchangeArray($form->getData());
+                $form_warclaim = new Warclaim();
+                $form_warclaim->exchangeArray($form->getData());
+                $service  = new WarclaimService();
+                $warclaim = $service->mergeWarclaims($warclaim, $form_warclaim);
+
                 //Validate if info is filled out if a cleanup was set
                 $errors = [];
                 for ($i = 0; $i < $warclaim->getSize(); $i++) {

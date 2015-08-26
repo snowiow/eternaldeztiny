@@ -62,7 +62,6 @@ class AccountController extends AbstractActionController
     {
         $name              = $this->params()->fromRoute('id', '');
         $session           = new Container('user');
-        $self              = false;
         $open_applications = $this->getApplicationTable()->getOpenApplications();
         $open_war          = $this->getWarclaimTable()->getCurrentWar();
         if ($session->name === $name || empty($name)) {
@@ -72,19 +71,18 @@ class AccountController extends AbstractActionController
                 'open_applications' => $open_applications->count(),
                 'war'               => $open_war ? true : false,
             ]);
-        } else {
-            $account = $this->getAccountTable()->getAccountBy(['name' => $name]);
-
-            if ($account) {
-                return new ViewModel([
-                    'self'              => false,
-                    'account'           => $account,
-                    'open_applications' => $open_applications->count(),
-                    'war'               => $open_war ? true : false,
-                ]);
-            }
-            return $this->redirect()->toRoute('account', ['action' => 'nouser']);
         }
+        $account = $this->getAccountTable()->getAccountBy(['name' => $name]);
+
+        if ($account) {
+            return new ViewModel([
+                'self'              => false,
+                'account'           => $account,
+                'open_applications' => $open_applications->count(),
+                'war'               => $open_war ? true : false,
+            ]);
+        }
+        return $this->redirect()->toRoute('account', ['action' => 'nouser']);
 
     }
 

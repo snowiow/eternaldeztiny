@@ -1,3 +1,18 @@
+<script>
+var time = new Date().getTime();
+$(document.body).bind("mousemove keypress", function(e) {
+    time = new Date().getTime();
+});
+
+function refresh() {
+    if(new Date().getTime() - time >= 120000) 
+        window.location.reload(true);
+    else 
+        setTimeout(refresh, 10000);
+}
+
+setTimeout(refresh, 10000);
+</script>
 <?php
 $title = 'Clanwar against ' . $warclaim->getOpponent();
 $this->headTitle($title);
@@ -48,77 +63,77 @@ $this->headTitle($title);
                 echo '</div>';
             ?>
             <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th class="col-xs-1">#</th>
-                        <th class="col-xs-4 name">Assigned</th>
-                        <th class="col-xs-4 name">Cleanup</th>
-                        <th class="col-xs-3">Time mirror until attack</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    for ($i = 0; $i < $warclaim->getSize(); $i++) {
-                    echo '<tr>';
-                        if (isset($errors)) { 
-                        if (array_key_exists($i, $errors) || array_key_exists($i . 'c', $errors) ||
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-1">#</th>
+                            <th class="col-xs-4 name">Assigned</th>
+                            <th class="col-xs-4 name">Cleanup</th>
+                            <th class="col-xs-3">Time mirror until attack</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        for ($i = 0; $i < $warclaim->getSize(); $i++) {
+                        echo '<tr>';
+                            if (isset($errors)) { 
+                            if (array_key_exists($i, $errors) || array_key_exists($i . 'c', $errors) ||
                             array_key_exists($i . 'i', $errors)) {
                             echo '<td>';
                                 echo $this->formLabel($form->get($i)->setLabelAttributes(
                                 ['class' => 'control-label']
                                 ));
                                 echo '</td>';
-                                echo '<td>';
-                                    echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
-                                    echo $this->formElementErrors($form->get($i));
+                            echo '<td>';
+                                echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
+                                echo $this->formElementErrors($form->get($i));
                                 echo '</td>';
-                                echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
-                                    echo $this->formElementErrors($form->get($i . 'c'));
+                            echo '<td>';
+                                echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
+                                echo $this->formElementErrors($form->get($i . 'c'));
                                 echo '</td>';
-                                echo '<td>';
-                                    echo $this->formText($form->get($i . 'i'));
-                                    echo $this->formElementErrors($form->get($i . 'i'));
+                            echo '<td>';
+                                echo $this->formText($form->get($i . 'i'));
+                                echo $this->formElementErrors($form->get($i . 'i'));
                                 echo '</td>';
 
                             } else {
-                                echo '<td>';
-                                    echo $this->formLabel($form->get($i)->setLabelAttributes(
-                                    ['class' => 'control-label']
-                                    ));
-                                    echo '</td>';
-                                    echo '<td>';
-                                        echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
-                                    echo '</td>';
-                                echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
+                            echo '<td>';
+                                echo $this->formLabel($form->get($i)->setLabelAttributes(
+                                ['class' => 'control-label']
+                                ));
                                 echo '</td>';
-                                echo '<td>';
-                                    echo $this->formText($form->get($i . 'i'));
+                            echo '<td>';
+                                echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
                                 echo '</td>';
-                                }
-                                } else {
-                                    echo '<td>';
-                                        echo $this->formLabel($form->get($i)->setLabelAttributes(
-                                        ['class' => 'control-label']
-                                        ));
-                                        echo '</td>';
-                                    echo '<td>';
-                                        echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
-                                    echo '</td>';
-                                echo '<td>';
-                                    echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
+                            echo '<td>';
+                                echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
                                 echo '</td>';
-                                echo '<td>';
-                                    echo $this->formText($form->get($i . 'i'));
+                            echo '<td>';
+                                echo $this->formText($form->get($i . 'i'));
                                 echo '</td>';
-                                }
+                            }
+                            } else {
+                            echo '<td>';
+                                echo $this->formLabel($form->get($i)->setLabelAttributes(
+                                ['class' => 'control-label']
+                                ));
+                                echo '</td>';
+                            echo '<td>';
+                                echo $this->formSearch($form->get($i)->setAttribute('list', 'members'));
+                                echo '</td>';
+                            echo '<td>';
+                                echo $this->formSearch($form->get($i . 'c')->setAttribute('list', 'members'));
+                                echo '</td>';
+                            echo '<td>';
+                                echo $this->formText($form->get($i . 'i'));
+                                echo '</td>';
+                            }
                             echo '</th>';
                         }
                         ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             </div>
             <div class="form-group">
                 <?php echo $this->formSubmit($form->get('submit')->setAttribute('class', 'btn btn-success')) ?>
@@ -127,4 +142,4 @@ $this->headTitle($title);
                 <?php endif; ?>
             </div>
             <?php echo $this->form()->closeTag(); ?>
-                            </div>
+        </div>
