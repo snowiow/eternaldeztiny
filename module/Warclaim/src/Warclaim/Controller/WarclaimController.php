@@ -74,7 +74,7 @@ class WarclaimController extends AbstractActionController
                 //Normalize targets to 1-.. from 0-..
                 $assignments = [];
                 foreach ($warclaim->getAssignments() as $k => $v) {
-                    $assignments[$k + 1] = $v;
+                    $assignments[$k + 1] = strtolower($v);
                 }
                 foreach ($accounts as $account) {
                     $this->sendAssignmentMail($account, $assignments);
@@ -273,8 +273,8 @@ class WarclaimController extends AbstractActionController
 
     private function sendAssignmentMail(Account $account, array $assignments)
     {
-        $target_main = implode(',', array_keys($assignments, $account->getName()));
-        $target_mini = implode(',', array_keys($assignments, $account->getMini()));
+        $target_main = implode(',', array_keys($assignments, strtolower($account->getName())));
+        $target_mini = implode(',', array_keys($assignments, strtolower($account->getMini())));
 
         $text = 'Hello ' . $account->getName() . ". Your targets are:\n";
 
