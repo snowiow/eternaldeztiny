@@ -77,7 +77,7 @@ class WarclaimController extends AbstractActionController
                     $assignments[$k + 1] = strtolower($v);
                 }
                 foreach ($accounts as $account) {
-                    $this->sendAssignmentMail($account, $assignments);
+                    $this->sendAssignmentMail($account, $assignments, $warclaim->getStrategy());
                 }
 
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
@@ -271,7 +271,7 @@ class WarclaimController extends AbstractActionController
         return $this->accountTable;
     }
 
-    private function sendAssignmentMail(Account $account, array $assignments)
+    private function sendAssignmentMail(Account $account, array $assignments, string $strategy)
     {
         $target_main = implode(',', array_keys($assignments, strtolower($account->getName())));
         $target_mini = implode(',', array_keys($assignments, strtolower($account->getMini())));
@@ -284,6 +284,8 @@ class WarclaimController extends AbstractActionController
         if ($target_mini) {
             $text .= $account->getMini() . ': ' . $target_mini . "\n";
         }
+
+        $text .= 'War Strategy: ' . $strategy . "\n\n";
 
         $text .= 'Good Luck. Further information can be found under ' .
         $_SERVER['SERVER_NAME'] . '/warclaim/';
