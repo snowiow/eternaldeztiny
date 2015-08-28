@@ -317,7 +317,7 @@ class AccountController extends AbstractActionController
     private function sendConfirmationMail($account)
     {
         $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText = $mailText . "follow the link:\n" . Constants::HOST . "/account/activate/" . $account->getUserHash();
+        $mailText = $mailText . "follow the link:\n" . $_SERVER['SERVER_NAME'] . "/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
     }

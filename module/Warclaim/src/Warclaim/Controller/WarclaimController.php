@@ -286,7 +286,7 @@ class WarclaimController extends AbstractActionController
         }
 
         $text .= 'Good Luck. Further information can be found under ' .
-        Constants::HOST . '/warclaim/';
+        $_SERVER['SERVER_NAME'] . '/warclaim/';
 
         $this->appMailService->sendMail($account->getEmail(), 'A new war has started!', $text);
     }

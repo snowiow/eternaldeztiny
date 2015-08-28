@@ -238,7 +238,7 @@ class ApplyNowController extends AbstractActionController
         "About me: " . $application->getInfos() . "\n" .
         "Why I want to join ED: " . $application->getWhy() . "\n" .
         "Strategies: " . $application->getStrategies() . "\n" .
-        "Process application at: " . Constants::HOST . '/applynow/detail/' . $application->getId();
+        "Process application at: " . $_SERVER['SERVER_NAME'] . '/applynow/detail/' . $application->getId();
 
         $this->appMailService->sendMail($mail_address, 'New application has arrived!', $mailText,
             [getcwd() . '/public' . $application->getBasePic(), getcwd() . '/public' . $application->getProfilePic()]);
