@@ -82,6 +82,10 @@ if (isset($errors)) {
 }
 ?>
 </div>
+
+<div class="form-group">
+<a href=" <?php echo $this->url('account', ['action' => 'lostpassword']); ?>">Lost password?</a>
+</div>
 <div class="form-group">
     <?php echo $this->formSubmit(
     $form->get('submit')

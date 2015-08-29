@@ -61,7 +61,7 @@ class AccountTable
      * Returns the data requested by the array. Key of array must be column name of Account table and $value the actual value
      * @param array $array with one [key => value] pair
      *
-     * @return array|\ArrayObject|null the account with the given email
+     * @return array|\ArrayObject|null|Account the account with the given email
      */
     public function getAccountBy($array)
     {

@@ -70,6 +70,16 @@ class Account
     private $editProfileInputFilter;
 
     /**
+     * @var InputFilter
+     */
+    private $lostPasswordInputFilter;
+
+    /**
+     * @var inputFilter
+     */
+    private $resetPasswordInputFilter;
+
+    /**
      * @param int
      */
     public function getId()
@@ -404,5 +414,78 @@ class Account
             $this->editProfileInputFilter = $inputFilter;
         }
         return $this->editProfileInputFilter;
+    }
+
+    public function getLostPasswordInputFilter()
+    {
+        if (!$this->lostPasswordInputFilter) {
+            $inputFilter = new InputFilter();
+            $inputFilter->add([
+                'name'       => 'email',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 4,
+                            'max'      => 255,
+                        ],
+                    ],
+                ],
+            ]);
+            $this->lostPasswordInputFilter = $inputFilter;
+        }
+        return $this->lostPasswordInputFilter;
+    }
+
+    public function getResetPasswordInputFilter()
+    {
+        if (!$this->resetPasswordInputFilter) {
+            $inputFilter = new InputFilter();
+            $inputFilter->add([
+                'name'       => 'password',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 4,
+                            'max'      => 64,
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'       => 'repeat',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 4,
+                            'max'      => 64,
+                        ],
+                    ],
+                ],
+            ]);
+            $this->resetPasswordInputFilter = $inputFilter;
+        }
+        return $this->resetPasswordInputFilter;
     }
 }

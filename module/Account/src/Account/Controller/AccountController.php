@@ -11,6 +11,8 @@ use Zend\InputFilter\FileInput;
 use Account\Form\RegisterForm;
 use Account\Form\LoginForm;
 use Account\Form\EditProfileForm;
+use Account\Form\LostPasswordForm;
+use Account\Form\ResetPasswordForm;
 use Account\Model\Account;
 use Account\Model\Role;
 use Account\Model\AccountTable;
@@ -83,7 +85,6 @@ class AccountController extends AbstractActionController
             ]);
         }
         return $this->redirect()->toRoute('account', ['action' => 'nouser']);
-
     }
 
     public function editAction()
@@ -272,6 +273,73 @@ class AccountController extends AbstractActionController
         }
     }
 
+    public function lostpasswordAction()
+    {
+        $form    = new LostPasswordForm();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $account = new Account();
+            $form->setInputFilter($account->getLostPasswordInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $account->exchangeArray($form->getData());
+                $account = $this->getAccountTable()->getAccountBy(['email' => $account->getEmail()]);
+                if (!$account) {
+                    return $this->redirect()->toRoute('account', ['action' => 'nouser']);
+                }
+                $account->setUserHash(hash('sha256', $account->getName()));
+                $this->getAccountTable()->saveAccount($account);
+                $this->sendLostPasswordMail($account);
+
+                return $this->redirect()->toRoute('account', ['action' => 'lostpasswordsuccess']);
+            }
+            return ['form' => $form, 'errors' => 'No valid E-Mail adress'];
+        }
+        return ['form' => $form];
+    }
+
+    public function resetpasswordAction()
+    {
+        $userhash = $this->params()->fromRoute('id', '');
+        $account  = $this->getAccountTable()->getAccountBy(['userhash' => $userhash]);
+        $form     = new ResetPasswordForm();
+        $request  = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($account->getResetPasswordInputFilter());
+            $form->setData($request->getPost());
+            $userhash = $request->getPost()['userhash'];
+            if ($form->isValid()) {
+                if ($form->getData()['password'] !== $form->getData()['repeat']) {
+                    $errors           = [];
+                    $errors['repeat'] = ['not_same' => 'Passwords have to be the same'];
+                    $form->get('repeat')->setMessages($errors);
+                    return ['form' => $form, 'errors' => $errors, 'userhash' => $userhash];
+                }
+
+                $account  = $this->getAccountTable()->getAccountBy(['userhash' => $userhash]);
+                $password = hash('sha256', $form->getData()['password']) . Constants::SALT;
+                $account->setPassword($password);
+                $account->setUserHash(null);
+                $this->getAccountTable()->saveAccount($account);
+                return $this->redirect()->toRoute('account', ['action' => 'resetpasswordsuccess']);
+            }
+            $errors = $form->getMessages();
+            return ['form' => $form, 'errors' => $errors, 'userhash' => $userhash];
+        }
+        if (!$account || !$userhash) {
+            return $this->redirect()->toRoute('account', ['action' => 'nouser']);
+        }
+        return ['form' => $form, 'userhash' => $userhash];
+    }
+
+    public function lostpasswordsuccessAction()
+    {
+    }
+
+    public function resetpasswordsuccessAction()
+    {
+    }
+
     /**
      * Retrieve the accountTable
      *
@@ -314,12 +382,25 @@ class AccountController extends AbstractActionController
      *
      * @param Account $account
      */
-    private function sendConfirmationMail($account)
+    private function sendConfirmationMail(Account $account)
     {
         $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText = $mailText . "follow the link:\n" . $_SERVER['SERVER_NAME'] . "/account/activate/" . $account->getUserHash();
+        $mailText .= "follow the link:\n" . $_SERVER['SERVER_NAME'] . "/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
+    }
+
+    /**
+     * Sends out a lost password mail to the given account
+     * @param Account $account
+     */
+    private function sendLostPasswordMail(Account $account)
+    {
+        $mailText = 'Hello ' . $account->getName() . ', a password reset for your account was requested. ' .
+        'If you didn\'t request a password reset, you don\'t need to do anything. If you really want to ' .
+        'reset your password, please follow the given link: ' . $_SERVER['SERVER_NAME'] . '/account/resetpassword/' .
+        $account->getUserHash();
+        $this->appMailService->sendMail($account->getEmail(), 'Password Reset', $mailText);
     }
 
     /**

@@ -300,7 +300,6 @@ class Warclaim
 
     public function getCurrentInputFilter($size)
     {
-
         if (!$this->currentInputFilter) {
             $inputFilter = $this->getCreateInputFilter($size);
             for ($i = 0; $i < $size; $i++) {
