@@ -2,16 +2,14 @@
 
 namespace Account\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+use Account\Controller\AbstractAccountController;
 use Account\Model\Role;
 use Account\Service\PermissionChecker;
 
-class AdminController extends AbstractActionController
+class AdminController extends AbstractAccountController
 {
-    protected $accountTable;
-
     public function setRolesAction()
     {
         if (!PermissionChecker::check(Role::CO)) {
@@ -37,20 +35,4 @@ class AdminController extends AbstractActionController
         }
         $this->redirect()->toRoute('admin', ['action' => 'setroles']);
     }
-
-    /**
-     * Retrieve the accountTable
-     *
-     * @return AccountTable
-     */
-    public function getAccountTable()
-    {
-        if (!$this->accountTable) {
-            $sm                 = $this->getServiceLocator();
-            $this->accountTable = $sm->get('Account\Model\AccountTable');
-        }
-
-        return $this->accountTable;
-    }
-
 }

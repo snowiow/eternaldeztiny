@@ -9,6 +9,7 @@ return [
     'controllers'     => [
         'factories'  => [
             'Account\Controller\Account' => 'Account\Factory\AccountControllerFactory',
+            'Account\Controller\Auth'    => 'Account\Factory\AuthControllerFactory',
         ],
         'invokables' => [
             'Account\Controller\Admin' => 'Account\Controller\AdminController',
@@ -32,13 +33,25 @@ return [
             'admin'   => [
                 'type'    => 'segment',
                 'options' => [
-                    'route'       => '/admin[/:action][/:id]',
+                    'route'       => '/admin[/:action]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[a-zA-Z]+',
                     ],
                     'defaults'    => [
                         'controller' => 'Account\Controller\Admin',
+                    ],
+                ],
+            ],
+            'auth'    => [
+                'type'    => 'segment',
+                'options' => [
+                    'route'       => '/auth[/:action][/:id]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[a-zA-Z0-9_-]+',
+                    ],
+                    'defaults'    => [
+                        'controller' => 'Account\Controller\Auth',
                     ],
                 ],
             ],
@@ -48,6 +61,7 @@ return [
         'template_path_stack' => [
             'account' => __DIR__ . '/../view',
             'admin'   => __DIR__ . '/../view',
+            'auth'    => __DIR__ . '/../view',
         ],
     ],
 ];
