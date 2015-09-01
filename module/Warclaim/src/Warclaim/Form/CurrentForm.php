@@ -2,8 +2,6 @@
 
 namespace Warclaim\Form;
 
-use Warclaim\Form\CreateForm;
-
 class CurrentForm extends CreateForm
 {
 

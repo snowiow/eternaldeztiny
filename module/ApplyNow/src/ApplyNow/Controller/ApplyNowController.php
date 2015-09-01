@@ -13,7 +13,6 @@ use AppMail\Service\AppMailServiceInterface;
 use Account\Model\AccountTable;
 use Account\Model\Role;
 use Account\Service\PermissionChecker;
-use Application\Constants;
 
 class ApplyNowController extends AbstractActionController
 {

@@ -5,7 +5,6 @@ namespace Members\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-use Account\Model\Account;
 use Account\Model\Role;
 
 class MembersController extends AbstractActionController

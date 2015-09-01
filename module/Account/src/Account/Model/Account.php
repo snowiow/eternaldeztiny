@@ -5,8 +5,6 @@ namespace Account\Model;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 
-use Application\Constants;
-
 class Account
 {
     /**

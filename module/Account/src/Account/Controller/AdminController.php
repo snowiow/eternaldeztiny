@@ -4,7 +4,6 @@ namespace Account\Controller;
 
 use Zend\View\Model\ViewModel;
 
-use Account\Controller\AbstractAccountController;
 use Account\Model\Role;
 use Account\Service\PermissionChecker;
 

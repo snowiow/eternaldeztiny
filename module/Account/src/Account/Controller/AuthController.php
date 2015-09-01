@@ -2,7 +2,6 @@
 
 namespace Account\Controller;
 
-use Account\Controller\AbstractAccountController;
 use Account\Form\RegisterForm;
 use Account\Form\LoginForm;
 use Account\Model\Account;

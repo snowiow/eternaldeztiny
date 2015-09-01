@@ -10,7 +10,6 @@ use Zend\Session\Container;
 use Account\Service\PermissionChecker;
 use Account\Model\Role;
 use Media\Model\Media;
-use Media\Model\MediaTable;
 use Media\Form\MediaForm;
 
 class MediaController extends AbstractActionController

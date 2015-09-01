@@ -7,16 +7,11 @@ use Zend\Session\Container;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\FileInput;
 
-use Account\Controller\AbstractAccountController;
-use Account\Form\RegisterForm;
-use Account\Form\LoginForm;
 use Account\Form\EditProfileForm;
 use Account\Form\LostPasswordForm;
 use Account\Form\ResetPasswordForm;
 use Account\Model\Account;
 use Account\Model\Role;
-use Account\Model\AccountTable;
-use Account\Service\SessionService;
 
 use AppMail\Service\AppMailServiceInterface;
 use Application\Constants;

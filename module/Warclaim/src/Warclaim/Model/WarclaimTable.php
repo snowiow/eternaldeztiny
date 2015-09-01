@@ -5,8 +5,6 @@ namespace Warclaim\Model;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
-use Warclaim\Model\Warclaim;
-
 class WarclaimTable
 {
     private $tableGateway;

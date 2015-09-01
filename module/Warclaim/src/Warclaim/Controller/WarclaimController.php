@@ -16,7 +16,6 @@ use AppMail\Service\AppMailServiceInterface;
 use Account\Model\Account;
 use Account\Model\Role;
 use Account\Service\PermissionChecker;
-use Application\Constants;
 
 class WarclaimController extends AbstractActionController
 {

@@ -2,8 +2,6 @@
 
 namespace AppMail\Model;
 
-use AppMail\Service\AppMailServiceInterface;
-
 class AppMail implements AppMailInterface
 {
     /**
