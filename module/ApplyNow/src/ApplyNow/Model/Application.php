@@ -18,16 +18,16 @@ interface Status
 function statusToString(\int $status)
 {
     switch ($status) {
-    case (Status::ACCEPTED):
-        return 'accepted';
-    case (Status::DECLINED):
-        return 'declined';
-    case (Status::ACCEPTED_MAILED):
-        return 'accepted and mail send';
-    case (Status::DECLINED_MAILED):
-        return 'declined and mail send';
-    default:
-        return 'not processed';
+        case (Status::ACCEPTED):
+            return 'accepted';
+        case (Status::DECLINED):
+            return 'declined';
+        case (Status::ACCEPTED_MAILED):
+            return 'accepted and mail send';
+        case (Status::DECLINED_MAILED):
+            return 'declined and mail send';
+        default:
+            return 'not processed';
     }
 }
 
@@ -650,7 +650,7 @@ class Application implements InputFilterAwareInterface
                         'options' => [
                             'encoding' => 'UTF-8',
                             'min'      => 1,
-                            'max'      => 3,
+                            'max'      => 5,
                         ],
                     ],
                 ],
