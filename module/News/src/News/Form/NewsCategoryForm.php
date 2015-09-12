@@ -44,8 +44,9 @@ class NewsCategoryForm extends Form
             'name'       => 'submit',
             'type'       => 'Submit',
             'attributes' => [
-                'value' => 'Apply',
+                'value' => 'Add',
                 'id'    => 'submitbutton',
+                'class' => 'btn btn-success',
             ],
         ]);
     }

@@ -9,6 +9,7 @@ use Zend\Db\TableGateway\TableGateway;
 
 use News\Model\NewsTable;
 use News\Model\NewsCategoryTable;
+use News\Model\NewsCategory;
 use News\Model\News;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
@@ -36,23 +37,23 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return [
             'factories' => [
-                'News\Model\NewsTable'             => function ($sm) {
+                'News\Model\NewsTable'         => function ($sm) {
                     $tableGateway = $sm->get('NewsTableGateway');
                     $table = new NewsTable($tableGateway);
                     return $table;
                 },
-                'News\Model\NewsCategoyController' => function ($sm) {
+                'News\Model\NewsCategoryTable' => function ($sm) {
                     $tableGateway = $sm->get('NewsCategoryTableGateway');
-                    $table = new NewsCategoryTable($tablegateway);
+                    $table = new NewsCategoryTable($tableGateway);
                     return $table;
                 },
-                'NewsTableGateway'                 => function ($sm) {
+                'NewsTableGateway'             => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new News());
                     return new TableGateway('news', $dbAdapter, null, $resultSetPrototype);
                 },
-                'NewsCategoryTableGateway'         => function ($sm) {
+                'NewsCategoryTableGateway'     => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new NewsCategory());

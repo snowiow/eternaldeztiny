@@ -19,14 +19,17 @@ class NewsCategory implements InputFilterAwareInterface
     private $name;
 
     /**
-     * @var string
-     */
-    private $path;
-
-    /**
      * @var InputFilter
      */
     private $inputFilter;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return string
@@ -45,22 +48,6 @@ class NewsCategory implements InputFilterAwareInterface
     }
 
     /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-    }
-
-    /**
      * Fill up the model class with the given data
      * @param array $data
      */
@@ -68,7 +55,6 @@ class NewsCategory implements InputFilterAwareInterface
     {
         $this->id   = !empty($data['id']) ? $data['id'] : null;
         $this->name = !empty($data['name']) ? $data['name'] : null;
-        $this->path = !empty($data['path']) ? $data['path'] : null;
     }
 
     public function getArrayCopy()
@@ -76,13 +62,36 @@ class NewsCategory implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    public function setInputFilter(InputFilterAwareInterface $inputFIlter)
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("not used");
     }
 
     public function getInputFilter()
     {
-        return;
+        if (!$this->inputFilter) {
+            $inputFilter = new InputFilter();
+
+            $inputFilter->add([
+                'name'       => 'name',
+                'required'   => 'true',
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 3,
+                            'max'      => 64,
+                        ],
+                    ],
+                ],
+            ]);
+            $this->inputFilter = $inputFilter;
+        }
+        return $this->inputFilter;
     }
 }

@@ -3,7 +3,8 @@
 return [
     'controllers'  => [
         'invokables' => [
-            'News\Controller\News' => 'News\Controller\NewsController',
+            'News\Controller\News'         => 'News\Controller\NewsController',
+            'News\Controller\NewsCategory' => 'News\Controller\NewsCategoryController',
         ],
     ],
     'router'       => [

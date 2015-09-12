@@ -1,5 +1,5 @@
  CREATE TABLE news_category (
    id INT NOT NULL auto_increment,
-   name VARCHAR(65),
-   path VARCHAR(255),
+   name VARCHAR(65) UNIQUE NOT NULL,
+   PRIMARY KEY (id)
  );
