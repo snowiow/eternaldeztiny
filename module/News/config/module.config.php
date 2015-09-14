@@ -41,7 +41,8 @@ return [
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'news' => __DIR__ . '/../view',
+            'news'         => __DIR__ . '/../view',
+            'newscategory' => __DIR__ . '/../view',
         ],
     ],
 ];
