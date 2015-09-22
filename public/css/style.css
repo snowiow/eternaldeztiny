@@ -51,6 +51,16 @@ th.name {
     min-width: 200px;
 }
 
+img.news-cat {
+    max-width: 80px;
+    max-height: 80px;
+}
+
+.news-cat {
+    max-width: 90px;
+    max-height: 90px;
+}
+
 .btn-success:active, .btn-success.active {
   background-color: #57a900;
 }

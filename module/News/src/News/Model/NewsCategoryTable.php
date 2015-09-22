@@ -2,9 +2,8 @@
 
 namespace News\Model;
 
-use Zend\Db\TableGateway\TableGateway;
-
 use News\Model\NewsCategory;
+use Zend\Db\TableGateway\TableGateway;
 
 class NewsCategoryTable
 {
@@ -20,6 +19,15 @@ class NewsCategoryTable
     public function __construct(TableGateway $tableGateway)
     {
         $this->tableGateway = $tableGateway;
+    }
+
+    /**
+     * Returns all NewsCategories in db
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
+    public function fetchAll()
+    {
+        return $this->tableGateway->select();
     }
 
     /**
@@ -54,7 +62,7 @@ class NewsCategoryTable
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getNews($id)) {
+            if ($this->getNewsCategoryBy(['id' => $id])) {
                 $this->tableGateway->update($data, ['id' => $id]);
             } else {
                 throw new \Ȩxception('NewsCategory id does not exist');

@@ -23,8 +23,7 @@ class NewsCategoryForm extends Form
                 'label' => 'Name',
             ],
             'attributes' => [
-                'required' => 'required',
-                'class'    => 'form-control',
+                'class' => 'form-control',
             ],
         ]);
 
@@ -35,8 +34,7 @@ class NewsCategoryForm extends Form
                 'label' => 'Image',
             ],
             'attributes' => [
-                'required' => 'required',
-                'class'    => 'form-control',
+                'class' => 'form-control',
             ],
         ]);
 

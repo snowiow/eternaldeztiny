@@ -40,6 +40,15 @@ class NewsCategory implements InputFilterAwareInterface
     }
 
     /**
+     * Generates the path of the image
+     * @return string
+     */
+    public function getPath()
+    {
+        return '/news_cat/' . $this->name . '.png';
+    }
+
+    /**
      * @param string $name
      */
     public function setName($name)

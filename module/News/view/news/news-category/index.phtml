@@ -4,7 +4,41 @@ $this->headTitle($title);
 ?>
 <div class="content shadow">
     <div class="page-header">
-        <h1><?php $this->escapeHtml($title); ?></h1>
+        <h1><?php echo $this->escapeHtml($title); ?></h1>
     </div>
-    test
+    <a class="btn btn-success" href="<?php echo $this->url('newscategory', ['action' => 'add']); ?>">Add Category</a>
+    <br />
+    <br />
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($categories as $category) : ?>
+                <tr>
+                    <th>
+                        <a href="<?php echo $category->getPath(); ?>" class="thumbnail news-cat">
+                        <img src="<?php echo $category->getPath(); ?>" class="img-responsive img-thumbnail news-cat"></a>
+                    </th>
+                    <th><?php echo $category->getName(); ?></th>
+                    <th>
+                        <a href="<?php echo $this->url('newscategory', [
+                            'action' => 'edit', 
+                            'id' => $category->getId()
+                        ]); ?>" class="btn btn-default">Edit</a>
+                        <a href="<?php echo $this->url('newscategory', [
+                            'action' => 'delete', 
+                            'id' => $category->getId()
+                        ]); ?>" class="btn btn-danger">Delete</>
+                    </th>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
