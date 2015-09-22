@@ -69,4 +69,15 @@ class NewsCategoryTable
             }
         }
     }
+
+    /**
+     * Deletes the news category with the corresponding id.
+     *
+     * @param int|string $id
+     */
+    public function deleteNewsCategory(int $id)
+    {
+        $this->tableGateway->delete(['id' => $id]);
+    }
+
 }

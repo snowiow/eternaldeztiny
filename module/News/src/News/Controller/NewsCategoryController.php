@@ -2,16 +2,15 @@
 
 namespace News\Controller;
 
-use Zend\File\Transfer\Adapter\Http;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Validator\File\Size;
-use Zend\Http\PhpEnvironment\Request;
-
 use Account\Model\Role;
 use Account\Service\PermissionChecker;
 use News\Form\NewsCategoryForm;
 use News\Model\NewsCategory;
 use News\Model\NewsCategoryTable;
+use Zend\File\Transfer\Adapter\Http;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Validator\File\Size;
 
 class NewsCategoryController extends AbstractActionController
 {
@@ -46,6 +45,38 @@ class NewsCategoryController extends AbstractActionController
             return $this->handleForm($request, $form, $nc, $id);
         }
         return ['form' => $form, 'id' => $id];
+    }
+
+    public function deleteAction()
+    {
+        if (!PermissionChecker::check(Role::CO)) {
+            return $this->redirect()->toRoute('account',
+                [
+                    'action' => 'noright',
+                ]
+            );
+        }
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('newscategory');
+        }
+
+        try {
+            $nc = $this->getNewsCategoryTable()->getNewsCategoryBy(['id' => $id]);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('newscategory');
+        }
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del === 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->getNewsCategoryTable()->deleteNewsCategory($id);
+            }
+            return $this->redirect()->toRoute('newscategory');
+        }
+        return ['id' => $id, 'nc' => $nc];
     }
 
     public function addAction()
