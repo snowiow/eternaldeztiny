@@ -11,5 +11,4 @@ vendor/bin
 ./
 public/users/
 public/applications/
-public/news_cat/
 tags

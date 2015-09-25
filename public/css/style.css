@@ -56,9 +56,19 @@ img.news-cat {
     max-height: 80px;
 }
 
+img.news-cat-img {
+    margin-top: 10%;
+    max-width: 90px;
+    max-height: 90px;
+}
+
 .news-cat {
     max-width: 90px;
     max-height: 90px;
+}
+
+.news-border {
+    border-left: 1px solid black;
 }
 
 .btn-success:active, .btn-success.active {

@@ -7,6 +7,7 @@ use Account\Service\PermissionChecker;
 use News\Form\NewsCategoryForm;
 use News\Model\NewsCategory;
 use News\Model\NewsCategoryTable;
+use News\Model\NewsTable;
 use Zend\File\Transfer\Adapter\Http;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -14,7 +15,15 @@ use Zend\Validator\File\Size;
 
 class NewsCategoryController extends AbstractActionController
 {
+    /**
+     * @var NewsCategoryTable
+     */
     private $newsCategoryTable;
+
+    /**
+     * @var NewsTable
+     */
+    private $newsTable;
 
     public function editAction()
     {
@@ -71,7 +80,18 @@ class NewsCategoryController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del === 'Yes') {
-                $id = (int) $request->getPost('id');
+                $id   = (int) $request->getPost('id');
+                $news = $this->getNewsTable()->getNewsByCategoryId($id);
+
+                foreach ($news as $n) {
+                    $n->setCategoryId(1);
+                    $this->getNewsTable()->saveNews($n);
+                }
+                $nc   = $this->getNewsCategoryTable()->getNewsCategoryBy(['id' => $id]);
+                $path = getcwd() . '/public/' . $nc->getPath();
+                if (file_exists($path)) {
+                    unlink($path);
+                }
                 $this->getNewsCategoryTable()->deleteNewsCategory($id);
             }
             return $this->redirect()->toRoute('newscategory');
@@ -130,6 +150,19 @@ class NewsCategoryController extends AbstractActionController
     }
 
     /**
+     * @return array|NewsTable|object
+     */
+    public function getNewsTable()
+    {
+        if (!$this->newsTable) {
+            $sm              = $this->getServiceLocator();
+            $this->newsTable = $sm->get('News\Model\NewsTable');
+        }
+
+        return $this->newsTable;
+    }
+
+    /**
      * Handles a given form for the add and edit action
      * @return array Array for the view, containing the form and maybe id and errors
      */
@@ -178,8 +211,6 @@ class NewsCategoryController extends AbstractActionController
                 $pic  = $post['path'];
                 $file = file_get_contents($pic['tmp_name']);
                 file_put_contents($dir . $nc->getName() . '.png', $file);
-                //wait a bit to write the file. The redirect is faster otherwise
-                sleep(2);
             } else {
                 //No new file was given, so update the filename to the new name
                 rename($dir . $old->getName() . '.png', $dir . $nc->getName() . '.png');

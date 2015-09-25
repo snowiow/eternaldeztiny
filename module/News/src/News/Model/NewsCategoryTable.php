@@ -2,8 +2,10 @@
 
 namespace News\Model;
 
-use News\Model\NewsCategory;
+use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGateway;
+
+use News\Model\NewsCategory;
 
 class NewsCategoryTable
 {
@@ -27,7 +29,9 @@ class NewsCategoryTable
      */
     public function fetchAll()
     {
-        return $this->tableGateway->select();
+        return $this->tableGateway->select(function (Select $select) {
+            $select->where('id > 1');
+        });
     }
 
     /**
@@ -77,7 +81,9 @@ class NewsCategoryTable
      */
     public function deleteNewsCategory(int $id)
     {
-        $this->tableGateway->delete(['id' => $id]);
+        if ($id > 1) {
+            $this->tableGateway->delete(['id' => $id]);
+        }
     }
 
 }

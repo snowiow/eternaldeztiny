@@ -32,7 +32,10 @@ class NewsTable
     {
         if ($paginated) {
             $select = new Select('news');
-            $select->join(['a' => 'account'], 'news.account_id = a.id', ['name'])->order('date_posted DESC');
+            $select
+                ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
+                ->join(['c' => 'news_category'], 'news.category_id = c.id', ['cname' => 'name'])
+                ->order('date_posted DESC');
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new News());
             $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
@@ -40,8 +43,9 @@ class NewsTable
         }
         return $this->tableGateway->select(function (Select $select) {
             $select
-            ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
-            ->order('date_posted DESC');
+                ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
+                ->join(['c' => 'news_category'], 'news.category_id = c.id', ['category'])
+                ->order('date_posted DESC');
         });
     }
 
@@ -57,8 +61,8 @@ class NewsTable
     {
         $rowset = $this->tableGateway->select(function (Select $select) use ($id) {
             $select
-            ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
-            ->where(['news.id' => $id]);
+                ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
+                ->where(['news.id' => $id]);
         });
 
         $row = $rowset->current();
@@ -67,6 +71,14 @@ class NewsTable
         }
 
         return $row;
+    }
+
+    public function getNewsByCategoryId(int $id)
+    {
+        return $this->tableGateway->select(function (Select $select) use ($id) {
+            $select->where('news.category_id = ' . $id);
+        });
+
     }
 
     /**
@@ -82,6 +94,7 @@ class NewsTable
             'account_id'  => $news->getAccountId(),
             'title'       => $news->getTitle(),
             'content'     => $news->getContent(),
+            'category_id' => $news->getCategoryId(),
             'date_posted' => $news->getDatePosted(),
         ];
 

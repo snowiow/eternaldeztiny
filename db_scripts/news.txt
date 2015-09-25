@@ -1,11 +1,13 @@
  CREATE TABLE news (
    id INT NOT NULL auto_increment,
    account_id INT NOT NULL,
+   category_id INT,
    title VARCHAR(100) NOT NULL,
    content TEXT NOT NULL,
    date_posted TIMESTAMP NOT NULL,
    PRIMARY KEY (id),
-   FOREIGN KEY (account_id) REFERENCES account(id)
+   FOREIGN KEY (account_id) REFERENCES account(id),
+   FOREIGN KEY (category_id) REFERENCES news_category(id)
  );
 
 

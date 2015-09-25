@@ -13,12 +13,18 @@ $title = 'News';
                 $item->getAuthor() . '</a>'; ?>
             </div>
             <div class="panel-body">
+                <div class="row">
                 <div class="col-md-2 visible-md visible-lg"> 
-                    <img src="img/news/website2.png">
+                    <img src="/news_cat/<?php echo $item->getCategory(); ?>.png" class="news-cat-img">
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-10 news-border">
                 <p><?php echo $parsedown->text(nl2br($item->getContent())); ?></p>
                 </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        </div>
+                        <div class="col-md-10">
                 <?php
                 if ($item->getAuthor() == $accountName) {
                     echo '<a href="' . $this->url('news', ['action' => 'edit', 'id' => $item->getId()]) . '">Edit</a>';
@@ -26,6 +32,8 @@ $title = 'News';
                     echo '<a href="' . $this->url('news', ['action' => 'delete', 'id' => $item->getId()]) . '">Delete</a>';
                 }
                 ?>
+                </div>
+                </div>
             </div>
             <div class="panel-footer">
                 posted on <?php echo substr($item->getDatePosted(), 0, -3); ?>
