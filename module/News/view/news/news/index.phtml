@@ -14,25 +14,25 @@ $title = 'News';
             </div>
             <div class="panel-body">
                 <div class="row">
-                <div class="col-md-2 visible-md visible-lg"> 
-                    <img src="/news_cat/<?php echo $item->getCategory(); ?>.png" class="news-cat-img">
-                </div>
-                <div class="col-md-10 news-border">
-                <p><?php echo $parsedown->text(nl2br($item->getContent())); ?></p>
-                </div>
+                    <div class="col-md-2 visible-md visible-lg news-border"> 
+                        <img src="/news_cat/<?php echo $item->getCategory(); ?>.png" class="news-cat-img">
+                    </div>
+                    <div class="col-md-10">
+                        <p><?php echo $parsedown->text(nl2br($item->getContent())); ?></p>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 visible-md visible-lg news-border">
                         </div>
                         <div class="col-md-10">
-                <?php
-                if ($item->getAuthor() == $accountName) {
-                    echo '<a href="' . $this->url('news', ['action' => 'edit', 'id' => $item->getId()]) . '">Edit</a>';
-                    echo "\t";
-                    echo '<a href="' . $this->url('news', ['action' => 'delete', 'id' => $item->getId()]) . '">Delete</a>';
-                }
-                ?>
-                </div>
+                    <?php
+                    if ($item->getAuthor() == $accountName) {
+                        echo '<a href="' . $this->url('news', ['action' => 'edit', 'id' => $item->getId()]) . '">Edit</a>';
+                        echo "\t";
+                        echo '<a href="' . $this->url('news', ['action' => 'delete', 'id' => $item->getId()]) . '">Delete</a>';
+                    }
+                    ?>
+                    </div>
                 </div>
             </div>
             <div class="panel-footer">

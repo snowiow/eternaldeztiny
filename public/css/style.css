@@ -56,6 +56,13 @@ img.news-cat {
     max-height: 80px;
 }
 
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
 img.news-cat-img {
     margin-top: 10%;
     max-width: 90px;
@@ -68,7 +75,7 @@ img.news-cat-img {
 }
 
 .news-border {
-    border-left: 1px solid black;
+    border-right: 1px solid #3074AD;
 }
 
 .btn-success:active, .btn-success.active {
