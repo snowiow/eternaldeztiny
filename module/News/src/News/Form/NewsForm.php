@@ -16,23 +16,47 @@ class NewsForm extends Form
         ]);
 
         $this->add([
-            'name'    => 'title',
-            'type'    => 'Text',
-            'options' => [
+            'name'       => 'title',
+            'type'       => 'Text',
+            'options'    => [
                 'label' => 'Title',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+            ],
+
+        ]);
+
+        $this->add([
+            'name' => 'account_id',
+            'type' => 'Hidden',
+        ]);
+
+        $this->add([
+            'name'       => 'category_id',
+            'type'       => 'Select',
+            'options'    => [
+                'label'         => 'Category',
+                'value_options' => [
+                    0 => 'None',
+                ],
+            ],
+            'attributes' => [
+                'class' => 'form-control',
             ],
         ]);
 
         $this->add([
-            'name'    => 'account_id',
-            'type'    => 'Hidden',
-        ]);
-
-        $this->add([
-            'name'    => 'content',
-            'type'    => 'Text',
-            'options' => [
-                'label' => 'Text'
+            'name'       => 'content',
+            'type'       => 'Text',
+            'options'    => [
+                'label' => 'Text',
+            ],
+            'attributes' => [
+                'class'    => 'form-control',
+                'required' => 'required',
+                'rows'     => 10,
             ],
         ]);
 
@@ -45,8 +69,9 @@ class NewsForm extends Form
             'name'       => 'submit',
             'type'       => 'Submit',
             'attributes' => [
-                'value' => 'Go',
+                'value' => 'Add',
                 'id'    => 'submitbutton',
+                'class' => 'btn btn-success',
             ],
         ]);
     }

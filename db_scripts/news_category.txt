@@ -1,0 +1,7 @@
+ CREATE TABLE news_category (
+   id INT NOT NULL auto_increment,
+   name VARCHAR(65) UNIQUE NOT NULL,
+   PRIMARY KEY (id)
+ );
+
+INSERT INTO news_category (id) VALUES ('1');

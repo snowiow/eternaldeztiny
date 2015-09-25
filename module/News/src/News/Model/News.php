@@ -14,15 +14,26 @@ class News implements InputFilterAwareInterface
     private $id;
 
     /**
-     * @var string
+     * @var int
      */
     private $accountId;
+
+    /**
+     * @var int
+     */
+    private $categoryId;
 
     /**
      * NOTE: still needed for showing of the name in the view
      * @var string
      */
     private $author;
+
+    /**
+     * NOTE: still needed for showing of the name in the view
+     * @var string
+     */
+    private $category;
 
     /**
      * @var string
@@ -82,6 +93,38 @@ class News implements InputFilterAwareInterface
     }
 
     /**
+     * @return int
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId()
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * @param int
+     */
+    public function setCategoryId(int $categoryId)
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    /**
      * @return string
      */
     public function getTitle()
@@ -127,16 +170,16 @@ class News implements InputFilterAwareInterface
      */
     public function exchangeArray($data)
     {
-        $this->id        = (!empty($data['id'])) ? $data['id'] : null;
-        $this->accountId = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->author    = (!empty($data['name'])) ? $data['name'] : null;
-        $this->title     = (!empty($data['title'])) ? $data['title'] : null;
-        $this->content   = (!empty($data['content'])) ? $data['content'] : null;
+        $this->id         = (!empty($data['id'])) ? $data['id'] : null;
+        $this->accountId  = (!empty($data['account_id'])) ? $data['account_id'] : null;
+        $this->categoryId = (!empty($data['category_id'])) ? $data['category_id'] : null;
+        $this->author     = (!empty($data['name'])) ? $data['name'] : null;
+        $this->category   = (!empty($data['cname'])) ? $data['cname'] : null;
+        $this->title      = (!empty($data['title'])) ? $data['title'] : null;
+        $this->content    = (!empty($data['content'])) ? $data['content'] : null;
 
         $date              = new \DateTime();
-        $this->date_posted = (!empty($data['date_posted'])) ?
-        $data['date_posted'] : $date->format('Y-m-d H:i:s');
-
+        $this->date_posted = (!empty($data['date_posted'])) ? $data['date_posted'] : $date->format('Y-m-d H:i:s');
     }
 
     /**
@@ -178,6 +221,14 @@ class News implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name'     => 'account_id',
+                'required' => true,
+                'filters'  => [
+                    ['name' => 'Int'],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'category_id',
                 'required' => true,
                 'filters'  => [
                     ['name' => 'Int'],

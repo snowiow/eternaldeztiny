@@ -17,19 +17,20 @@ $this->headTitle($title);
         <?php echo $this->formLabel(
             $form->get('title')
                 ->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formText(
-            $form->get('title')
-                ->setAttribute('class', 'form-control'));
+        echo $this->formText($form->get('title'));
+        ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel(
+            $form->get('category_id')->setLabelAttributes(['class' => 'control-label']));
+        echo $this->formSelect($form->get('category_id'));
         ?>
     </div>
     <div class="form-group">
         <?php echo $this->formLabel(
             $form->get('content')
                 ->setLabelAttributes(['class' => 'control-label']));
-        echo $this->formTextarea(
-            $form->get('content')
-                ->setAttribute('class', 'form-control')
-                ->setAttribute('rows', '10'));
+        echo $this->formTextarea($form->get('content'));
         if ($this->error && $this->error === 'tooLong') {
             echo '<p>Words for text must be smaller than 100 characters and the text only contains between 10
             and 100000 characters.</p>';
@@ -37,10 +38,7 @@ $this->headTitle($title);
         ?>
     </div>
     <div class="form-group">
-        <?php echo $this->formSubmit(
-            $form->get('submit')
-                ->setAttribute('class', 'btn btn-success'));
-        ?>
+        <?php echo $this->formSubmit($form->get('submit')); ?>
     </div>
     <?php echo $this->form()->closeTag(); ?>
 </div>

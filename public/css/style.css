@@ -51,6 +51,33 @@ th.name {
     min-width: 200px;
 }
 
+img.news-cat {
+    max-width: 80px;
+    max-height: 80px;
+}
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+img.news-cat-img {
+    margin-top: 10%;
+    max-width: 90px;
+    max-height: 90px;
+}
+
+.news-cat {
+    max-width: 90px;
+    max-height: 90px;
+}
+
+.news-border {
+    border-right: 1px solid #3074AD;
+}
+
 .btn-success:active, .btn-success.active {
   background-color: #57a900;
 }

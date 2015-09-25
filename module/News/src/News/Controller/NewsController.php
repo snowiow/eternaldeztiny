@@ -4,20 +4,26 @@ namespace News\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Paginator;
 
 use Account\Model\Role;
 use Account\Service\PermissionChecker;
-use News\Model\News;
-use News\Model\NewsTable;
+
 use News\Form\NewsForm;
+use News\Model\News;
+use News\Model\NewsCategoryTable;
+use News\Model\NewsTable;
 
 class NewsController extends AbstractActionController
 {
     /**
      * @var NewsTable
      */
-    protected $newsTable;
+    private $newsTable;
+
+    /**
+     * @var NewsCategoryTable
+     */
+    private $newsCategoryTable;
 
     public function indexAction()
     {
@@ -54,7 +60,8 @@ class NewsController extends AbstractActionController
         }
 
         $form = new NewsForm();
-        $form->get('submit')->setValue('Add');
+
+        $form->get('category_id')->setValueOptions($this->createCategorySelect());
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -66,7 +73,6 @@ class NewsController extends AbstractActionController
                 $news->exchangeArray($form->getData());
                 if ($this->checkWordLengths($news->getContent())) {
                     $this->getNewsTable()->saveNews($news);
-
                     return $this->redirect()->toRoute('news');
                 } else {
                     return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
@@ -74,7 +80,6 @@ class NewsController extends AbstractActionController
             } else {
                 return ['form' => $form, 'accountId' => $session->id, 'error' => 'tooLong'];
             }
-
         }
         return ['form' => $form, 'accountId' => $session->id];
     }
@@ -97,9 +102,7 @@ class NewsController extends AbstractActionController
         try {
             $news = $this->getNewsTable()->getNews($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('news', [
-                'action' => 'index',
-            ]);
+            return $this->redirect()->toRoute('news');
         }
         $session = $session = new \Zend\Session\Container('user');
         if (!isset($session->id) || $session->id != $news->getAccountId()) {
@@ -111,7 +114,9 @@ class NewsController extends AbstractActionController
         }
 
         $form = new NewsForm();
+        $form->get('category_id')->setValueOptions($this->createCategorySelect());
         $form->bind($news);
+        $form->get('category_id')->setValue($news->getCategoryId());
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
@@ -206,6 +211,15 @@ class NewsController extends AbstractActionController
         return $this->newsTable;
     }
 
+    public function getNewsCategoryTable()
+    {
+        if (!$this->newsCategoryTable) {
+            $sm                      = $this->getServiceLocator();
+            $this->newsCategoryTable = $sm->get('News\Model\NewsCategoryTable');
+        }
+        return $this->newsCategoryTable;
+    }
+
     /**
      * Checks the word lengths of all words in a given text.
      * If any word is longer than 100 chars false is returned,
@@ -223,5 +237,19 @@ class NewsController extends AbstractActionController
 
         }
         return true;
+    }
+
+    /**
+     * Creates an associative array of the id and names of all created categories.
+     * @return array
+     */
+    private function createCategorySelect()
+    {
+        $categories = $this->getNewsCategoryTable()->fetchAll();
+
+        foreach ($categories as $category) {
+            $selectElems[$category->getId()] = $category->getName();
+        }
+        return $selectElems;
     }
 }
