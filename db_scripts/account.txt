@@ -10,7 +10,3 @@ date_registered TIMESTAMP NOT NULL,
 mini VARCHAR(64),
 PRIMARY KEY (id)
 );
-
-
-INSERT INTO account (name, password, email, role, date_registered)
-VALUES  ('noob',  'hallotest', 'noob@test.com', '0', '20150331202022');

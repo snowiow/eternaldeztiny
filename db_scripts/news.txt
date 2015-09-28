@@ -9,9 +9,3 @@
    FOREIGN KEY (account_id) REFERENCES account(id),
    FOREIGN KEY (category_id) REFERENCES news_category(id)
  );
-
-
- INSERT INTO news (author, title, content, date_posted)
-     VALUES  ('noob',  'First news', 'This is the first news.', '20150831202022');
- INSERT INTO news (author, title, content, date_posted)
-     VALUES  ('ryan',  'Secound news', 'This is the secound news.', '20150831221822');
