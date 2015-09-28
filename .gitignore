@@ -12,3 +12,5 @@ vendor/bin
 public/users/
 public/applications/
 tags
+
+module/Application/src/Application/Constants.php
