@@ -11,6 +11,7 @@ vendor/bin
 ./
 public/users/
 public/applications/
+public/img/warlog/*
 tags
 
 module/Application/src/Application/Constants.php
