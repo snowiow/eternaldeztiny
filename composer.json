@@ -1,7 +1,7 @@
 {
     "name": "ed.com",
     "description": "Eternal Deztiny Website",
-    "license": "BSD-3-Clause",
+    "license": MIT,
     "keywords": [
         "framework",
         "zf2"
