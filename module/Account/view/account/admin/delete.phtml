@@ -1,0 +1,26 @@
+<?php
+$title = 'Delete Account';
+$this->headTitle($title);
+?>
+<div class="content shadow">
+    <div class="page-header">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+
+    <p>Are you sure that you want to delete
+        '<?php echo $this->escapeHtml($account->getName()); ?>'? This will delete all of his uploaded news and media as well.
+    </p>
+    <?php
+    $url = $this->url('admin', [
+        'action' => 'delete',
+        'id'     => $account->getId(),
+    ]);
+    ?>
+    <form action="<?php echo $url; ?>" method="post">
+        <div>
+            <input type="hidden" name="id" value="<?php echo (int)$account->getId(); ?>"/>
+            <input type="submit" class="btn btn-danger" name="del" value="Yes"/>
+            <input type="submit" class="btn btn-primary" name="del" value="No"/>
+        </div>
+    </form>
+</div>

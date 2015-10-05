@@ -33,9 +33,10 @@ return [
             'admin'   => [
                 'type'    => 'segment',
                 'options' => [
-                    'route'       => '/admin[/:action]',
+                    'route'       => '/admin[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
                     ],
                     'defaults'    => [
                         'controller' => 'Account\Controller\Admin',

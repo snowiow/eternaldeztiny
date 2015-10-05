@@ -78,7 +78,13 @@ class NewsTable
         return $this->tableGateway->select(function (Select $select) use ($id) {
             $select->where('news.category_id = ' . $id);
         });
+    }
 
+    public function getNewsByAccoundId(int $id)
+    {
+        return $this->tableGateway->select(function (Select $select) use ($id) {
+            $select->where('news.account_id = ' . $id);
+        });
     }
 
     /**

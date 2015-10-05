@@ -40,8 +40,8 @@ class MediaTable
         }
         return $this->tableGateway->select(function (Select $select) {
             $select
-            ->join(['a' => 'account'], 'media.account_id = a.id', ['name'])
-            ->order('date_posted DESC');
+                ->join(['a' => 'account'], 'media.account_id = a.id', ['name'])
+                ->order('date_posted DESC');
         });
     }
 
@@ -57,8 +57,8 @@ class MediaTable
     {
         $rowset = $this->tableGateway->select(function (Select $select) use ($id) {
             $select
-            ->join(['a' => 'account'], 'media.account_id = a.id', ['name'])
-            ->where(['media.id' => $id]);
+                ->join(['a' => 'account'], 'media.account_id = a.id', ['name'])
+                ->where(['media.id' => $id]);
         });
 
         $row = $rowset->current();
@@ -67,6 +67,13 @@ class MediaTable
         }
 
         return $row;
+    }
+
+    public function getMediaByAccoundId(int $id)
+    {
+        return $this->tableGateway->select(function (Select $select) use ($id) {
+            $select->where('media.account_id = ' . $id);
+        });
     }
 
     /**

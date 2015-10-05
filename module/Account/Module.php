@@ -9,6 +9,10 @@ use Zend\Db\ResultSet\ResultSet;
 
 use Account\Model\Account;
 use Account\Model\AccountTable;
+use News\Model\News;
+use News\Model\NewsTable;
+use Media\Model\Media;
+use Media\Model\MediaTable;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -37,14 +41,36 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             'factories' => [
                 'Account\Model\AccountTable' => function ($sm) {
                     $tableGateway = $sm->get('AccountTableGateway');
-                    $table = new AccountTable($tableGateway);
+                    $table        = new AccountTable($tableGateway);
                     return $table;
                 },
                 'AccountTableGateway'        => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Account());
                     return new TableGateway('account', $dbAdapter, null, $resultSetPrototype);
+                },
+                'News\Model\NewsTable'       => function ($sm) {
+                    $tableGateway = $sm->get('NewsTableGateway');
+                    $table        = new NewsTable($tableGateway);
+                    return $table;
+                },
+                'NewsTableGateway'           => function ($sm) {
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new News());
+                    return new TableGateway('news', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Media\Model\MediaTable'     => function ($sm) {
+                    $tableGateway = $sm->get('MediaTableGateway');
+                    $table        = new MediaTable($tableGateway);
+                    return $table;
+                },
+                'MediaTableGateway'          => function ($sm) {
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Media());
+                    return new TableGateway('media', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

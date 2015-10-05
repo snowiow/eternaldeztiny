@@ -15,6 +15,7 @@ $this->headTitle($title);
                     <th>Current Role</th>
                     <th>New Role</th>
                     <th>Update</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,15 @@ $this->headTitle($title);
                             </th>
                             <th><button type="submit" class="btn btn-default btn-sm">Confirm</button></th>
                     </form>
+                    <th>
+                        <?php if ($user->getRole() < \Account\Model\Role::MEMBER): ?>
+                        <a href="<?php echo $this->url('admin',
+                            [
+                                'action' => 'delete', 
+                                'id' => $user->getId()
+                            ]);?>" class="btn btn-danger">Delete</a>
+                        <?php endif; ?>
+                    </th>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
