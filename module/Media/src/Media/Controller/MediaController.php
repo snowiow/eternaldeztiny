@@ -52,8 +52,8 @@ class MediaController extends AbstractActionController
             );
         }
 
-        $form = new MediaForm();
-
+        $form    = new MediaForm();
+        $session = new Container('user');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $media = new Media();
@@ -71,7 +71,6 @@ class MediaController extends AbstractActionController
                 return ['form' => $form, 'accountId' => $session->id, 'errors' => $errors];
             }
         }
-        $session = new Container('user');
         return ['form' => $form, 'accountId' => $session->id];
     }
 
