@@ -5,6 +5,7 @@ namespace Account\Controller;
 use Zend\View\Model\ViewModel;
 
 use Account\Model\Role;
+use Account\Form\SearchUserForm;
 use Account\Service\PermissionChecker;
 
 class AdminController extends AbstractAccountController
@@ -15,9 +16,12 @@ class AdminController extends AbstractAccountController
             return $this->redirect()->toRoute('account', ['action' => 'noright']);
         }
 
+        $form = new SearchUserForm();
+
         $users = $this->getAccountTable()->getUsersAndAbove();
         $roles = Role::getAllRoles();
         return new ViewModel([
+            'form'  => $form,
             'users' => $users,
             'roles' => $roles,
         ]);
