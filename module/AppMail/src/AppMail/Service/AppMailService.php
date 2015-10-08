@@ -58,7 +58,7 @@ class AppMailService implements AppMailServiceInterface
 
         $parts[] = $text;
         foreach ($files as $filePath) {
-            $fileContent             = fopen($filePath, 'r');
+            $fileContent             = file_get_contents($filePath);
             $attachment              = new Mime\Part($fileContent);
             $attachment->type        = 'image/' . pathinfo($filePath, PATHINFO_EXTENSION);
             $attachment->filename    = basename($filePath);
