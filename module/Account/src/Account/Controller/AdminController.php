@@ -5,6 +5,7 @@ namespace Account\Controller;
 use Zend\View\Model\ViewModel;
 
 use Account\Model\Role;
+use Account\Model\Account;
 use Account\Form\SearchUserForm;
 use Account\Service\PermissionChecker;
 
@@ -18,13 +19,24 @@ class AdminController extends AbstractAccountController
 
         $form = new SearchUserForm();
 
-        $users = $this->getAccountTable()->getUsersAndAbove();
+        $request = $this->getRequest();
+        $users   = $this->getAccountTable()->getUsersAndAbove();
+        if ($request->isPost()) {
+            $account = new Account();
+            $form->setInputFilter($account->getUserSearchInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $account->exchangeArray($form->getData());
+                $users = $this->getAccountTable()->getUsersAndAbove($account->getName(), $account->getRole());
+            }
+        }
         $roles = Role::getAllRoles();
-        return new ViewModel([
+        return [
             'form'  => $form,
             'users' => $users,
             'roles' => $roles,
-        ]);
+        ];
     }
 
     public function updateroleAction()

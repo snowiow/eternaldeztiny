@@ -30,12 +30,7 @@ class SearchUserForm extends Form
                 'label'         => 'Role',
                 'value_options' => [
                     0 => 'All',
-                    1 => 'User',
-                    2 => 'Member',
-                    3 => 'Elder',
-                    4 => 'Co-Leader',
-                    5 => 'Leader',
-                ],
+                ]+\Account\Model\Role::getRoleArray(),
             ],
             'attributes' => [
                 'class'    => 'form-control',

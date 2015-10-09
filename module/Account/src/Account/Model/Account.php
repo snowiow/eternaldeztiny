@@ -73,9 +73,14 @@ class Account
     private $lostPasswordInputFilter;
 
     /**
-     * @var inputFilter
+     * @var InputFilter
      */
     private $resetPasswordInputFilter;
+
+    /**
+     * @var InputFilter
+     */
+    private $userSearchInputFilter;
 
     /**
      * @param int
@@ -150,7 +155,7 @@ class Account
     }
 
     /**
-     * @return int
+     * @return int|array
      */
     public function getRole()
     {
@@ -211,6 +216,7 @@ class Account
      */
     public function exchangeArray($data)
     {
+
         $this->id       = (!empty($data['id'])) ? $data['id'] : null;
         $this->name     = !empty($data['name']) ? $data['name'] : null;
         $this->password = !empty($data['password']) ? $data['password'] : null;
@@ -485,5 +491,40 @@ class Account
             $this->resetPasswordInputFilter = $inputFilter;
         }
         return $this->resetPasswordInputFilter;
+    }
+
+    public function getUserSearchInputFilter()
+    {
+        if (!$this->userSearchInputFilter) {
+            $inputFilter = new InputFilter();
+            $inputFilter->add([
+                'name'       => 'name',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'max'      => 64,
+                        ],
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        ],
+                    ],
+                ],
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'role',
+                'required' => false,
+            ]);
+            $this->userSearchInputFilter = $inputFilter;
+        }
+        return $this->userSearchInputFilter;
     }
 }

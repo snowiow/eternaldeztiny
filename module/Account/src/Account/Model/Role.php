@@ -15,18 +15,18 @@ class Role
     public static function convertToRole(int $int)
     {
         switch ($int) {
-        case Role::USER:
-            return 'User';
-        case Role::MEMBER:
-            return 'Member';
-        case Role::ELDER:
-            return 'Elder';
-        case Role::CO:
-            return 'Co-Leader';
-        case Role::LEADER:
-            return 'Leader';
-        default:
-            return 'Elder';
+            case Role::USER:
+                return 'User';
+            case Role::MEMBER:
+                return 'Member';
+            case Role::ELDER:
+                return 'Elder';
+            case Role::CO:
+                return 'Co-Leader';
+            case Role::LEADER:
+                return 'Leader';
+            default:
+                return 'Elder';
         }
     }
 
@@ -38,6 +38,17 @@ class Role
             self::ELDER,
             self::CO,
             self::LEADER,
+        ];
+    }
+
+    public static function getRoleArray()
+    {
+        return [
+            self::USER   => self::convertToRole(self::USER),
+            self::MEMBER => self::convertToRole(self::MEMBER),
+            self::ELDER  => self::convertToRole(self::ELDER),
+            self::CO     => self::convertToRole(self::CO),
+            self::LEADER => self::convertToRole(self::LEADER),
         ];
     }
 }
