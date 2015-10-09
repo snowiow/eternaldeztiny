@@ -3,6 +3,8 @@ namespace Account\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
+use Zend\Db\Sql\Predicate\Predicate;
 
 use Application\Constants;
 
@@ -30,13 +32,31 @@ class AccountTable
         return $this->tableGateway->select();
     }
 
-    public function getUsersAndAbove()
+    public function getUsersAndAbove($name = '', $roles = [])
     {
-        return $this->tableGateway->select(function (Select $select) {
-            $select->where('role > 0 AND role < 32')
-            ->order('name ASC');
-        });
+        return $this->tableGateway->select(function (Select $select) use ($name, $roles) {
+            $where = new Where();
 
+            if ($roles) {
+                $sub = $where->nest();
+                for ($i = 0; $i < count($roles); $i++) {
+                    $sub->equalTo('role', $roles[$i]);
+                    if ($i < count($roles) - 1) {
+                        $sub->or;
+                    }
+                }
+                $sub->unnest();
+            } else {
+                $where->greaterThan('role', '0');
+                $where->lessThan('role', '32');
+            }
+            if ($name) {
+                $where->like('name', '%' . $name . '%');
+            }
+
+            $select->where($where)
+                ->order('name ASC');
+        });
     }
 
     /**
@@ -78,7 +98,7 @@ class AccountTable
     {
         return $this->tableGateway->select(function (Select $select) {
             $select->where('role > 1')
-            ->order('name ASC');
+                ->order('name ASC');
         });
     }
 
