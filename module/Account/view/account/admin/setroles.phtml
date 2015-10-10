@@ -9,6 +9,7 @@ $this->headTitle($title);
     </div>
     <?php
     $form->setAttribute('action', $this->url('admin', ['action' => 'setroles']));
+    $form->setAttribute('method', 'get');
     $form->prepare();
     echo $this->form()->openTag($form);
     foreach ($form as $element) {
@@ -49,7 +50,7 @@ $this->headTitle($title);
                             <input type="hidden" name="id" value="<?php echo $user->getId(); ?>">
                             <th>
                                 <select class="form-control" name="select">
-                                    <?php foreach ($roles as $role) {
+                                    <?php foreach ($role_strings as $role) {
                                     echo '<option value="' . $role . '" '; 
                                     if ($role == (int) $user->getRole()) echo 'selected';
                                     echo '>' . Account\Model\Role::convertToRole($role) . '</option>';
@@ -72,6 +73,14 @@ $this->headTitle($title);
             </tbody>
         </table>
     </div>
+    <?php echo $this->paginationControl($this->users, 'sliding', [
+        'partial/paginator_setroles.phtml',
+        'application',
+    ],
+    [
+        'route' => 'setroles',
+    ]);
+    ?>
     <a href="<?php echo $this->url('account', ['action' => 'profile']);?>" class="btn btn-danger">Back</a>
     </div>
 

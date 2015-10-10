@@ -2,9 +2,12 @@
 namespace Account\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 use Application\Constants;
 
@@ -32,33 +35,39 @@ class AccountTable
         return $this->tableGateway->select();
     }
 
-    public function getUsersAndAbove($name = '', $roles = [])
+    public function getUsersAndAbove(bool $paginated, $name = '', $roles = [])
     {
-        return $this->tableGateway->select(function (Select $select) use ($name, $roles) {
-            $where = new Where();
+        $select = new Select('account');
+        $where  = new Where();
 
-            if ($roles) {
-                $sub = $where->nest();
-                for ($i = 0; $i < count($roles); $i++) {
-                    $sub->equalTo('role', $roles[$i]);
-                    if ($i < count($roles) - 1) {
-                        $sub->or;
-                    }
+        if ($roles) {
+            $sub = $where->nest();
+            for ($i = 0; $i < count($roles); $i++) {
+                $sub->equalTo('role', $roles[$i]);
+                if ($i < count($roles) - 1) {
+                    $sub->or;
                 }
-                $sub->unnest();
-            } else {
-                $where->greaterThan('role', '0');
-                $where->lessThan('role', '32');
             }
-            if ($name) {
-                $where->like('name', '%' . $name . '%');
-            }
+            $sub->unnest();
+        } else {
+            $where->greaterThan('role', '0');
+            $where->lessThan('role', '32');
+        }
+        if ($name) {
+            $where->like('name', '%' . $name . '%');
+        }
 
-            $select->where($where)
-                ->order('name ASC');
-        });
+        $select->where($where)
+            ->order('name ASC');
+
+        if ($paginated) {
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new Account());
+            $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
+            return new Paginator($paginatorAdapter);
+        }
+        return $this->tableGateway->select($select);
     }
-
     /**
      *
      * @param string|int $id
