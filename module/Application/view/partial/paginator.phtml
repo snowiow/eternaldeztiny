@@ -4,13 +4,13 @@
             <?php if (isset($this->previous)): ?>
                 <li>
                     <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->previous; ?>" aria-label="Previous">
-                        <<
+                        &lt;&lt;
                     </a>
                 </li>
             <?php else: ?>
                 <li class="disabled">
                     <a href="#">
-                        <<
+                        &lt;&lt;
                     </a>
                 </li>
             <?php endif; ?>
@@ -31,13 +31,13 @@
             <?php if (isset($this->next)): ?>
                 <li>
                     <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->next; ?>" aria-label="Next">
-                        >>
+                        &gt;&gt;
                     </a>
                 </li>
             <?php else: ?>
                 <li class="disabled">
                     <a href="#">
-                        >>
+                        &gt;&gt;
                     </a>
                 </li>
             <?php endif; ?>

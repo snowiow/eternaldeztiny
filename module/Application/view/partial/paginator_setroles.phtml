@@ -1,0 +1,60 @@
+<?php if ($this->pageCount): ?>
+<?php 
+$arr = [];
+if (array_key_exists('name', $_GET) && !empty($_GET['name'])) {
+    $arr['name'] = trim(htmlentities($_GET['name'])); 
+}
+if (array_key_exists('role', $_GET) && is_array($_GET['role'])) {
+    $arr['role'] = $_GET['role'];    
+}
+$url = '/admin/setroles';
+?>
+<div>
+    <ul class="pagination">
+        <?php if (isset($this->previous)): ?>
+            <li>
+                <?php $arr['page'] = $this->previous; ?>
+                <a href="<?php echo $url . '?' . http_build_query($arr); ?>" aria-label="Previous">
+                    &lt;&lt;
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">
+                    &lt;&lt;
+                </a>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <li>
+                    <?php $arr['page'] = $page; ?>
+                    <a href="<?php echo $url . '?' . http_build_query($arr); ?>">
+                        <?php echo $page; ?>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="active">
+                    <a href="#"><?php echo $page; ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php if (isset($this->next)): ?>
+            <li>
+                <?php $arr['page'] = $this->next; ?>
+                <a href="<?php echo $url . '?' . http_build_query($arr); ?>" aria-label="Next">
+                    &gt;&gt;
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">
+                    &gt;&gt;
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
+<?php endif; ?>

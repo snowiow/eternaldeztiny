@@ -28,9 +28,7 @@ class SearchUserForm extends Form
             'type'       => 'Select',
             'options'    => [
                 'label'         => 'Role',
-                'value_options' => [
-                    0 => 'All',
-                ]+\Account\Model\Role::getRoleArray(),
+                'value_options' => \Account\Model\Role::getRoleArray(),
             ],
             'attributes' => [
                 'class'    => 'form-control',

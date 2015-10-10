@@ -20,22 +20,26 @@ class AdminController extends AbstractAccountController
         $form = new SearchUserForm();
 
         $request = $this->getRequest();
-        $users   = $this->getAccountTable()->getUsersAndAbove();
-        if ($request->isPost()) {
-            $account = new Account();
-            $form->setInputFilter($account->getUserSearchInputFilter());
-            $form->setData($request->getPost());
 
-            if ($form->isValid()) {
-                $account->exchangeArray($form->getData());
-                $users = $this->getAccountTable()->getUsersAndAbove($account->getName(), $account->getRole());
-            }
+        $paginator = $this->getAccountTable()->getUsersAndAbove(true);
+        $page      = (int) $this->params()->fromQuery('page', 1);
+        $name      = $this->params()->fromQuery('name', '');
+        $role      = $this->params()->fromQuery('role', '');
+        $account   = new Account();
+        $form->setInputFilter($account->getUserSearchInputFilter());
+        $form->setData(['name' => $name, 'role' => $role]);
+
+        if ($form->isValid()) {
+            $account->exchangeArray($form->getData());
+            $paginator = $this->getAccountTable()->getUsersAndAbove(true, $name, $role);
         }
-        $roles = Role::getAllRoles();
+        $role_strings = Role::getAllRoles();
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage(25);
         return [
-            'form'  => $form,
-            'users' => $users,
-            'roles' => $roles,
+            'form'         => $form,
+            'users'        => $paginator,
+            'role_strings' => $role_strings,
         ];
     }
 
