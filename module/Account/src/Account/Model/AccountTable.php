@@ -174,6 +174,11 @@ class AccountTable
      */
     public function deleteAccount($id)
     {
+        $account = $this->getAccount($id);
+        $dir     = getcwd() . '/public/users/' . $account->getName();
+        if (file_exists($dir)) {
+            rmdir($dir);
+        }
         $this->tableGateway->delete(['id' => $id]);
     }
 }

@@ -3,6 +3,7 @@
 namespace Account\Controller;
 
 use Zend\View\Model\ViewModel;
+use Zend\Session\Container;
 
 use Account\Model\Role;
 use Account\Model\Account;
@@ -11,6 +12,21 @@ use Account\Service\PermissionChecker;
 
 class AdminController extends AbstractAccountController
 {
+    /**
+     * ApplicationTable
+     */
+    private $applicationTable;
+
+    /**
+     * @var MediaTable
+     */
+    private $mediaTable;
+
+    /**
+     * @var NewsTable
+     */
+    private $newsTable;
+
     public function setRolesAction()
     {
         if (!PermissionChecker::check(Role::CO)) {
@@ -76,16 +92,26 @@ class AdminController extends AbstractAccountController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id   = (int) $request->getPost('id');
+                $id = (int) $request->getPost('id');
+                //delete all related news
                 $news = $this->getNewsTable()->getNewsByAccoundId($id);
                 foreach ($news as $n) {
                     $this->getNewsTable()->deleteNews($n->getId());
                 }
-
+                //delete all related media
                 $media = $this->getMediaTable()->getMediaByAccoundId($id);
                 foreach ($media as $m) {
                     $this->getMediaTable()->deleteMedia($m->getId());
                 }
+                //reset all applications to the account who is executing this actio
+                $applications = $this->getApplicationTable()->getApplicationsByAccountId($id);
+                $session      = new Container('user');
+                foreach ($applications as $application) {
+                    $application->setProcessedBy($session->id);
+                    $this->getApplicationTable()->saveApplication($application);
+                }
+                //TODO: If new relations have to be deleted, replace these into their own function
+
                 $this->getAccountTable()->deleteAccount($id);
             }
             return $this->redirect()->toRoute('admin', ['action' => 'setroles']);
@@ -124,4 +150,13 @@ class AdminController extends AbstractAccountController
         return $this->mediaTable;
     }
 
+    public function getApplicationTable()
+    {
+        if (!$this->applicationTable) {
+            $sm                     = $this->getServiceLocator();
+            $this->applicationTable = $sm->get('ApplyNow\Model\ApplicationTable');
+        }
+
+        return $this->applicationTable;
+    }
 }

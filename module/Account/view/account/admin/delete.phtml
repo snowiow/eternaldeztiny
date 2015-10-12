@@ -8,7 +8,8 @@ $this->headTitle($title);
     </div>
 
     <p>Are you sure that you want to delete
-        '<?php echo $this->escapeHtml($account->getName()); ?>'? This will delete all of his uploaded news and media as well.
+        '<?php echo $this->escapeHtml($account->getName()); ?>'? This will delete all of his uploaded news and media as well. 
+        Applications processed by this account, will be transfered to you.
     </p>
     <?php
     $url = $this->url('admin', [

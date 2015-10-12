@@ -79,7 +79,14 @@ class ApplicationTable
         }
         return $this->tableGateway->select(function (Select $select) {
             $select->join(['a' => 'account'], 'application.processed_by = a.id', ['account_name' => 'name'])
-            ->where('processed > 0');
+                ->where('processed > 0');
+        });
+    }
+
+    public function getApplicationsByAccountId(int $id)
+    {
+        return $this->tableGateway->select(function (Select $select) use ($id) {
+            $select->where('application.processed_by = ' . $id);
         });
     }
 
