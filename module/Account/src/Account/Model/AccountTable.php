@@ -177,8 +177,21 @@ class AccountTable
         $account = $this->getAccount($id);
         $dir     = getcwd() . '/public/users/' . $account->getName();
         if (file_exists($dir)) {
-            rmdir($dir);
+            $this->rrmdir($dir);
         }
         $this->tableGateway->delete(['id' => $id]);
+    }
+
+    private function rrmdir($dir)
+    {
+        foreach (glob($dir . '/*') as $file) {
+            if (is_dir($file)) {
+                rrmdir($file);
+            } else {
+                unlink($file);
+            }
+
+        }
+        rmdir($dir);
     }
 }
