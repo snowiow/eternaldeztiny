@@ -1,44 +1,65 @@
-<div class="jumbotron">
-    <h1><?php echo sprintf($this->translate('Welcome to %sZend Framework 2%s'), '<span class="zf-green">', '</span>') ?></h1>
-    <p><?php echo sprintf($this->translate('Congratulations! You have successfully installed the %sZF2 Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple starting point for you to begin building your application on ZF2.'), '<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>', \Zend\Version\Version::VERSION) ?></p>
-    <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2" target="_blank"><?php echo $this->translate('Fork Zend Framework 2 on GitHub') ?> &raquo;</a></p>
-</div>
+<?php
+$title = 'Home';
+$this->headTitle($title);
+?>
 
-<div class="row">
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Follow Development') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('Zend Framework 2 is under active development. If you are interested in following the development of ZF2, there is a special ZF2 portal on the official Zend Framework website which provides links to the ZF2 %swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great resource for staying up to date with the latest developments!'), '<a href="http://framework.zend.com/wiki/display/ZFDEV2/Home">', '</a>', '<a href="http://framework.zend.com/zf2/blog">', '</a>', '<a href="https://github.com/zendframework/zf2/issues">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://framework.zend.com/zf2" target="_blank"><?php echo $this->translate('ZF2 Development Portal') ?> &raquo;</a></p>
-            </div>
+<div class="content shadow">
+    <div class="jumbotron">
+        <a href="/img/ed.jpg" class="thumbnail">
+            <img src="/img/ed.jpg" class="img-responsive img-thumbnail">
+        </a>
+        <h1>Welcome to Eternal Deztiny</h1>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>About us</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>We are a 21+ only adult clan that is organized and very serious about wars</li>
+                <li>We have active, engaging conversations and fast donations (troop lvl 5+)</li>
+                <li><a href="/warlog">A pretty good war record</a></li>
+                <li>We have GroupMe chats for better communication and for sharing base/strategy/anything else you fancy</li>
+                <li>We have members from all over the world who love some CoC</li>
+            </ul>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Discover Modules') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('The community is working on developing a community site to serve as a repository and gallery for ZF2 modules. The project is available %son GitHub%s. The site is currently live and currently contains a list of some of the modules already available for ZF2.'), '<a href="https://github.com/zendframework/modules.zendframework.com">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://modules.zendframework.com/" target="_blank"><?php echo $this->translate('Explore ZF2 Modules') ?> &raquo;</a></p>
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Recruiting Criteria</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>Serious players who love to win wars and collaborate with teammates with non-rushed bases</li>
+                <li>TH6s who are heading to TH7</li>
+                <li>TH7 with dragon unlocked (lvl 2 preferred)</li>
+                <li>TH8 with lvl 3 dragon</li>
+            </ul>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Help &amp; Support') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('If you need any help or support while developing with ZF2, you may reach us via IRC: %s#zftalk on Freenode%s. We\'d love to hear any questions or feedback you may have regarding the beta releases. Alternatively, you may subscribe and post questions to the %smailing lists%s.'), '<a href="irc://irc.freenode.net/zftalk">', '</a>', '<a href="http://framework.zend.com/wiki/display/ZFDEV/Mailing+Lists">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://webchat.freenode.net?channels=zftalk" target="_blank"><?php echo $this->translate('Ping us on IRC') ?> &raquo;</a></p>
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Clan Dynamics</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>All our members are experienced in their townhall level and more than willing to give advice and feedback to help you learn and grow</li>
+                <li>Our donations are super fast and we always donate what you want/need whether it's for farming or practicing war comp attacks</li>
+                <li>We are very active, and outside of war we're pretty chill as well (war is chill too, but more serious). We love to joke around and have fun.</li>
+                <li>Our wars are usually 30-40 people so you will get a feel of the larger war dynamics without feeling super lost</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>What are you waiting for? Apply!</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>Either fill out an <a href="/applynow">Application</a> here or visit us in game at #28PU922</li>
+                <li>We will get back to you as soon as we can (usually within a few hours but no more than 24 hours) if you apply through the website</li>
+                <li>If you apply in game, please state that you read about us on our website and that you understand our <a href="/applynow">rules</a></li>
+            </ul>
         </div>
     </div>
 </div>

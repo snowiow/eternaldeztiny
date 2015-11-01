@@ -89,7 +89,9 @@ img.news-cat-img {
     padding-top: 5%;
     padding-bottom: 5%;
 }
-
+.jumbotron {
+    background-color: #F5F5F5;
+}
 .main {
     margin-top: 5%;
 }
