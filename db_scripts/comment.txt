@@ -1,0 +1,10 @@
+CREATE TABLE comment (
+    id INT NOT NULL auto_increment,
+    news_id INT NOT NULL,
+    account_id INT NOT NULL,
+    content VARCHAR(512) NOT NULL,
+    date_posted TIMESTAMP NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY (news_id) REFERENCES news(id),
+    FOREIGN KEY (account_id) REFERENCES account(id)
+);
