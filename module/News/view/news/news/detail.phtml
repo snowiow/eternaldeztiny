@@ -1,0 +1,68 @@
+<?php
+$parsedown = new News\Service\Parsedown();
+$title = $news->getTitle();
+$this->headTitle($title);
+?> 
+<div class="content shadow">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title"><?php echo $news->getTitle() ?></h1>
+            by <?php 
+                    echo '<a href="' . 
+                        $this->url('account', [
+                            'action' => 'profile', 
+                            'id' => $news->getAuthor(),
+                        ]) . 
+                        '" class="panel-href">' . 
+                        $news->getAuthor() . 
+                        '</a>'; 
+                ?>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 visible-md visible-lg news-border">
+                    <img src="/news_cat/
+                        <?php 
+                            echo $news->getCategory(); 
+                        ?>.png" 
+                    class="news-cat-img">
+                </div>
+                <div class="col-md-10">
+                    <p>
+                        <?php 
+                            echo $parsedown->text(nl2br($news->getContent())); 
+                        ?>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 visible-md visible-lg news-border">
+                </div>
+                <div class="col-md-10">
+                    <?php
+                        if ($news->getAuthor() == $accountName) {
+                            echo '<a href="' . 
+                                $this->url('news', [
+                                    'action' => 'edit', 
+                                    'id' => $news->getId()
+                                ]) . 
+                                '">Edit</a>';
+                            echo "\t";
+                            echo '<a href="' . 
+                                $this->url('news', [
+                                    'action' => 'delete', 
+                                    'id' => $news->getId()
+                                ]) . 
+                                '">Delete</a>';
+                        }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            posted on <?php echo substr($news->getDatePosted(), 0, -3); ?>
+        </div>
+    </div>
+
+</div>
+

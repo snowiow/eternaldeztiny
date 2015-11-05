@@ -125,3 +125,11 @@ img.news-cat-img {
 .longer {
     min-height: 80%
 }
+
+.right-align {
+    text-align: right;
+}
+
+.left-align {
+    text-align: left;
+}

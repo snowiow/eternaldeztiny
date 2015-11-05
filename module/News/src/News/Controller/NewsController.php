@@ -191,10 +191,27 @@ class NewsController extends AbstractActionController
                 ]
             );
         }
-
         return [
             'id'   => $id,
             'news' => $this->getNewsTable()->getNews($id),
+        ];
+    }
+
+    public function detailAction()
+    {
+        $name    = '';
+        $session = $session = new \Zend\Session\Container('user');
+        if (isset($session) && !empty($session->name)) {
+            $name = $session->name;
+        }
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('news');
+        }
+        return [
+            'accountName' => $name,
+            'news'        => $this->getNewsTable()->getNews($id),
         ];
     }
 

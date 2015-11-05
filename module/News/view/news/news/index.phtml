@@ -1,8 +1,8 @@
 <?php
 $parsedown = new News\Service\Parsedown();
 $title = 'News';
+$this->headTitle($title); 
 ?>
-    <?php $this->headTitle($title); ?>
     <?php foreach ($paginator as $item) : ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -36,7 +36,16 @@ $title = 'News';
                 </div>
             </div>
             <div class="panel-footer">
-                posted on <?php echo substr($item->getDatePosted(), 0, -3); ?>
+                <div class="row">
+                    <div class="left-align col-xs-8 col-md-6">posted on <?php echo substr($item->getDatePosted(), 0, -3); ?></div>
+                    <div class="right-align col-xs-4 col-md-6"><a href="
+                        <?php 
+                            echo $this->url('news', 
+                                [
+                                    'action' => 'detail', 
+                                    'id' => $item->getId(),
+                                ]); ?>">0 Comments</a></div>
+                </div>
             </div>
         </div>
     <?php endforeach; ?>
