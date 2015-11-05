@@ -28,7 +28,7 @@ class NewsController extends AbstractActionController
     public function indexAction()
     {
         $name    = '';
-        $session = $session = new \Zend\Session\Container('user');
+        $session = new \Zend\Session\Container('user');
         if (isset($session) && !empty($session->name)) {
             $name = $session->name;
         }
