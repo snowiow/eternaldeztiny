@@ -9,8 +9,10 @@ use Zend\Db\TableGateway\TableGateway;
 
 use News\Model\NewsTable;
 use News\Model\NewsCategoryTable;
+use News\Model\CommentTable;
 use News\Model\NewsCategory;
 use News\Model\News;
+use News\Model\Comment;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -39,25 +41,36 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             'factories' => [
                 'News\Model\NewsTable'         => function ($sm) {
                     $tableGateway = $sm->get('NewsTableGateway');
-                    $table = new NewsTable($tableGateway);
+                    $table        = new NewsTable($tableGateway);
                     return $table;
                 },
                 'News\Model\NewsCategoryTable' => function ($sm) {
                     $tableGateway = $sm->get('NewsCategoryTableGateway');
-                    $table = new NewsCategoryTable($tableGateway);
+                    $table        = new NewsCategoryTable($tableGateway);
+                    return $table;
+                },
+                'News\Model\CommentTable'      => function ($sm) {
+                    $tableGateway = $sm->get('CommentTableGateway');
+                    $table        = new CommentTable($tableGateway);
                     return $table;
                 },
                 'NewsTableGateway'             => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new News());
                     return new TableGateway('news', $dbAdapter, null, $resultSetPrototype);
                 },
                 'NewsCategoryTableGateway'     => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new NewsCategory());
                     return new TableGateway('news_category', $dbAdapter, null, $resultSetPrototype);
+                },
+                'CommentTableGateway'          => function ($sm) {
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Comment());
+                    return new TableGateway('comment', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

@@ -63,6 +63,40 @@ $this->headTitle($title);
             posted on <?php echo substr($news->getDatePosted(), 0, -3); ?>
         </div>
     </div>
-
+    <?php
+    $form->setAttribute('action', $this->url('news', [
+        'action' => 'detail',
+        'id' => $news->getId(),
+    ]));
+    if ($accountName):
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('news_id'));
+        echo $this->formHidden($form->get('account_id'));
+        echo $this->formHidden($form->get('date_posted'));
+        foreach ($form as $element):
+            if (!($element instanceof Zend\Form\Element\Submit) &&
+                !($element instanceof Zend\Form\Element\Hidden)):
+                if (isset($errors)):
+                    echo '<div class="form-group has-error has-feedback">';
+                    echo $this->formElement($element);
+                    echo '<span class="glyphicon glyphicon-remove 
+                        form-control-feedback" aria-hidden="true"></span>';
+                    echo $this->formElementErrors($element);
+                else:
+                    echo '<div class="form-group">';
+                    echo $this->formElement($element);
+                endif;
+                echo '</div>';
+            endif;
+        endforeach;
+        ?>
+        <div class="form-group">
+            <?php echo $this->formSubmit($form->get('submit')); ?>
+        </div>
+        <?php echo $this->form()->closeTag(); 
+    else: ?>
+        <p><b>You need to be logged in to comment.</b></p>
+    <?php endif; ?>
 </div>
 

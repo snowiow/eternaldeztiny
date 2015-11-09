@@ -116,7 +116,8 @@ class Comment implements InputFilterAwareInterface
         $this->newsId     = (!empty($data['news_id'])) ? $data['news_id'] : null;
         $this->accountId  = (!empty($data['account_id'])) ? $data['account_id'] : null;
         $this->content    = (!empty($data['content'])) ? $data['content'] : null;
-        $this->datePosted = (!empty($data['date_posted'])) ? $data['date_posted'] : null;
+        $date             = new \DateTime();
+        $this->datePosted = (!empty($data['date_posted'])) ? $data['date_posted'] : $date->format('Y-m-d H:i:s');
     }
 
     public function getArrayCopy()
@@ -169,9 +170,9 @@ class Comment implements InputFilterAwareInterface
                 ],
             ]);
 
-            $this->inputFilter->add([
+            $inputFilter->add([
                 'name'     => 'date_posted',
-                'required' => true,
+                'required' => false,
             ]);
 
             $this->inputFilter = $inputFilter;

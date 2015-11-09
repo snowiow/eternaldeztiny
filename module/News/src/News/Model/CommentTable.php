@@ -3,6 +3,7 @@
 namespace News\Model;
 
 use News\Model\Comment;
+use Zend\Db\TableGateway\TableGateway;
 
 class CommentTable
 {
@@ -33,7 +34,7 @@ class CommentTable
     public function saveComment(Comment $comment)
     {
         $data = [
-            'news_id'     => $comment->getId(),
+            'news_id'     => $comment->getNewsId(),
             'account_id'  => $comment->getAccountId(),
             'content'     => $comment->getContent(),
             'date_posted' => $comment->getDatePosted(),

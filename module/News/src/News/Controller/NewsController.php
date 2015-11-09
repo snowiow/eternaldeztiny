@@ -9,9 +9,12 @@ use Account\Model\Role;
 use Account\Service\PermissionChecker;
 
 use News\Form\NewsForm;
+use News\Form\CommentForm;
 use News\Model\News;
+use News\Model\Comment;
 use News\Model\NewsCategoryTable;
 use News\Model\NewsTable;
+use News\Model\CommentTable;
 
 class NewsController extends AbstractActionController
 {
@@ -24,6 +27,11 @@ class NewsController extends AbstractActionController
      * @var NewsCategoryTable
      */
     private $newsCategoryTable;
+
+    /**
+     * @var CommentTable
+     */
+    private $commentTable;
 
     public function indexAction()
     {
@@ -199,19 +207,47 @@ class NewsController extends AbstractActionController
 
     public function detailAction()
     {
-        $name    = '';
-        $session = $session = new \Zend\Session\Container('user');
+        $name       = '';
+        $account_id = 0;
+        $session    = $session    = new \Zend\Session\Container('user');
         if (isset($session) && !empty($session->name)) {
-            $name = $session->name;
+            $name       = $session->name;
+            $account_id = (int) $session->id;
         }
 
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('news');
         }
+
+        $form = new CommentForm();
+        $form->get('news_id')->setValue($id);
+        $form->get('account_id')->setValue($account_id);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $comment = new Comment();
+            $form->setInputFilter($comment->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $comment->exchangeArray($form->getData());
+                $this->getCommentTable()->saveComment($comment);
+                return $this->redirect()->toRoute('news', [
+                    'action' => 'detail',
+                    'id'     => $id,
+                ]);
+            }
+            return [
+                'errors'      => $form->getMessages(),
+                'accountName' => $name,
+                'news'        => $this->getNewsTable()->getNews($id),
+                'form'        => $form,
+            ];
+        }
         return [
             'accountName' => $name,
             'news'        => $this->getNewsTable()->getNews($id),
+            'form'        => $form,
         ];
     }
 
@@ -235,6 +271,18 @@ class NewsController extends AbstractActionController
             $this->newsCategoryTable = $sm->get('News\Model\NewsCategoryTable');
         }
         return $this->newsCategoryTable;
+    }
+
+    /**
+     * @return CommentTable
+     */
+    public function getCommentTable()
+    {
+        if (!$this->commentTable) {
+            $sm                 = $this->getServiceLocator();
+            $this->commentTable = $sm->get('News\Model\CommentTable');
+        }
+        return $this->commentTable;
     }
 
     /**
