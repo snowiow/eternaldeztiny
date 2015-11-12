@@ -2,8 +2,10 @@
 
 namespace News\Model;
 
-use News\Model\Comment;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
+
+use News\Model\Comment;
 
 class CommentTable
 {
@@ -11,11 +13,11 @@ class CommentTable
     /**
      * @var Tablegateway
      */
-    private $tablegateway;
+    private $tableGateway;
 
     public function __construct(TableGateway $tableGateway)
     {
-        $this->tablegateway = $tableGateway;
+        $this->tableGateway = $tableGateway;
     }
 
     public function getComment(int $id)
@@ -31,6 +33,16 @@ class CommentTable
         return $row;
     }
 
+    public function getCommentsByNewsId(int $newsId)
+    {
+        return $this->tableGateway->select(function (Select $select) use ($newsId) {
+            $select
+                ->join(['a' => 'account'], 'comment.account_id = a.id', ['name', 'avatar'])
+                ->where(['news_id' => $newsId])
+                ->order(['date_posted ASC']);
+        });
+    }
+
     public function saveComment(Comment $comment)
     {
         $data = [
@@ -42,10 +54,10 @@ class CommentTable
 
         $id = $comment->getid();
         if ($id == 0) {
-            $this->tablegateway->insert($data);
+            $this->tableGateway->insert($data);
         } else {
             if ($this->getComment($id)) {
-                $this->tablegateway->update($data, ['id' => $id]);
+                $this->tableGateway->update($data, ['id' => $id]);
             } else {
                 throw new \Exception('Comment id does not exist');
             }

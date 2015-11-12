@@ -51,6 +51,11 @@ class News implements InputFilterAwareInterface
     private $date_posted;
 
     /**
+     * @var int
+     */
+    private $commentCount;
+
+    /**
      * @var InputFilter
      */
     protected $inputFilter;
@@ -157,6 +162,14 @@ class News implements InputFilterAwareInterface
     }
 
     /**
+     * @return int
+     */
+    public function getCommentCount()
+    {
+        return $this->commentCount;
+    }
+
+    /**
      * @return string
      */
     public function getDatePosted()
@@ -170,13 +183,14 @@ class News implements InputFilterAwareInterface
      */
     public function exchangeArray($data)
     {
-        $this->id         = (!empty($data['id'])) ? $data['id'] : null;
-        $this->accountId  = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->categoryId = (!empty($data['category_id'])) ? $data['category_id'] : null;
-        $this->author     = (!empty($data['name'])) ? $data['name'] : null;
-        $this->category   = (!empty($data['cname'])) ? $data['cname'] : null;
-        $this->title      = (!empty($data['title'])) ? $data['title'] : null;
-        $this->content    = (!empty($data['content'])) ? $data['content'] : null;
+        $this->id           = (!empty($data['id'])) ? $data['id'] : null;
+        $this->accountId    = (!empty($data['account_id'])) ? $data['account_id'] : null;
+        $this->categoryId   = (!empty($data['category_id'])) ? $data['category_id'] : null;
+        $this->author       = (!empty($data['name'])) ? $data['name'] : null;
+        $this->category     = (!empty($data['cname'])) ? $data['cname'] : null;
+        $this->title        = (!empty($data['title'])) ? $data['title'] : null;
+        $this->content      = (!empty($data['content'])) ? $data['content'] : null;
+        $this->commentCount = (!empty($data['comment_count'])) ? $data['comment_count'] : 0;
 
         $date              = new \DateTime();
         $this->date_posted = (!empty($data['date_posted'])) ? $data['date_posted'] : $date->format('Y-m-d H:i:s');

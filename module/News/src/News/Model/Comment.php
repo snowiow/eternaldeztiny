@@ -34,6 +34,16 @@ class Comment implements InputFilterAwareInterface
     private $datePosted;
 
     /**
+     * @var string
+     */
+    private $accountName;
+
+    /**
+     * @var string
+     */
+    private $accountPic;
+
+    /**
      * @var InputFilter
      */
     private $inputFilter;
@@ -103,6 +113,38 @@ class Comment implements InputFilterAwareInterface
     }
 
     /**
+     * @return string
+     */
+    public function getAccountName()
+    {
+        return $this->accountName;
+    }
+
+    /**
+     * @param string $accountName
+     */
+    public function setAccountName($accountName)
+    {
+        $this->accountName = $accountName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountPic()
+    {
+        return $this->accountPic;
+    }
+
+    /**
+     * @param string $accountPic
+     */
+    public function setAccoutPic($accountPic)
+    {
+        $this->accountPic = $accountPic;
+    }
+
+    /**
      * @param string $datePosted
      */
     public function setDatePosted(string $datePosted)
@@ -112,10 +154,13 @@ class Comment implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id         = (!empty($data['id'])) ? $data['id'] : null;
-        $this->newsId     = (!empty($data['news_id'])) ? $data['news_id'] : null;
-        $this->accountId  = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->content    = (!empty($data['content'])) ? $data['content'] : null;
+        $this->id          = (!empty($data['id'])) ? $data['id'] : null;
+        $this->newsId      = (!empty($data['news_id'])) ? $data['news_id'] : null;
+        $this->accountId   = (!empty($data['account_id'])) ? $data['account_id'] : null;
+        $this->content     = (!empty($data['content'])) ? $data['content'] : null;
+        $this->accountName = (!empty($data['name'])) ? $data['name'] : null;
+        $this->accountPic  = (!empty($data['avatar'])) ? $data['avatar'] : null;
+
         $date             = new \DateTime();
         $this->datePosted = (!empty($data['date_posted'])) ? $data['date_posted'] : $date->format('Y-m-d H:i:s');
     }

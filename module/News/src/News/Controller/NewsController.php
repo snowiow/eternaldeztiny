@@ -220,7 +220,8 @@ class NewsController extends AbstractActionController
             return $this->redirect()->toRoute('news');
         }
 
-        $form = new CommentForm();
+        $comments = $this->getCommentTable()->getCommentsByNewsId($id);
+        $form     = new CommentForm();
         $form->get('news_id')->setValue($id);
         $form->get('account_id')->setValue($account_id);
 
@@ -241,12 +242,14 @@ class NewsController extends AbstractActionController
                 'errors'      => $form->getMessages(),
                 'accountName' => $name,
                 'news'        => $this->getNewsTable()->getNews($id),
+                'comments'    => $comments,
                 'form'        => $form,
             ];
         }
         return [
             'accountName' => $name,
             'news'        => $this->getNewsTable()->getNews($id),
+            'comments'    => $comments,
             'form'        => $form,
         ];
     }

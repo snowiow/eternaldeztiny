@@ -78,6 +78,10 @@ img.news-cat-img {
     border-right: 1px solid #3074AD;
 }
 
+.comment-border {
+    border-right: 1px solid #eae8e8;
+}
+
 .btn-success:active, .btn-success.active {
   background-color: #57a900;
 }

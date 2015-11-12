@@ -44,7 +44,7 @@ $this->headTitle($title);
                                 [
                                     'action' => 'detail', 
                                     'id' => $item->getId(),
-                                ]); ?>">0 Comments</a></div>
+                                    ]); ?>"><?php echo $item->getCommentCount(); ?> Comments</a></div>
                 </div>
             </div>
         </div>

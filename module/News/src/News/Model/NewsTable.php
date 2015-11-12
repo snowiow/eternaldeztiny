@@ -4,6 +4,7 @@ namespace News\Model;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
@@ -35,7 +36,16 @@ class NewsTable
             $select
                 ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
                 ->join(['c' => 'news_category'], 'news.category_id = c.id', ['cname' => 'name'])
-                ->order('date_posted DESC');
+                ->join(['m' => 'comment'], 'news.id = m.news_id', ['cid' => 'id'], $select::JOIN_LEFT)
+                ->order('news.date_posted DESC')
+                ->columns([
+                    'id',
+                    'title',
+                    'content',
+                    'date_posted',
+                    'comment_count' => new Expression('COUNT(m.id)'),
+                ])
+                ->group('news.id');
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new News());
             $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
@@ -62,6 +72,7 @@ class NewsTable
         $rowset = $this->tableGateway->select(function (Select $select) use ($id) {
             $select
                 ->join(['a' => 'account'], 'news.account_id = a.id', ['name'])
+                ->join(['c' => 'news_category'], 'news.category_id = c.id', ['cname' => 'name'])
                 ->where(['news.id' => $id]);
         });
 
