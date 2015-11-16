@@ -16,6 +16,7 @@ basepic VARCHAR(64),
 profilepic VARCHAR(64),
 processed INT NOT NULL,
 processed_by INT,
+date_applied TIMESTAMP NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY (processed_by) REFERENCES account(id)
 );

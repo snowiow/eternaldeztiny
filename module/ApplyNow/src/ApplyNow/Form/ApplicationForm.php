@@ -215,6 +215,11 @@ class ApplicationForm extends Form
         ]);
 
         $this->add([
+            'name' => 'date_applied',
+            'type' => 'Hidden',
+        ]);
+
+        $this->add([
             'name'       => 'submit',
             'type'       => 'Submit',
             'attributes' => [

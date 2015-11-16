@@ -129,6 +129,11 @@ class Application implements InputFilterAwareInterface
     private $account_name;
 
     /**
+     * @var string
+     */
+    private $dateApplied;
+
+    /**
      * @return int
      */
     public function getId()
@@ -401,6 +406,15 @@ class Application implements InputFilterAwareInterface
     {
         return $this->account_name;
     }
+
+    /**
+     * @return string
+     */
+    public function getDateApplied()
+    {
+        return $this->dateApplied;
+    }
+
     /**
      * Fills up the model class with the given data
      * @param array $data The account data needed to fill the model
@@ -425,6 +439,8 @@ class Application implements InputFilterAwareInterface
         $this->processed    = !empty($data['processed']) ? $data['processed'] : 0;
         $this->processedBy  = !empty($data['processed_by']) ? $data['processed_by'] : null;
         $this->account_name = !empty($data['account_name']) ? $data['account_name'] : null;
+        $date               = new \DateTime();
+        $this->dateApplied  = !empty($data['date_applied']) ? $data['date_applied'] : $date->format('Y-m-d H:i:s');
     }
 
     /**
@@ -677,6 +693,11 @@ class Application implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name'     => 'processed',
+                'required' => false,
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'date_applied',
                 'required' => false,
             ]);
 

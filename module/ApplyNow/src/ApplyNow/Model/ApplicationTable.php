@@ -56,7 +56,9 @@ class ApplicationTable
     public function getOpenApplications()
     {
         return $this->tableGateway->select(function (Select $select) {
-            $select->where('processed = 0');
+            $select
+                ->where('processed = 0')
+                ->order('date_applied ASC');
         });
     }
 
@@ -67,10 +69,12 @@ class ApplicationTable
     {
         if ($paginated) {
             $select = new Select('application');
-            $select->join(['a' => 'account'],
-                'application.processed_by = a.id',
-                ['account_name' => 'name']
-            )->where('processed > 0');
+            $select
+                ->join(['a' => 'account'],
+                    'application.processed_by = a.id',
+                    ['account_name' => 'name'])
+                ->where('processed > 0')
+                ->order('date_applied DESC');
 
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new Application());
@@ -78,8 +82,10 @@ class ApplicationTable
             return new Paginator($paginatorAdapter);
         }
         return $this->tableGateway->select(function (Select $select) {
-            $select->join(['a' => 'account'], 'application.processed_by = a.id', ['account_name' => 'name'])
-                ->where('processed > 0');
+            $select
+                ->join(['a' => 'account'], 'application.processed_by = a.id', ['account_name' => 'name'])
+                ->where('processed > 0')
+                ->order('date_applied DESC');
         });
     }
 
@@ -114,6 +120,7 @@ class ApplicationTable
             'profilepic'   => $application->getProfilepic(),
             'processed'    => $application->getProcessed(),
             'processed_by' => $application->getProcessedBy(),
+            'date_applied' => $application->getDateApplied(),
         ];
 
         $id = (int) $application->getId();
