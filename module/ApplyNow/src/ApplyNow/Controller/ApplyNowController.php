@@ -142,6 +142,7 @@ class ApplyNowController extends AbstractActionController
             'role'        => $session->role,
             'unprocessed' => $this->getApplicationTable()->getOpenApplications(),
             'processed'   => $paginator,
+            'last30days'  => $this->getApplicationTable()->getApplicationCountLast30Days(),
         ]);
     }
 

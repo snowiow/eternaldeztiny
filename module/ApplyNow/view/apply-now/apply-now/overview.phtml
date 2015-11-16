@@ -27,7 +27,9 @@ $this->headTitle($title);
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="alert alert-success" role="alert">Processed Applications</div>
+    <div class="alert alert-success" role="alert">
+        Processed Applications (<?php echo $last30days; ?> application(s) in the last 30 days)
+    </div>
     <div class="table-responsive">
     <table class="table table-striped">
         <thead>

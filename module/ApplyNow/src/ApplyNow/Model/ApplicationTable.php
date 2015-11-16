@@ -96,6 +96,20 @@ class ApplicationTable
         });
     }
 
+    public function getApplicationCountLast30Days()
+    {
+        $dateNow    = new \DateTime();
+        $dateBehind = (new \DateTime())->sub(new \DateInterval('P30D'));
+        return $this->tableGateway->select(function (Select $select)
+             use ($dateNow, $dateBehind) {
+                $select
+                    ->where->between(
+                        'date_applied',
+                        $dateBehind->format('Y-m-d H:i:s'),
+                        $dateNow->format('Y-m-d H:i:s'));
+            })->count();
+    }
+
     /**
      * @param Application $application to be saved
      *
