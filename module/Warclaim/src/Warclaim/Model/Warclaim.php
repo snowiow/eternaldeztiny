@@ -268,7 +268,7 @@ class Warclaim
                         'name'    => 'StringLength',
                         'options' => [
                             'encoding' => 'UTF-8',
-                            'max'      => 500,
+                            'max'      => 2000,
                         ],
                     ],
                 ],
