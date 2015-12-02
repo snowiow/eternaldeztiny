@@ -50,7 +50,12 @@ $this->headTitle($title);
     foreach ($comments as $comment): ?>
         <div class="panel panel-default">
             <div class="panel-heading">
-                    <?php echo $comment->getAccountName(); ?>
+                <a href="<?php echo $this->url(
+                    'account', [
+                        'action' => 'profile',
+                        'id' => $comment->getAccountName()
+                    ]
+                    ); ?>"><?php echo $comment->getAccountName() ?></a>
                     commented on 
                     <?php echo substr($comment->getDatePosted(), 0, -3); ?>
             </div>
