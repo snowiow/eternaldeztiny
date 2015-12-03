@@ -11,6 +11,8 @@ use Account\Model\Account;
 use Account\Model\AccountTable;
 use News\Model\News;
 use News\Model\NewsTable;
+use News\Model\Comment;
+use News\Model\CommentTable;
 use Media\Model\Media;
 use Media\Model\MediaTable;
 
@@ -71,6 +73,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Media());
                     return new TableGateway('media', $dbAdapter, null, $resultSetPrototype);
+                },
+                'News\Model\CommentTable'    => function ($sm) {
+                    $tableGateway = $sm->get('CommentTableGateway');
+                    $table        = new CommentTable($tableGateway);
+                    return $table;
+                },
+                'CommentTableGateway'        => function ($sm) {
+                    $dabAdapter         = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Comment());
+                    return new TableGateway('comment', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

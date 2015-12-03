@@ -27,6 +27,11 @@ class AdminController extends AbstractAccountController
      */
     private $newsTable;
 
+    /**
+     * @var commentTable
+     */
+    private $commentTable;
+
     public function setRolesAction()
     {
         if (!PermissionChecker::check(Role::CO)) {
@@ -93,25 +98,7 @@ class AdminController extends AbstractAccountController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                //delete all related news
-                $news = $this->getNewsTable()->getNewsByAccoundId($id);
-                foreach ($news as $n) {
-                    $this->getNewsTable()->deleteNews($n->getId());
-                }
-                //delete all related media
-                $media = $this->getMediaTable()->getMediaByAccoundId($id);
-                foreach ($media as $m) {
-                    $this->getMediaTable()->deleteMedia($m->getId());
-                }
-                //reset all applications to the account who is executing this actio
-                $applications = $this->getApplicationTable()->getApplicationsByAccountId($id);
-                $session      = new Container('user');
-                foreach ($applications as $application) {
-                    $application->setProcessedBy($session->id);
-                    $this->getApplicationTable()->saveApplication($application);
-                }
-                //TODO: If new relations have to be deleted, replace these into their own function
-
+                $this->removeDependencies($id);
                 $this->getAccountTable()->deleteAccount($id);
             }
             return $this->redirect()->toRoute('admin', ['action' => 'setroles']);
@@ -158,5 +145,41 @@ class AdminController extends AbstractAccountController
         }
 
         return $this->applicationTable;
+    }
+
+    public function getCommentTable()
+    {
+        if (!$this->commentTable) {
+            $sm                 = $this->getServiceLocator();
+            $this->commentTable = $sm->get('News\Model\CommentTable');
+        }
+
+        return $this->commentTable;
+    }
+
+    private function removeDependencies(int $id)
+    {
+        //delete all related news
+        $news = $this->getNewsTable()->getNewsByAccoundId($id);
+        foreach ($news as $n) {
+            $this->getNewsTable()->deleteNews($n->getId());
+        }
+        //delete all related comments
+        $comments = $this->getCommentTable()->getCommentByAccountId($id);
+        foreach ($comments as $comment) {
+            $this->getCommentTable()->deleteComment((int) $comment->getId());
+        }
+        //delete all related media
+        $media = $this->getMediaTable()->getMediaByAccoundId($id);
+        foreach ($media as $m) {
+            $this->getMediaTable()->deleteMedia($m->getId());
+        }
+        //reset all applications to the account who is executing this actio
+        $applications = $this->getApplicationTable()->getApplicationsByAccountId($id);
+        $session      = new Container('user');
+        foreach ($applications as $application) {
+            $application->setProcessedBy($session->id);
+            $this->getApplicationTable()->saveApplication($application);
+        }
     }
 }

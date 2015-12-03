@@ -43,6 +43,16 @@ class CommentTable
         });
     }
 
+    public function getCommentByAccountId(int $accountId)
+    {
+        return $this->tableGateway->select(function (Select $select)
+             use ($accountId) {
+                $select
+                    ->where(['account_id' => $accountId])
+                    ->order(['date_posted ASC']);
+            });
+    }
+
     public function saveComment(Comment $comment)
     {
         $data = [
@@ -62,6 +72,11 @@ class CommentTable
                 throw new \Exception('Comment id does not exist');
             }
         }
+    }
+
+    public function deleteComment(int $id)
+    {
+        $this->tableGateway->delete(['id' => $id]);
     }
 
 }
