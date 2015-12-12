@@ -1,0 +1,8 @@
+CREATE TABLE warstats (
+    id INT NOT NULL auto_increment,
+    opted_out_date TIMESTAMP NOT NULL,
+    opted_in_date TIMESTAMP NOT NULL,
+    gemable TINYINT(1) NOT NULL,
+    reason VARCHAR(255),
+    PRIMARY KEY (id)
+);
