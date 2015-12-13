@@ -5,8 +5,8 @@
  *
  * @see https://github.com/zendframework/ZFTool
  */
-return array(
-    'modules' => array(
+return [
+    'modules'                 => [
         'Account',
         'Application',
         'ApplyNow',
@@ -17,14 +17,15 @@ return array(
         'Warlog',
         'Warclaim',
         'Media',
-    ),
-    'module_listener_options' => array(
-        'module_paths' => array(
+        'Warstatus',
+    ],
+    'module_listener_options' => [
+        'module_paths'      => [
             './module',
             './vendor',
-        ),
-        'config_glob_paths' => array(
+        ],
+        'config_glob_paths' => [
             'config/autoload/{,*.}{global,local}.php',
-        ),
-    ),
-);
+        ],
+    ],
+];

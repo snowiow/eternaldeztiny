@@ -41,7 +41,7 @@ class AccountController extends AbstractAccountController
     public function __construct(AppMailServiceInterface $appMailService)
     {
         $this->appMailService = $appMailService;
-    }
+        }
 
     public function profileAction()
     {
