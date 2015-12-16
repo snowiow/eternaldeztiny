@@ -35,6 +35,11 @@ class Warstatus implements InputFilterAwareInterface
     private $gemable;
 
     /**
+     * @var bool
+     */
+    private $crusade;
+
+    /**
      * @var InputFilter
      */
     private $inputFilter;
@@ -117,6 +122,22 @@ class Warstatus implements InputFilterAwareInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getCrusade()
+    {
+        return $this->crusade;
+    }
+
+    /**
+     * @param bool $crusade
+     */
+    public function setCrusade(bool $crusade)
+    {
+        $this->crusade = $crusade;
+    }
+
+    /**
      * Fills up the model class with the given data
      * @param array $data
      */
@@ -131,6 +152,7 @@ class Warstatus implements InputFilterAwareInterface
 
         $this->reason  = (!empty($data['reason'])) ? $data['reason'] : '';
         $this->gemable = (!empty($data['gemable'])) ? $data['gemable'] : 0;
+        $this->crusade = (!empty($data['crusade'])) ? $data['crusade'] : 0;
     }
 
     public function getArrayCopy()
@@ -141,6 +163,7 @@ class Warstatus implements InputFilterAwareInterface
             'opted_in_date'  => $this->optedInDate,
             'gemable'        => $this->gemable,
             'reason'         => $this->reason,
+            'crusade'        => $this->crusade,
         ];
     }
 
@@ -195,6 +218,11 @@ class Warstatus implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name'     => 'gemable',
+                'required' => true,
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'crusade',
                 'required' => true,
             ]);
 

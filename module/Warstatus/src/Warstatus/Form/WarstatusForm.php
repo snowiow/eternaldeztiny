@@ -52,7 +52,18 @@ class WarstatusForm extends Form
                 'label' => 'Gemable:',
             ],
             'attributes' => [
-                'style' => 'margin-top: 0.75em',
+                'class' => 'horizontal-form-cb',
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'crusade',
+            'type'       => 'Checkbox',
+            'options'    => [
+                'label' => 'Able for crusade:',
+            ],
+            'attributes' => [
+                'class' => 'horizontal-form-cb',
             ],
         ]);
 

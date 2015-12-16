@@ -47,6 +47,7 @@ class WarstatusTable
             'opted_out_date' => $warstatus->getOptedOutDate(),
             'opted_in_date'  => $warstatus->getOptedInDate(),
             'gemable'        => $warstatus->getGemable(),
+            'crusade'        => $warstatus->getCrusade(),
             'reason'         => $warstatus->getReason(),
         ];
 

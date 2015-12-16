@@ -137,3 +137,7 @@ img.news-cat-img {
 .left-align {
     text-align: left;
 }
+
+input[type=checkbox].horizontal-form-cb {
+   margin-top: 0.75em;
+}
