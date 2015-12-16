@@ -1,12 +1,13 @@
 <?php
+
 return [
-    'controllers' => [
+    'controllers'  => [
         'invokables' => [
             'Warstatus\Controller\Warstatus' => 'Warstatus\Controller\WarstatusController',
         ],
     ],
-    'router'      => [
-        'routes'       => [
+    'router'       => [
+        'routes' => [
             'warstatus' => [
                 'type'    => 'segment',
                 'options' => [
@@ -22,10 +23,10 @@ return [
                 ],
             ],
         ],
-        'view_manager' => [
-            'template_path_stack' => [
-                'warstatus' => __DIR__ . '/../view',
-            ],
+    ],
+    'view_manager' => [
+        'template_path_stack' => [
+            'warstatus' => __DIR__ . '/../view',
         ],
     ],
 ];

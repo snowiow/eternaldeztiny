@@ -9,8 +9,4 @@ avatar VARCHAR(128),
 date_registered TIMESTAMP NOT NULL,
 mini VARCHAR(64),
 PRIMARY KEY (id),
-FOREIGN KEY (warstats_id) REFERENCES warstats(id) ON DELETE CASCADE
 );
-
-
-ALTER TABLE account ADD COLUMN warstats_id INT, ADD FOREIGN KEY (warstats_id) REFERENCES warstats(id) ON DELETE CASCADE;

@@ -1,5 +1,14 @@
 <?php
+
 namespace Warstatus;
+
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+
+use Warstatus\Model\Warstatus;
+use Warstatus\Model\WarstatusTable;
 
 class Module
 {
@@ -26,19 +35,19 @@ class Module
     {
         return [
             'factories' => [
-                'Warstats\Model\WarstatsTable' => function ($sm) {
-                    $tableGateway = $sm->get('WarstatsTableGateway');
-                    $table        = new WarstatsTable($tableGateway);
+                'Warstatus\Model\WarstatusTable' => function ($sm) {
+                    $tableGateway = $sm->get('WarstatusTableGateway');
+                    $table        = new WarstatusTable($tableGateway);
 
                     return $table;
                 },
-                'WarstatsTableGateway'         => function ($sm) {
+                'WarstatusTableGateway'          => function ($sm) {
                     $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Warstats());
+                    $resultSetPrototype->setArrayObjectPrototype(new Warstatus());
 
                     return new TableGateway(
-                        'warstats',
+                        'warstatus',
                         $dbAdapter,
                         null,
                         $resultSetPrototype

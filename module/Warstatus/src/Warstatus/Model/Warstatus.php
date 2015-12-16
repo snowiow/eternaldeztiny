@@ -3,6 +3,7 @@
 namespace Warstatus\Model;
 
 use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilterAwareInterface;
 
 class Warstatus implements InputFilterAwareInterface
@@ -14,12 +15,12 @@ class Warstatus implements InputFilterAwareInterface
     private $id;
 
     /**
-     * @var string
+     * @var DateTime
      */
     private $optedOutDate;
 
     /**
-     * @var string
+     * @var DateTime
      */
     private $optedInDate;
 
@@ -46,8 +47,13 @@ class Warstatus implements InputFilterAwareInterface
         return $this->id;
     }
 
+    public function __construct($id = 0)
+    {
+        $this->id = $id;
+    }
+
     /**
-     * @return string
+     * @return DateTime
      */
     public function getOptedOutDate()
     {
@@ -57,7 +63,7 @@ class Warstatus implements InputFilterAwareInterface
     /**
      * @param string $date
      */
-    public function setOptedOutDate(string $date)
+    public function setOptedOutDate($date)
     {
         $this->optedOutDate = $date;
     }
@@ -73,7 +79,7 @@ class Warstatus implements InputFilterAwareInterface
     /**
      * @param string $date
      */
-    public function setOptedInDate(string $date)
+    public function setOptedInDate($date)
     {
         $this->optedInDate = $date;
     }
@@ -119,21 +125,26 @@ class Warstatus implements InputFilterAwareInterface
         $this->id = (!empty($data['id'])) ? $data['id'] : null;
 
         $dateNow = new \DateTime();
-        $dateNow = $dateNow->format('Y-m-d H:i:s');
 
         $this->optedInDate  = (!empty($data['opted_in_date'])) ? $data['opted_in_date'] : $dateNow;
         $this->optedOutDate = (!empty($data['opted_out_date'])) ? $data['opted_out_date'] : $dateNow;
 
-        $this->reason = (!empty($data['reason'])) ? $data['reason'] : null;
-        $this->gemable(!empty($data['gemable'])) ? $data['gemable'] : 0;
+        $this->reason  = (!empty($data['reason'])) ? $data['reason'] : '';
+        $this->gemable = (!empty($data['gemable'])) ? $data['gemable'] : 0;
     }
 
     public function getArrayCopy()
     {
-        return get_object_vars($this);
+        return [
+            'id'             => $this->id,
+            'opted_out_date' => $this->optedOutDate,
+            'opted_in_date'  => $this->optedInDate,
+            'gemable'        => $this->gemable,
+            'reason'         => $this->reason,
+        ];
     }
 
-    public function setInputFilter(InputFilterInterface $inputFIlter)
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception('Not used');
     }
@@ -170,14 +181,24 @@ class Warstatus implements InputFilterAwareInterface
             ]);
 
             $inputFilter->add([
-                'name'     => 'opted_in_date',
-                'required' => false,
+                'name'       => 'opted_in_date',
+                'required'   => false,
+                'validators' => [
+                    [
+                        'name'    => 'Date',
+                        'options' => [
+                            'format' => 'Y-m-d\TH:i',
+                        ],
+                    ],
+                ],
             ]);
 
             $inputFilter->add([
                 'name'     => 'gemable',
                 'required' => true,
             ]);
+
+            $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;

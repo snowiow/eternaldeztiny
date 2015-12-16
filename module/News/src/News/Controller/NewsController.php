@@ -112,7 +112,7 @@ class NewsController extends AbstractActionController
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('news');
         }
-        $session = $session = new \Zend\Session\Container('user');
+        $session = new \Zend\Session\Container('user');
         if (!isset($session->id) || $session->id != $news->getAccountId()) {
             return $this->redirect()->toRoute('account',
                 [
