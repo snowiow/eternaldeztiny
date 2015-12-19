@@ -24,7 +24,13 @@ $this->headTitle('Warstatus Overview');
             <tbody>
                 <?php foreach ($accounts as $account): ?>
                 <tr>
-                    <th><?php echo $account->getName(); ?></th>
+                    <th>
+                        <a href="<?php echo $this->url(
+                            'account', 
+                            ['action' => 'profile', 'id' => $account->getName()]
+                            ); ?>"><?php echo $account->getName() ?>
+                        </a>
+                    </th>
                     <th>
                         <?php if ($account->getWarstatus()->getDurationLeft()): ?>
                         <?php echo $account->getWarstatus()->getDurationLeft(); ?> day(s) left 
