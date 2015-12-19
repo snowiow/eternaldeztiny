@@ -7,6 +7,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGateway;
 
 use Warstatus\Model\WarstatusTable;
+use Warstatus\Model\Warstatus;
 
 class WarstatusTable
 {
@@ -43,14 +44,7 @@ class WarstatusTable
      */
     public function saveWarstatus(Warstatus $warstatus)
     {
-        $data = [
-            'opted_out_date' => $warstatus->getOptedOutDate(),
-            'opted_in_date'  => $warstatus->getOptedInDate(),
-            'gemable'        => $warstatus->getGemable(),
-            'crusade'        => $warstatus->getCrusade(),
-            'reason'         => $warstatus->getReason(),
-        ];
-
+        $data = $warstatus->getArrayCopy();
         if ($warstatus->getId() == 0) {
             throw new \Exception('Id needed to save a warstatus');
         } else {

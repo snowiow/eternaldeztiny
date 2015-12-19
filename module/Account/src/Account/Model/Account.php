@@ -5,6 +5,8 @@ namespace Account\Model;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 
+use Warstatus\Model\Warstatus;
+
 class Account
 {
     /**
@@ -51,6 +53,11 @@ class Account
      * @var string
      */
     private $mini;
+
+    /**
+     * @var Warstatus
+     */
+    private $warstatus;
 
     /**
      * @var InputFilter
@@ -211,6 +218,14 @@ class Account
     }
 
     /**
+     * @return Warstatus
+     */
+    public function getWarstatus()
+    {
+        return $this->warstatus;
+    }
+
+    /**
      * Fills up the model class with the given data
      * @param array $data The account data needed to fill the model
      */
@@ -229,6 +244,13 @@ class Account
         $date                  = new \DateTime();
         $this->date_registered = !empty($data['date_registered']) ? $data['date_registered'] :
         $date->format('Y-m-d H:i:s');
+
+        if (array_key_exists('opted_out_date', $data)) {
+            if (!$this->warstatus) {
+                $this->warstatus = new Warstatus();
+            }
+            $this->warstatus->exchangeArray($data);
+        }
     }
 
     /**

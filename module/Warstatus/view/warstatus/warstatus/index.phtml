@@ -1,0 +1,56 @@
+<?php
+$title = 'Warstatus Overview';
+$this->headTitle('Warstatus Overview');
+?>
+<div class="content shadow">
+    <div class"page-header">
+        <h1><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+    <br />
+    <u>Currently <b><?php echo $out_of_war; ?></b> Members out of war</u>
+    <br />
+    <br />
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Time until opt-in</th>
+                    <th>Reason</th>
+                    <th>Gemable</th>
+                    <th>Crusade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($accounts as $account): ?>
+                <tr>
+                    <th><?php echo $account->getName(); ?></th>
+                    <th>
+                        <?php if ($account->getWarstatus()->getDurationLeft()): ?>
+                        <?php echo $account->getWarstatus()->getDurationLeft(); ?> day(s) left 
+                        <?php else: ?>
+                        Opted-In
+                        <?php endif; ?>
+                    </th>
+                    <th><?php echo $account->getWarstatus()->getReason(); ?></th>
+                    <th>
+                        <?php if ($account->getWarstatus()->getGemable()): ?>
+                        <img src="/img/warstatus/gem.png" class="img-responsive warstatus-gem">
+                        <?php else: ?>
+                        <img src="/img/warstatus/no_gem.png" class="img-responsive warstatus-gem">
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <?php if ($account->getWarstatus()->getCrusade()): ?>
+                        <img src="/img/warstatus/crusade.png" class="img-responsive warstatus-crusade">
+                        <?php else: ?>
+                        <img src="/img/warstatus/no_crusade.png" class="img-responsive warstatus-crusade">
+                        <?php endif; ?>
+                    </th>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <a href="<?php echo $this->url('account', ['action' => 'profile']);?>" class="btn btn-danger">Back</a>
+</div>

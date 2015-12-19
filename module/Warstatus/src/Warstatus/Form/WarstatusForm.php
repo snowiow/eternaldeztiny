@@ -27,21 +27,32 @@ class WarstatusForm extends Form
         ]);
 
         $dateNow    = new \DateTime();
-        $dateNowStr = $dateNow->format('Y-m-d\TH:i');
+        $dateNowStr = $dateNow->format('Y-m-d');
         $dateMax    = $dateNow->add(new \DateInterval('P3M'));
-        $dateMaxStr = $dateMax->format('Y-m-d\TH:i');
+        $dateMaxStr = $dateMax->format('Y-m-d');
 
         $this->add([
             'name'       => 'opted_in_date',
-            'type'       => 'Zend\Form\Element\DateTimeLocal',
+            'type'       => 'Zend\Form\Element\Date',
             'options'    => [
                 'label'  => 'Opt-In date:',
-                'format' => 'Y-m-d\TH:i',
+                'format' => 'Y-m-d',
             ],
             'attributes' => [
                 'class' => 'form-control',
                 'min'   => $dateNowStr,
                 'max'   => $dateMaxStr,
+            ],
+        ]);
+
+        $this->add([
+            'name'       => 'reason',
+            'type'       => 'Text',
+            'options'    => [
+                'label' => 'Reason for opting out:',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
             ],
         ]);
 
@@ -64,17 +75,6 @@ class WarstatusForm extends Form
             ],
             'attributes' => [
                 'class' => 'horizontal-form-cb',
-            ],
-        ]);
-
-        $this->add([
-            'name'       => 'reason',
-            'type'       => 'Text',
-            'options'    => [
-                'label' => 'Reason:',
-            ],
-            'attributes' => [
-                'class' => 'form-control',
             ],
         ]);
 

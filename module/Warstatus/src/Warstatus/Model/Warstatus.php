@@ -58,7 +58,7 @@ class Warstatus implements InputFilterAwareInterface
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getOptedOutDate()
     {
@@ -68,7 +68,7 @@ class Warstatus implements InputFilterAwareInterface
     /**
      * @param string $date
      */
-    public function setOptedOutDate($date)
+    public function setOptedOutDate(string $date)
     {
         $this->optedOutDate = $date;
     }
@@ -84,9 +84,21 @@ class Warstatus implements InputFilterAwareInterface
     /**
      * @param string $date
      */
-    public function setOptedInDate($date)
+    public function setOptedInDate(string $date)
     {
         $this->optedInDate = $date;
+    }
+
+    /**
+     * Returns the days, until someone is ready to war again
+     * @return int
+     */
+    public function getDurationLeft()
+    {
+        $opt_in = new \DateTime($this->optedInDate);
+
+        $current_date = new \DateTime();
+        return $current_date->diff($opt_in)->days;
     }
 
     /**
@@ -210,7 +222,7 @@ class Warstatus implements InputFilterAwareInterface
                     [
                         'name'    => 'Date',
                         'options' => [
-                            'format' => 'Y-m-d\TH:i',
+                            'format' => 'Y-m-d',
                         ],
                     ],
                 ],

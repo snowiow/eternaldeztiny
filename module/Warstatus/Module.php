@@ -7,6 +7,8 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
+use Account\Model\Account;
+use Account\Model\AccountTable;
 use Warstatus\Model\Warstatus;
 use Warstatus\Model\WarstatusTable;
 
@@ -48,6 +50,23 @@ class Module
 
                     return new TableGateway(
                         'warstatus',
+                        $dbAdapter,
+                        null,
+                        $resultSetPrototype
+                    );
+                },
+                'Account\Model\AccountTable'     => function ($sm) {
+                    $tableGateway = $sm->get('AccountTableGateway');
+                    $table        = new AccountTable($tableGateway);
+                    return $table;
+                },
+                'AccountTableGateway'            => function ($sm) {
+                    $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Account());
+
+                    return new TableGateway(
+                        'account',
                         $dbAdapter,
                         null,
                         $resultSetPrototype

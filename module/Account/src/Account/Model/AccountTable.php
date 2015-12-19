@@ -111,6 +111,18 @@ class AccountTable
         });
     }
 
+    public function getMembersWithWarstatus()
+    {
+        return $this->tableGateway->select(function (Select $select) {
+            $select
+                ->join(
+                    ['w' => 'warstatus'],
+                    'w.id = account.id',
+                    ['opted_in_date', 'opted_out_date', 'reason', 'gemable', 'crusade']
+                );
+        });
+    }
+
     public function getLeadershipMails()
     {
         return $this->tableGateway->select(function (Select $select) {
