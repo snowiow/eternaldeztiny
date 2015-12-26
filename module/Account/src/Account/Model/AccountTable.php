@@ -118,7 +118,18 @@ class AccountTable
                 ->join(
                     ['w' => 'warstatus'],
                     'w.id = account.id',
-                    ['opted_in_date', 'opted_out_date', 'reason', 'gemable', 'crusade']
+                    [
+                        'opted_in_date',
+                        'opted_out_date',
+                        'reason',
+                        'gemable',
+                        'crusade',
+                        'opted_in_date_mini',
+                        'opted_out_date_mini',
+                        'reason_mini',
+                        'gemable_mini',
+                        'crusade_mini',
+                    ]
                 );
         });
     }

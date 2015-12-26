@@ -5,6 +5,11 @@ CREATE TABLE warstatus (
     gemable TINYINT(1) NOT NULL,
     crusade TINYINT(1) NOT NULL,
     reason VARCHAR(255),
+    opted_out_date_mini TIMESTAMP NOT NULL,
+    opted_in_date_mini TIMESTAMP NOT NULL,
+    gemable_mini TINYINT(1) NOT NULL,
+    crusade_mini TINYINT(1) NOT NULL,
+    reason_mini VARCHAR(255),
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES account(id) ON DELETE CASCADE
 );

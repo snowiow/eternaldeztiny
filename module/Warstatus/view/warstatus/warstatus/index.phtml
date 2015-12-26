@@ -7,7 +7,7 @@ $this->headTitle('Warstatus Overview');
         <h1><?php echo $this->escapeHtml($title); ?></h1>
     </div>
     <br />
-    <u>Currently <b><?php echo $out_of_war; ?></b> Member(s) out of war</u>
+    <u>Currently <b><?php echo $in_war; ?></b> Member(s) available for war</u>
     <br />
     <br />
     <div class="table-responsive">
@@ -22,32 +22,32 @@ $this->headTitle('Warstatus Overview');
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($accounts as $account): ?>
+                <?php foreach ($accounts as $_ => $account): ?>
                 <tr>
                     <th>
-                        <a href="<?php echo $this->url(
-                            'account', 
-                            ['action' => 'profile', 'id' => $account->getName()]
-                            ); ?>"><?php echo $account->getName() ?>
-                        </a>
+                        <?php echo $account['name']; ?>
                     </th>
                     <th>
-                        <?php if ($account->getWarstatus()->getDurationLeft()): ?>
-                        <?php echo $account->getWarstatus()->getDurationLeft(); ?> day(s) left 
+                        <?php if ($account['duration']): ?>
+                        <?php echo $account['duration']; ?> day(s) left 
                         <?php else: ?>
                         Opted-In
                         <?php endif; ?>
                     </th>
-                    <th><?php echo $account->getWarstatus()->getReason(); ?></th>
                     <th>
-                        <?php if ($account->getWarstatus()->getGemable()): ?>
+                        <?php if ($account['duration']): ?>
+                        <?php echo $account['reason']; ?>
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <?php if ($account['gemable']): ?>
                         <img src="/img/warstatus/gem.png" class="img-responsive warstatus-gem">
                         <?php else: ?>
                         <img src="/img/warstatus/no_gem.png" class="img-responsive warstatus-gem">
                         <?php endif; ?>
                     </th>
                     <th>
-                        <?php if ($account->getWarstatus()->getCrusade()): ?>
+                        <?php if ($account['crusade']): ?>
                         <img src="/img/warstatus/crusade.png" class="img-responsive warstatus-crusade">
                         <?php else: ?>
                         <img src="/img/warstatus/no_crusade.png" class="img-responsive warstatus-crusade">

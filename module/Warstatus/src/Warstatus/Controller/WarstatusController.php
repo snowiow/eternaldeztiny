@@ -36,11 +36,12 @@ class WarstatusController extends AbstractActionController
         }
 
         $session   = new \Zend\Session\Container('user');
+        $account   = $this->getAccountTable()->getAccount($session->id);
         $warstatus = null;
         try {
             $warstatus = $this
                 ->getWarstatusTable()
-                ->getWarstatus((int) $session->id);
+                ->getWarstatus((int) $account->getId());
         } catch (\Exception $e) {
             return $this->redirect()->toRoute('news');
         }
@@ -48,16 +49,20 @@ class WarstatusController extends AbstractActionController
         if (!$warstatus) {
             $warstatus = new Warstatus($session->id);
             $warstatus->setOptedOutDate((new \DateTime())->format('Y-m-d'));
+            $warstatus->setOptedOutDateMini((new \DateTime())->format('Y-m-d'));
         }
         $form = new WarstatusForm();
 
         //Prepare date for HTML 5 input
-        $date = new \DateTime($warstatus->getOptedInDate());
+        $date      = new \DateTime($warstatus->getOptedInDate());
+        $date_mini = new \DateTime($warstatus->getOptedInDateMini());
         $warstatus->setOptedInDate($date->format('Y-m-d'));
+        $warstatus->setOptedInDateMini($date_mini->format('Y-m-d'));
 
         $form->bind($warstatus);
 
-        $request = $this->getRequest();
+        $has_mini = $account->getMini() ? true : false;
+        $request  = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($warstatus->getInputFilter());
             $form->setData($request->getPost());
@@ -70,28 +75,39 @@ class WarstatusController extends AbstractActionController
                 );
             } else {
                 $errors = $form->getMessages();
-                return ['form' => $form, 'errors' => $errors];
+                return ['form' => $form, 'errors' => $errors, 'has_mini' => $has_mini];
             }
         }
-        return ['form' => $form];
+        return ['form' => $form, 'has_mini' => $has_mini];
     }
 
     public function indexAction()
     {
-        $acc_arr    = [];
-        $out_of_war = 0;
-        $accounts   = $this->getAccountTable()->getMembersWithWarstatus();
+        $acc_arr  = [];
+        $in_war   = 0;
+        $accounts = $this->getAccountTable()->getMembersWithWarstatus();
 
         foreach ($accounts as $account) {
-            $acc_arr[] = $account;
-            if ($account->getWarstatus()->getDurationLeft() > 0) {
-                $out_of_war++;
+            $warstatus      = $account->getWarstatus();
+            $ws_arr         = $warstatus->getWarstatusAsArray();
+            $ws_arr['name'] = $account->getName();
+            $acc_arr[]      = $ws_arr;
+            if ($account->getMini()) {
+                $ws_arr         = $warstatus->getWarstatusAsArrayMini();
+                $ws_arr['name'] = $account->getMini();
+                $acc_arr[]      = $ws_arr;
+                if ($warstatus->getDurationLeftMini() < 1) {
+                    $in_war++;
+                }
+            }
+            if ($warstatus->getDurationLeft() < 1) {
+                $in_war++;
             }
         }
 
         usort($acc_arr, function ($acc1, $acc2) {
-            $duration1 = $acc1->getWarstatus()->getDurationLeft();
-            $duration2 = $acc2->getWarstatus()->getDurationLeft();
+            $duration1 = $acc1['duration'];
+            $duration2 = $acc2['duration'];
             if ($duration1 === $duration2) {
                 return 0;
             }
@@ -103,7 +119,7 @@ class WarstatusController extends AbstractActionController
             }
             return ($duration1 < $duration2) ? -1 : 1;
         });
-        return ['accounts' => $acc_arr, 'out_of_war' => $out_of_war];
+        return ['accounts' => $acc_arr, 'in_war' => $in_war];
     }
 
     private function getWarstatusTable()
