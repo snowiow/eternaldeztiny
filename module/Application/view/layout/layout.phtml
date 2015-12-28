@@ -55,6 +55,7 @@ $session = new \Zend\Session\Container('user');
                 if (isset($session->role)) {
                     if (\Account\Service\PermissionChecker::check(\Account\Model\Role::MEMBER)) {
                         echo '<li><a href="/warclaim">WarClaim</a></li>';
+                        echo '<li><a href="/warstatus">Warstatus</a></li>';
                     } else {
                         echo '<li><a href="/applynow">Apply Now</a></li>';
                     }
