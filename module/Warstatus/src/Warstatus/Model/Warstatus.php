@@ -122,7 +122,7 @@ class Warstatus implements InputFilterAwareInterface
     {
         $opt_in = new \DateTime($this->optedInDate);
 
-        $current_date = new \DateTime();
+        $current_date = (new \DateTime())->setTime(0, 0);
         if ($current_date > $opt_in) {
             return 0;
         }
@@ -217,7 +217,7 @@ class Warstatus implements InputFilterAwareInterface
     {
         $opt_in = new \DateTime($this->optedInDateMini);
 
-        $current_date = new \DateTime();
+        $current_date = (new \DateTime())->setTime(0, 0);
         if ($current_date > $opt_in) {
             return 0;
         }
