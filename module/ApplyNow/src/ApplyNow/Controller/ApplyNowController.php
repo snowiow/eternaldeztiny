@@ -102,21 +102,38 @@ class ApplyNowController extends AbstractActionController
                 } catch (\Exception $e) {
                     return $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
                 }
+
                 $id = $this->getApplicationTable()->getLastInsertedId();
-                $application->setId($id);
-                $accounts = $this->getAccountTable()->getLeadershipMails();
+                return $this->redirect()->toRoute(
+                    'applynow',
+                    [
+                        'action' => 'processing',
+                        'id'     => $id,
+                    ]);
 
-                foreach ($accounts as $account) {
-                    $this->sendApplicationMail($application, $account->getEmail());
-                }
-
-                return $this->redirect()->toRoute('applynow', ['action' => 'applysuccess']);
             } else {
                 $errors = $form->getMessages();
                 return ['form' => $form, 'errors' => $errors];
             }
         }
         return ['form' => $form];
+    }
+
+    public function processingAction()
+    {
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if ($id > 0) {
+            $application = $this->getApplicationTable()->getApplication($id);
+            $accounts    = $this->getAccountTable()->getLeadershipMails();
+
+            foreach ($accounts as $account) {
+                $this->sendApplicationMail($application, $account->getEmail());
+            }
+
+            return $this->redirect()->toRoute('applynow', ['action' => 'applysuccess']);
+        }
+        return $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
     }
 
     public function applysuccessAction()
