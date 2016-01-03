@@ -134,6 +134,11 @@ class Application implements InputFilterAwareInterface
     private $dateApplied;
 
     /**
+     * @var string
+     */
+    private $mailsSend;
+
+    /**
      * @return int
      */
     public function getId()
@@ -415,6 +420,16 @@ class Application implements InputFilterAwareInterface
         return $this->dateApplied;
     }
 
+    public function getMailsSend()
+    {
+        return $this->mailsSend;
+    }
+
+    public function setMailsSend($mailsSend)
+    {
+        $this->mailsSend = $mailsSend;
+    }
+
     /**
      * Fills up the model class with the given data
      * @param array $data The account data needed to fill the model
@@ -441,6 +456,7 @@ class Application implements InputFilterAwareInterface
         $this->account_name = !empty($data['account_name']) ? $data['account_name'] : null;
         $date               = new \DateTime();
         $this->dateApplied  = !empty($data['date_applied']) ? $data['date_applied'] : $date->format('Y-m-d H:i:s');
+        $this->mailsSend    = !empty($data['mails_send']) ? $data['mails_send'] : 0;
     }
 
     /**
@@ -698,6 +714,11 @@ class Application implements InputFilterAwareInterface
 
             $inputFilter->add([
                 'name'     => 'date_applied',
+                'required' => false,
+            ]);
+
+            $inputFilter->add([
+                'name'     => 'mails_send',
                 'required' => false,
             ]);
 

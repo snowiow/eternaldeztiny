@@ -107,7 +107,7 @@ class ApplyNowController extends AbstractActionController
                 return $this->redirect()->toRoute(
                     'applynow',
                     [
-                        'action' => 'processing',
+                        'action' => 'applysuccess',
                         'id'     => $id,
                     ]);
 
@@ -119,21 +119,25 @@ class ApplyNowController extends AbstractActionController
         return ['form' => $form];
     }
 
-    public function processingAction()
+    public function sendleadershipmailsAction()
     {
-
         $id = (int) $this->params()->fromRoute('id', 0);
         if ($id > 0) {
-            $application = $this->getApplicationTable()->getApplication($id);
-            $accounts    = $this->getAccountTable()->getLeadershipMails();
-
-            foreach ($accounts as $account) {
-                $this->sendApplicationMail($application, $account->getEmail());
+            try {
+                $application = $this->getApplicationTable()->getApplication($id);
+                if (!$application->getMailsSend()) {
+                    $accounts = $this->getAccountTable()->getLeadershipMails();
+                    foreach ($accounts as $account) {
+                        $this->sendApplicationMail($application, $account->getEmail());
+                    }
+                    $application->setMailsSend(true);
+                    $this->getApplicationTable()->saveApplication($application);
+                }
+            } catch (\Exception $e) {
+                $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
             }
-
-            return $this->redirect()->toRoute('applynow', ['action' => 'applysuccess']);
         }
-        return $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
+        return [];
     }
 
     public function applysuccessAction()

@@ -1,3 +1,11 @@
+<script>
+$().ready(function () {
+    var pathname = window.location.pathname;
+    var arr = pathname.split('/');
+    var id = arr.pop();
+    $.get('/applynow/sendleadershipmails/' + id);
+});
+</script>
 <?php
 $title = 'Application sucessful!';
 $this->headTitle($title);

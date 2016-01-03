@@ -135,6 +135,7 @@ class ApplicationTable
             'processed'    => $application->getProcessed(),
             'processed_by' => $application->getProcessedBy(),
             'date_applied' => $application->getDateApplied(),
+            'mails_send'   => $application->getMailsSend(),
         ];
 
         $id = (int) $application->getId();
