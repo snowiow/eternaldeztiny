@@ -33,7 +33,7 @@ class ApplicationTable
      * Returns the Application by the given id
      * @param int $id
      */
-    public function getApplication(\int $id)
+    public function getApplication(int $id)
     {
         $id     = $id;
         $rowset = $this->tableGateway->select(['id' => $id]);

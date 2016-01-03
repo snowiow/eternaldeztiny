@@ -15,7 +15,7 @@ interface Status
     const DECLINED_MAILED = 1 << 3;
 }
 
-function statusToString(\int $status)
+function statusToString(int $status)
 {
     switch ($status) {
         case (Status::ACCEPTED):

@@ -245,7 +245,7 @@ class ApplyNowController extends AbstractActionController
         return $this->accountTable;
     }
 
-    private function sendApplicationMail(Application $application, \string $mail_address)
+    private function sendApplicationMail(Application $application, string $mail_address)
     {
         $mailText = $application->getName() . " has applied to join Eternal Destiny.\n" .
         "Ingame-Tag: #" . $application->getTag() . "\n" .
