@@ -15,3 +15,5 @@ public/img/warlog/*
 tags
 
 module/Application/src/Application/Constants.php
+
+tests/_output/*

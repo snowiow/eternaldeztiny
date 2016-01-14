@@ -8,8 +8,9 @@
     ],
     "homepage": "http://eternaldeztiny.com/",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7.0.0",
         "zendframework/zendframework": "~2.4",
-        "zendframework/zftool": "dev-master"
+        "zendframework/zftool": "dev-master",
+        "codeception/codeception": "*"
     }
 }

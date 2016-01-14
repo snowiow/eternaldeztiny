@@ -50,7 +50,6 @@ $session = new \Zend\Session\Container('user');
                 <li><a href="/warlog">Warlog</a></li>
                 <li><a href="/media">Media</a></li>
                 <li><a href="/media/live">Live</a></li>
-                <li><a href="#">Forum</a></li>
                 <?php
                 if (isset($session->role)) {
                     if (\Account\Service\PermissionChecker::check(\Account\Model\Role::MEMBER)) {
@@ -88,7 +87,7 @@ $session = new \Zend\Session\Container('user');
     </div>
         <footer><a href = "/impressum">Impressum</a> | 
                 <a href = "https://github.com/snowiow/eternaldeztiny/issues">Report bugs or enhancements</a> |
-                Clash of Clans and its logos are trademarks of Supercell. ©2015 Supercell
+                Clash of Clans and its logos are trademarks of Supercell. ©2016 Supercell
         </footer>
     </div>
 </body>

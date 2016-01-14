@@ -161,7 +161,11 @@ class AuthController extends AbstractAccountController
     private function sendConfirmationMail(Account $account)
     {
         $mailText = "Congratulations " . $account->getName() . ", you registered at Eternal Deztiny. To complete your registration, ";
-        $mailText .= "follow the link:\n" . $_SERVER['SERVER_NAME'] . "/account/activate/" . $account->getUserHash();
+        $server   = 'ed.com';
+        if (array_key_exists('SERVER_NAME', $_SERVER)) {
+            $server = $_SERVER['SERVER_NAME'];
+        }
+        $mailText .= "follow the link:\n" . $server . "/account/activate/" . $account->getUserHash();
 
         $this->appMailService->sendMail($account->getEmail(), 'Your registration at Eternal Deztiny', $mailText);
     }
