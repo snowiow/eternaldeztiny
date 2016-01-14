@@ -28,7 +28,9 @@ class CurrentForm extends CreateForm
 
         if ($role < \Account\Model\Role::CO) {
             $this->get('strategy')->setAttribute('readonly', 'readonly');
+        }
 
+        if ($role < \Account\Model\Role::ELDER) {
             for ($i = 0; $i < $size; $i++) {
                 $this->get($i)->setAttribute('readonly', 'readonly');
             }
