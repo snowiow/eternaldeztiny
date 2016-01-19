@@ -130,7 +130,8 @@ class AccountTable
                         'gemable_mini',
                         'crusade_mini',
                     ]
-                );
+                )
+                ->where('role > 1');
         });
     }
 
