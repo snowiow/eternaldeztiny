@@ -6,6 +6,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\File\Size;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
+use Zend\Log\Logger;
+use Zend\Log\Writer\Stream;
 
 use ApplyNow\Form\ApplicationForm;
 use ApplyNow\Model\Application;
@@ -31,9 +33,18 @@ class ApplyNowController extends AbstractActionController
      */
     protected $appMailService;
 
+    protected $logger;
+
     public function __construct(AppMailServiceInterface $appMailService)
     {
         $this->appMailService = $appMailService;
+
+        $this->logger = new Logger();
+        if (!file_exists('log/applynow.txt')) {
+            file_put_contents('log/applynow.txt', '');
+        }
+        $writer = new Stream('log/applynow.txt');
+        $this->logger->addWriter($writer);
     }
 
     public function indexAction()
@@ -127,11 +138,21 @@ class ApplyNowController extends AbstractActionController
                 $application = $this->getApplicationTable()->getApplication($id);
                 if (!$application->getMailsSend()) {
                     $accounts = $this->getAccountTable()->getLeadershipMails();
+                    $this->logger->info('!!!Sending out mails!!!');
+                    $mail_adresses = [];
                     foreach ($accounts as $account) {
-                        $this->sendApplicationMail($application, $account->getEmail());
+                        $mail_adresses[] = $account->getEmail();
+                        $this->logger->info('-> ' . $account->getEmail());
+                    }
+                    $this->logger->info(count($mail_adresses));
+                    foreach ($mail_adresses as $mail) {
+                        $this->logger->info('Send mail to: ' . $mail);
+                        $this->sendApplicationMail($application, $mail);
+                        $this->logger->info('Mail was send to: ' . $mail);
                     }
                     $application->setMailsSend(true);
                     $this->getApplicationTable()->saveApplication($application);
+                    $this->logger->info('!!!Mails sent!!!');
                 }
             } catch (\Exception $e) {
                 $this->redirect()->toRoute('applynow', ['action' => 'applyfailed']);
