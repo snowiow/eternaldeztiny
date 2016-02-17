@@ -18,7 +18,7 @@ class AccountControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $realServiceLocator = $serviceLocator->getServiceLocator();
-        $appMailService = $realServiceLocator->get('AppMail\Service\AppMailServiceInterface');
+        $appMailService     = $realServiceLocator->get('AppMail\Service\AppMailServiceInterface');
 
         return new AccountController($appMailService);
     }

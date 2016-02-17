@@ -18,13 +18,6 @@ $GLOBALS['RESTmap']['GET'] = [
                 'country' => 'Ukraine',
             ]];
     },
-    'ping' => function() {
-        $resp = '';
-        foreach (getallheaders() as $k => $v) {
-            $resp .= strtolower($k) . ": $v\n";
-        }
-        return $resp;
-    },
     'zeroes' => function() {
         return [
             'responseCode' => 0,
@@ -42,6 +35,11 @@ $GLOBALS['RESTmap']['POST'] = [
     'user' => function() {
         $name = $_POST['name'];
         return ['name' => $name];
+    },
+    'file-upload' => function() {
+        return [
+            'uploaded' => isset($_FILES['file']['tmp_name']) && file_exists($_FILES['file']['tmp_name']),
+        ];
     }
 ];
 

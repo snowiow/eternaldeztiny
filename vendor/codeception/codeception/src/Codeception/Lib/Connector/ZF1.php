@@ -1,7 +1,6 @@
 <?php
 namespace Codeception\Lib\Connector;
 
-use GuzzleHttp\Psr7\Uri;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\BrowserKit\Request as BrowserKitRequest;
@@ -57,7 +56,15 @@ class ZF1 extends Client
         // relying on $request->getPost()
         $zendRequest->setPost($request->getParameters());
         $zendRequest->setRawBody($request->getContent());
-        $zendRequest->setRequestUri(str_replace('http://localhost','',$request->getUri()));
+
+        $uri = $request->getUri();
+        $queryString = parse_url($uri, PHP_URL_QUERY);
+        $requestUri = parse_url($uri, PHP_URL_PATH);
+        if (!empty($queryString)) {
+            $requestUri .= '?' . $queryString;
+        }
+        $zendRequest->setRequestUri($requestUri);
+
         $zendRequest->setHeaders($this->extractHeaders($request));
         $_FILES  = $this->remapFiles($request->getFiles());
         $_SERVER = array_merge($_SERVER, $request->getServer());
@@ -68,8 +75,10 @@ class ZF1 extends Client
         ob_start();
         try {
             $this->bootstrap->run();
+            $_GET = $_POST = [];
         } catch (\Exception $e) {
             ob_end_clean();
+            $_GET = $_POST = [];
             throw $e;
         }
         ob_end_clean();
@@ -119,12 +128,6 @@ class ZF1 extends Client
     {
         $headers = [];
         $server = $request->getServer();
-        $uri                 = new Uri($request->getUri());
-        $server['HTTP_HOST'] = $uri->getHost();
-        $port                = $uri->getPort();
-        if ($port !== null && $port !== 443 && $port != 80) {
-            $server['HTTP_HOST'] .= ':' . $port;
-        }
 
         $contentHeaders = array('Content-Length' => true, 'Content-Md5' => true, 'Content-Type' => true);
         foreach ($server as $header => $val) {

@@ -135,7 +135,7 @@ class FTP extends Filesystem
     /**
      * Close the FTP connection & Clear up
      */
-    public function _after()
+    public function _after(TestCase $test)
     {
         $this->_closeConnection();
 
@@ -242,7 +242,7 @@ class FTP extends Filesystem
     }
 
     /**
-     * Checks if file does not exists in path on the remote FTP/SFTP system
+     * Checks if file does not exist in path on the remote FTP/SFTP system
      *
      * @param $filename
      * @param string $path
@@ -255,7 +255,7 @@ class FTP extends Filesystem
     }
 
     /**
-     * Checks if file does not exists in path on the remote FTP/SFTP system, using regular expression as filename.
+     * Checks if file does not exist in path on the remote FTP/SFTP system, using regular expression as filename.
      * DOES NOT OPEN the file when it's exists
      *
      * @param $regex
@@ -570,6 +570,7 @@ class FTP extends Filesystem
         }
         if (!$this->isSFTP()) {
             ftp_close($this->ftp);
+            $this->ftp = null;
         }
     }
 
@@ -733,7 +734,7 @@ class FTP extends Filesystem
      *
      * @param $filename
      */
-    private function delete($filename, $isDir = flase)
+    private function delete($filename, $isDir = false)
     {
         if ($this->isSFTP()) {
             $deleted = @$this->ftp->delete($filename, $isDir);

@@ -9,7 +9,7 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
     protected static $config = [
         'dsn' => 'pgsql:host=localhost;dbname=codeception_test',
         'user' => 'postgres',
-        'password' => ''
+        'password' => null,
     ];
 
     protected static $sql;
@@ -59,6 +59,18 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->postgres->getDbh()->query("SELECT * FROM pg_tables where schemaname = 'public'")->fetchAll());
     }
 
+    public function testCleanupDatabaseDeletesTypes()
+    {
+        $customTypes = ['composite_type', 'enum_type', 'range_type', 'base_type'];
+        foreach ($customTypes as $customType) {
+            $this->assertNotEmpty($this->postgres->getDbh()->query("SELECT 1 FROM pg_type WHERE typname = '" . $customType . "';")->fetchAll());
+        }
+        $this->postgres->cleanup();
+        foreach ($customTypes as $customType) {
+            $this->assertEmpty($this->postgres->getDbh()->query("SELECT 1 FROM pg_type WHERE typname = '" . $customType . "';")->fetchAll());
+        }
+    }
+
     public function testLoadDump()
     {
         $res = $this->postgres->getDbh()->query("select * from users where name = 'davert'");
@@ -72,6 +84,9 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
         $res = $this->postgres->getDbh()->query("select * from users where email = 'user2@example.org'");
         $this->assertNotEquals(false, $res);
         $this->assertGreaterThan(0, $res->rowCount());
+
+        $res = $this->postgres->getDbh()->query("select * from anotherschema.users where email = 'schemauser@example.org'");
+        $this->assertEquals(1, $res->rowCount());
     }
 
     public function testSelectWithEmptyCriteria()
@@ -80,6 +95,35 @@ class PostgresTest extends \PHPUnit_Framework_TestCase
       $generatedSql = $this->postgres->select('test_column', 'test_table', $emptyCriteria);
 
       $this->assertNotContains('where', $generatedSql);
+    }
+
+    public function testGetSingleColumnPrimaryKey()
+    {
+        $this->assertEquals(['id'], $this->postgres->getPrimaryKey('order'));
+    }
+
+    public function testGetCompositePrimaryKey()
+    {
+        $this->assertEquals(['group_id', 'id'], $this->postgres->getPrimaryKey('composite_pk'));
+    }
+
+    public function testGetEmptyArrayIfTableHasNoPrimaryKey()
+    {
+        $this->assertEquals([], $this->postgres->getPrimaryKey('no_pk'));
+    }
+
+    public function testGetPrimaryColumnOfTableUsingReservedWordAsTableName()
+    {
+        $this->assertEquals('id', $this->postgres->getPrimaryColumn('order'));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage getPrimaryColumn method does not support composite primary keys, use getPrimaryKey instead
+     */
+    public function testGetPrimaryColumnThrowsExceptionIfTableHasCompositePrimaryKey()
+    {
+        $this->postgres->getPrimaryColumn('composite_pk');
     }
 
 }

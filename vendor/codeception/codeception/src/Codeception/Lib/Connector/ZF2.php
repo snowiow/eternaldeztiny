@@ -49,21 +49,28 @@ class ZF2 extends Client
 
         $zendRequest->setCookies(new Parameters($request->getCookies()));
 
+        $query = [];
+        $post = [];
+        $content = $request->getContent();
         if ($queryString) {
             parse_str($queryString, $query);
-            $zendRequest->setQuery(new Parameters($query));
         }
         
-        if ($request->getContent() !== null) {
-            $zendRequest->setContent($request->getContent());
-        } elseif ($method != HttpRequest::METHOD_GET) {
+        if ($content === null && $method != HttpRequest::METHOD_GET) {
             $post = $request->getParameters();
-            $zendRequest->setPost(new Parameters($post));
         }
 
+        $zendRequest->setQuery(new Parameters($query));
+        $zendRequest->setPost(new Parameters($post));
+        $zendRequest->setContent($content);
         $zendRequest->setMethod($method);
         $zendRequest->setUri($uri);
-        $zendRequest->setRequestUri(str_replace('http://localhost','',$request->getUri()));
+        $requestUri = $uri->getPath();
+        if (!empty($queryString)) {
+            $requestUri .= '?' . $queryString;
+        }
+
+        $zendRequest->setRequestUri($requestUri);
         
         $zendRequest->setHeaders($this->extractHeaders($request));
         $this->application->run();
@@ -96,12 +103,6 @@ class ZF2 extends Client
     {
         $headers = [];
         $server = $request->getServer();
-        $uri                 = new Uri($request->getUri());
-        $server['HTTP_HOST'] = $uri->getHost();
-        $port                = $uri->getPort();
-        if ($port !== null && $port !== 443 && $port != 80) {
-            $server['HTTP_HOST'] .= ':' . $port;
-        }
 
         $contentHeaders = array('Content-Length' => true, 'Content-Md5' => true, 'Content-Type' => true);
         foreach ($server as $header => $val) {
