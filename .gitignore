@@ -13,6 +13,8 @@ public/users/
 public/applications/
 public/img/warlog/*
 tags
+tags.lock
+tags.temp
 
 module/Application/src/Application/Constants.php
 
