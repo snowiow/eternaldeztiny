@@ -15,9 +15,6 @@ $this->headTitle($title);
                 <li class="list-group-item"><?php echo $account->getName(); ?></li>
                 <li class="list-group-item">Role: 
                     <?php echo Account\Model\Role::convertToRole((int) $account->getRole()); ?></li>
-                <?php if ($account->getMini()): ?>
-                <li class="list-group-item">Mini-Account: <?php echo $account->getMini(); ?></li>
-                <?php endif; ?>
                 <li class="list-group-item">Registered Since: <?php echo substr($account->getDateRegistered(), 0, 10); ?></li>
             </ul>
         </div>

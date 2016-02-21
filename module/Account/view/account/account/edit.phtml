@@ -40,32 +40,6 @@ if (isset($errors)) {
     echo '</div>';
 }
 echo '</div>';
-if (isset($errors)) {
-    if (array_key_exists('mini', $errors)) {
-        echo '<div class="form-group has-error has-feedback">';
-        echo $this->formLabel($form->get('mini')->setLabelAttributes(['class' => 'control-label col-sm-3']));
-        echo '<div class="col-sm-9">';
-        echo $this->formText($form->get('mini')->setAttribute('class', 'form-control'));
-        echo '<span class="glyphicon glyphicon-remove form-control-feedback"
-            aria-hidden="true"></span>';
-        echo '</div>';
-        echo '<p>No valid name(Must only contain characters, numbers and _ or -)</p>';
-    } else {
-        echo '<div class="form-group has-success has-feedback">';
-        echo $this->formLabel($form->get('mini')->setLabelAttributes(['class' => 'control-label col-sm-3']));
-        echo '<div class="col-sm-9">';
-        echo $this->formText($form->get('mini')->setAttribute('class', 'form-control'));
-        echo '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>';
-        echo '</div>';
-    }
-    } else {
-    echo '<div class="form-group">';
-    echo $this->formLabel($form->get('mini')->setLabelAttributes(['class' => 'control-label col-sm-3']));
-    echo '<div class="col-sm-9">';
-    echo $this->formText($form->get('mini')->setAttribute('class', 'form-control'));
-    echo '</div>';
-}
-echo '</div>';
 ?>
 <br />
 <div class="form-group">

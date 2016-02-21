@@ -24,14 +24,6 @@ class EditProfileForm extends Form
         ]);
 
         $this->add([
-            'name'    => 'mini',
-            'type'    => 'Text',
-            'options' => [
-                'label' => 'Name of Mini-Account:',
-            ],
-        ]);
-
-        $this->add([
             'name'       => 'submit',
             'type'       => 'Submit',
             'attributes' => [

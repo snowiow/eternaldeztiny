@@ -20,7 +20,6 @@ $this->headTitle($title);
 <datalist id="members">
     <?php foreach($members as $member): ?>
         <option value="<?php echo $member->getName(); ?>" />
-        <option value="<?php echo $member->getMini(); ?>" />
     <?php endforeach; ?>
 </datalist>
 <div class="content shadow">

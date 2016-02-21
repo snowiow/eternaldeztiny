@@ -124,11 +124,6 @@ class AccountTable
                         'reason',
                         'gemable',
                         'crusade',
-                        'opted_in_date_mini',
-                        'opted_out_date_mini',
-                        'reason_mini',
-                        'gemable_mini',
-                        'crusade_mini',
                     ]
                 )
                 ->where('role > 1');
@@ -143,8 +138,8 @@ class AccountTable
     }
 
     /**
-     * Returns accounts which names or minis fit to the given array
-     * @param array $names the names or minis of which the accounts are needed
+     * Returns accounts which names fit to the given array
+     * @param array $names the names of which the accounts are needed
      * @return null|Account the found accounts or null
      */
     public function getAccountsFromNames(array $names)
@@ -152,10 +147,9 @@ class AccountTable
         if (!$names) {
             return null;
         }
-        $where = 'name = "' . $names[0] . '" OR mini = "' . $names[0] . '"';
+        $where = 'name = "' . $names[0] . '"';
         for ($i = 1; $i < count($names); $i++) {
             $where .= ' OR name = "' . $names[$i] . '"';
-            $where .= ' OR mini = "' . $names[$i] . '"';
         }
         return $this->tableGateway->select(function (Select $select) use ($where) {
             $select->where($where);
@@ -178,7 +172,6 @@ class AccountTable
             'role'            => $account->getRole(),
             'avatar'          => $account->getAvatar(),
             'date_registered' => $account->getDateRegistered(),
-            'mini'            => $account->getMini(),
         ];
         if (!$account->getId()) {
             $data['password'] = hash('sha256', $account->getPassword()) . Constants::SALT;

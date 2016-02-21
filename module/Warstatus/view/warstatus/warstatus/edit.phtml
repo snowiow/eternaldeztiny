@@ -13,19 +13,10 @@ $form->prepare();
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 echo $this->formHidden($form->get('opted_out_date'));
-echo $this->formHidden($form->get('opted_out_date_mini'));
 foreach ($form as $element) {
     if (!($element instanceof Zend\Form\Element\Submit) &&
         !($element instanceof Zend\Form\Element\Hidden)) { 
 
-        if ($element->getName() === 'opted_in_date_mini') {
-            if (!$has_mini) {
-                break;
-            }
-            echo '<div class="page-header">';
-            echo '<h1>Set my mini\'s warstatus</h1>';
-            echo '</div>';
-        }
         if (isset($errors)) {
             if (array_key_exists($element->getName(), $errors)) {
                 echo '<div class="form-group has-error has-feedback">';

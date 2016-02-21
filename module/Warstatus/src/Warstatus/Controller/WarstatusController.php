@@ -49,20 +49,16 @@ class WarstatusController extends AbstractActionController
         if (!$warstatus) {
             $warstatus = new Warstatus($session->id);
             $warstatus->setOptedOutDate((new \DateTime())->format('Y-m-d'));
-            $warstatus->setOptedOutDateMini((new \DateTime())->format('Y-m-d'));
         }
         $form = new WarstatusForm();
 
         //Prepare date for HTML 5 input
-        $date      = new \DateTime($warstatus->getOptedInDate());
-        $date_mini = new \DateTime($warstatus->getOptedInDateMini());
+        $date = new \DateTime($warstatus->getOptedInDate());
         $warstatus->setOptedInDate($date->format('Y-m-d'));
-        $warstatus->setOptedInDateMini($date_mini->format('Y-m-d'));
 
         $form->bind($warstatus);
 
-        $has_mini = $account->getMini() ? true : false;
-        $request  = $this->getRequest();
+        $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($warstatus->getInputFilter());
             $form->setData($request->getPost());
@@ -75,10 +71,10 @@ class WarstatusController extends AbstractActionController
                 );
             } else {
                 $errors = $form->getMessages();
-                return ['form' => $form, 'errors' => $errors, 'has_mini' => $has_mini];
+                return ['form' => $form, 'errors' => $errors];
             }
         }
-        return ['form' => $form, 'has_mini' => $has_mini];
+        return ['form' => $form];
     }
 
     public function indexAction()
@@ -92,14 +88,6 @@ class WarstatusController extends AbstractActionController
             $ws_arr         = $warstatus->getWarstatusAsArray();
             $ws_arr['name'] = $account->getName();
             $acc_arr[]      = $ws_arr;
-            if ($account->getMini()) {
-                $ws_arr         = $warstatus->getWarstatusAsArrayMini();
-                $ws_arr['name'] = $account->getMini();
-                $acc_arr[]      = $ws_arr;
-                if ($warstatus->getDurationLeftMini() < 1) {
-                    $in_war++;
-                }
-            }
             if ($warstatus->getDurationLeft() < 1) {
                 $in_war++;
             }

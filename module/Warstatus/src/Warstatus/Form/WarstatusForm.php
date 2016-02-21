@@ -79,58 +79,6 @@ class WarstatusForm extends Form
         ]);
 
         $this->add([
-            'name' => 'opted_out_date_mini',
-            'type' => 'Hidden',
-        ]);
-
-        $this->add([
-            'name'       => 'opted_in_date_mini',
-            'type'       => 'Zend\Form\Element\Date',
-            'options'    => [
-                'label'  => 'Opt-In date:',
-                'format' => 'Y-m-d',
-            ],
-            'attributes' => [
-                'class' => 'form-control',
-                'min'   => $dateNowStr,
-                'max'   => $dateMaxStr,
-            ],
-        ]);
-
-        $this->add([
-            'name'       => 'reason_mini',
-            'type'       => 'Text',
-            'options'    => [
-                'label' => 'Reason for opting out:',
-            ],
-            'attributes' => [
-                'class' => 'form-control',
-            ],
-        ]);
-
-        $this->add([
-            'name'       => 'gemable_mini',
-            'type'       => 'Checkbox',
-            'options'    => [
-                'label' => 'Gemable:',
-            ],
-            'attributes' => [
-                'class' => 'horizontal-form-cb',
-            ],
-        ]);
-
-        $this->add([
-            'name'       => 'crusade_mini',
-            'type'       => 'Checkbox',
-            'options'    => [
-                'label' => 'Able for crusade:',
-            ],
-            'attributes' => [
-                'class' => 'horizontal-form-cb',
-            ],
-        ]);
-
-        $this->add([
             'name'       => 'submit',
             'type'       => 'Submit',
             'attributes' => [

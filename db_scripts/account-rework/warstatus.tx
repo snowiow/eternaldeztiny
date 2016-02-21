@@ -1,0 +1,1 @@
+ALTER TABLE warstatus DROP COLUMN reason_mini, DROP COLUMN crusade_mini, DROP COLUMN gemable_mini, DROP COLUMN opted_in_date_mini, DROP COLUMN opted_out_date_mini;

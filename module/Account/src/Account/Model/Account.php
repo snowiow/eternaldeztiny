@@ -50,11 +50,6 @@ class Account
     private $date_registered;
 
     /**
-     * @var string
-     */
-    private $mini;
-
-    /**
      * @var Warstatus
      */
     private $warstatus;
@@ -202,22 +197,6 @@ class Account
     }
 
     /**
-     * @return string
-     */
-    public function getMini()
-    {
-        return $this->mini;
-    }
-
-    /**
-     * @param string
-     */
-    public function setMini($mini)
-    {
-        $this->mini = $mini;
-    }
-
-    /**
      * @return Warstatus
      */
     public function getWarstatus()
@@ -239,7 +218,6 @@ class Account
         $this->email    = !empty($data['email']) ? $data['email'] : null;
         $this->role     = !empty($data['role']) ? $data['role'] : Role::NOT_ACTIVATED;
         $this->avatar   = !empty($data['avatar']) ? $data['avatar'] : null;
-        $this->mini     = !empty($data['mini']) ? $data['mini'] : null;
 
         $date                  = new \DateTime();
         $this->date_registered = !empty($data['date_registered']) ? $data['date_registered'] :
@@ -415,27 +393,6 @@ class Account
                 ]
             );
             $inputFilter->add($fileInput);
-
-            $inputFilter->add([
-                'name'       => 'mini',
-                'required'   => false,
-                'filters'    => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    'name'    => 'StringLength',
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min'      => 3,
-                        'max'      => 64,
-                    ],
-                    'name'    => 'Regex',
-                    'options' => [
-                        'pattern' => '/^[a-zA-Z0-9_-]+$/',
-                    ],
-                ],
-            ]);
 
             $this->editProfileInputFilter = $inputFilter;
         }

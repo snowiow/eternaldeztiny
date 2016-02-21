@@ -41,7 +41,7 @@ class AccountController extends AbstractAccountController
     public function __construct(AppMailServiceInterface $appMailService)
     {
         $this->appMailService = $appMailService;
-        }
+    }
 
     public function profileAction()
     {
@@ -102,8 +102,7 @@ class AccountController extends AbstractAccountController
                 $request->getFiles()->toArray());
             $form->setData($post);
             if ($form->isValid()) {
-                $data = $form->getData();
-                $account->setMini($data->getMini('mini'));
+                $data     = $form->getData();
                 $file_arr = $request->getFiles()->toArray();
                 if (strstr($file_arr['file']['type'], 'image')) {
                     $file = file_get_contents($file_arr['file']['tmp_name']);

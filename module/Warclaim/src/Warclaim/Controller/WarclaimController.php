@@ -121,14 +121,14 @@ class WarclaimController extends AbstractActionController
                 $warclaim->setOpen(false);
                 $this->getWarclaimTable()->saveWarclaim($warclaim);
                 switch ($close) {
-                case 'Close':
-                    return $this->redirect()->toRoute('account', ['action' => 'profile']);
-                case 'Win':
-                    return $this->redirect()->toRoute('warlog', ['action' => 'win']);
-                case 'Loss':
-                    return $this->redirect()->toRoute('warlog', ['action' => 'loss']);
-                case 'Draw':
-                    return $this->redirect()->toRoute('warlog', ['action' => 'draw']);
+                    case 'Close':
+                        return $this->redirect()->toRoute('account', ['action' => 'profile']);
+                    case 'Win':
+                        return $this->redirect()->toRoute('warlog', ['action' => 'win']);
+                    case 'Loss':
+                        return $this->redirect()->toRoute('warlog', ['action' => 'loss']);
+                    case 'Draw':
+                        return $this->redirect()->toRoute('warlog', ['action' => 'draw']);
                 }
             }
             return $this->redirect()->toRoute('warclaim');
@@ -273,21 +273,17 @@ class WarclaimController extends AbstractActionController
     private function sendAssignmentMail(Account $account, array $assignments, string $strategy)
     {
         $target_main = implode(',', array_keys($assignments, strtolower($account->getName())));
-        $target_mini = implode(',', array_keys($assignments, strtolower($account->getMini())));
 
         $text = 'Hello ' . $account->getName() . ". Your targets are:\n";
 
         if ($target_main) {
             $text .= $account->getName() . ': ' . $target_main . "\n";
         }
-        if ($target_mini) {
-            $text .= $account->getMini() . ': ' . $target_mini . "\n";
-        }
 
         $text .= 'War Strategy: ' . $strategy . "\n\n";
 
         $text .= 'Good Luck. Further information can be found under ' .
-        $_SERVER['SERVER_NAME'] . '/warclaim/';
+            $_SERVER['SERVER_NAME'] . '/warclaim/';
 
         $this->appMailService->sendMail($account->getEmail(), 'A new war has started!', $text);
     }
