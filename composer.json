@@ -3,13 +3,11 @@
     "description": "Eternal Deztiny Website",
     "license": "MIT",
     "keywords": [
-        "framework",
-        "zf2"
     ],
     "homepage": "http://eternaldeztiny.com/",
     "require": {
         "php": ">=7.0.0",
-        "zendframework/zendframework": "~2.4",
+        "zendframework/zendframework": "~2.5",
         "zendframework/zftool": "dev-master",
         "codeception/codeception": "*",
         "snowiow/cocurl": "dev-master"
