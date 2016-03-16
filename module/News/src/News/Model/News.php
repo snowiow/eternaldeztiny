@@ -217,7 +217,7 @@ class News implements InputFilterAwareInterface
     }
 
     /**
-     * Creates the InputFilter for an NewsModel.
+     * Returns the InputFilter for a NewsModel.
      * @return InputFilter
      */
     public function getInputFilter()
