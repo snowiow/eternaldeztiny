@@ -281,28 +281,32 @@ class Account
         if (!$this->registerInputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add([
-                'name'       => 'name',
-                'required'   => true,
-                'filters'    => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min'      => 3,
-                            'max'      => 64,
+            $inputFilter->add(
+                [
+                    'name'       => 'name',
+                    'required'   => true,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'StringLength',
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min'      => 3,
+                                'max'      => 64,
+                            ],
                         ],
-                        'name'    => 'Regex',
-                        'options' => [
-                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        [
+                            'name'    => 'Regex',
+                            'options' => [
+                                'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                            ],
                         ],
                     ],
-                ],
-            ]);
+                ]
+            );
 
             $inputFilter->add([
                 'name'       => 'password',
@@ -355,28 +359,32 @@ class Account
         if (!$this->loginInputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add([
-                'name'       => 'name',
-                'required'   => true,
-                'filters'    => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min'      => 3,
-                            'max'      => 64,
+            $inputFilter->add(
+                [
+                    'name'       => 'name',
+                    'required'   => true,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'StringLength',
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min'      => 3,
+                                'max'      => 64,
+                            ],
                         ],
-                        'name'    => 'Regex',
-                        'options' => [
-                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        [
+                            'name'    => 'Regex',
+                            'options' => [
+                                'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                            ],
                         ],
                     ],
-                ],
-            ]);
+                ]
+            );
 
             $inputFilter->add([
                 'name'       => 'password',
@@ -424,18 +432,23 @@ class Account
                     ['name' => 'StringTrim'],
                 ],
                 'validators' => [
-                    'name'    => 'StringLength',
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min'      => 3,
-                        'max'      => 64,
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 3,
+                            'max'      => 64,
+                        ],
                     ],
-                    'name'    => 'Regex',
-                    'options' => [
-                        'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        ],
                     ],
                 ],
-            ]);
+            ]
+            );
 
             $this->editProfileInputFilter = $inputFilter;
         }
@@ -519,27 +532,31 @@ class Account
     {
         if (!$this->userSearchInputFilter) {
             $inputFilter = new InputFilter();
-            $inputFilter->add([
-                'name'       => 'name',
-                'required'   => false,
-                'filters'    => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'max'      => 64,
+            $inputFilter->add(
+                [
+                    'name'       => 'name',
+                    'required'   => false,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'StringLength',
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'max'      => 64,
+                            ],
                         ],
-                        'name'    => 'Regex',
-                        'options' => [
-                            'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        [
+                            'name'    => 'Regex',
+                            'options' => [
+                                'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                            ],
                         ],
                     ],
-                ],
-            ]);
+                ]
+            );
 
             $inputFilter->add([
                 'name'     => 'role',
